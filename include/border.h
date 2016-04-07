@@ -10,8 +10,8 @@ public:
     Point(double x, double y);
     ~Point();
 
-    double x();
-    double y();
+    double x() const;
+    double y() const;
 
     friend std::ostream &operator<<(std::ostream &os, const Point &p);
     friend std::istream &operator>>(std::istream &is, Point &p);
@@ -26,9 +26,9 @@ public:
     Border(Point first, Point second, double u);
     ~Border();
 
-    const Point first();
-    const Point second();
-    double u();
+    const Point first() const;
+    const Point second() const;
+    double u() const;
 
     friend std::ostream &operator<<(std::ostream &os, const Border &b);
     friend std::istream &operator>>(std::istream &is, Border &b);

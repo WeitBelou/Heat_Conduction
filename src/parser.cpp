@@ -25,25 +25,10 @@ std::list<Border> parseFile(const char * path)
 Border parseLine(const string & st)
 {
     Border b;
-    char ch;
 
     stringstream str(st);
 
-    str >> ch;
-    str >> b.first.x;
-    str >> ch;
-    str >> b.first.y;
-    str >> ch;
-
-    str >> ch;
-    str >> b.second.x;
-    str >> ch;
-    str >> b.second.y;
-    str >> ch;
-
-    str >> ch;
-
-    str >> b.u;
+    str >> b;
 
     return b;
 }

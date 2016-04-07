@@ -17,19 +17,19 @@ Point::~Point()
 
 }
 
-double Point::x()
+double Point::x() const
 {
     return m_x;
 }
 
-double Point::y()
+double Point::y() const
 {
     return m_y;
 }
 
 std::ostream &operator<<(std::ostream &os, const Point &p)
 {
-    os << "(" << x() << ", " << y() << ")";
+    os << "(" << p.x() << ", " << p.y() << ")";
     return os;
 }
 
@@ -37,7 +37,7 @@ std::istream &operator>>(std::istream &is, Point &p)
 {
     char ch;
 
-    is >> ch >> m_x >> ch >> m_y >> ch; // (d, d)
+    is >> ch >> p.m_x >> ch >> p.m_y >> ch; // (d, d)
 
     return is;
 }
@@ -59,17 +59,22 @@ Border::Border(Point first, Point second, double u)
     m_u = u;
 }
 
-const Point Border::first()
+Border::~Border()
+{
+
+}
+
+const Point Border::first() const
 {
     return m_first;
 }
 
-const Point Border::second()
+const Point Border::second() const
 {
     return m_second;
 }
 
-double Border::u()
+double Border::u() const
 {
     return m_u;
 }
@@ -82,6 +87,6 @@ std::ostream &operator<<(std::ostream &os, const Border &b)
 
 std::istream &operator>>(std::istream &is, Border &b)
 {
-    is >> b.m_first << b.m_second << b.m_u;
+    is >> b.m_first >> b.m_second >> b.m_u;
     return is;
 }

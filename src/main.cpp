@@ -4,14 +4,12 @@
 
 using namespace std;
 
-int main(int argc, char** argv)
+int main()
 {
     list<Border> lst = parseFile("../test.txt");
 
     for (Border b: lst) {
-        cout << '(' << b.first.x << ", " << b.first.y << ") " <<
-                '(' << b.first.x << ", " << b.first.y << ") " <<
-                b.u << endl;
+        cout << b << endl;
     }
 
     return 0;
