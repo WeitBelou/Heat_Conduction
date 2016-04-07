@@ -14,7 +14,8 @@ std::list<Border> parseFile(const char * path)
     while (file) {
         string s;
         getline(file, s);
-        lst.push_back(parseLine(s));
+        if (!s.empty())
+            lst.push_back(parseLine(s));
     }
 
     file.close();
@@ -25,10 +26,7 @@ std::list<Border> parseFile(const char * path)
 Border parseLine(const string & st)
 {
     Border b;
-
     stringstream str(st);
-
     str >> b;
-
     return b;
 }
