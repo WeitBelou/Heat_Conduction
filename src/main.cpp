@@ -1,14 +1,18 @@
-/* 
- * File:   main.cpp
- * Author: ivan
- *
- * Created on 7 апреля 2016 г., 19:57
- */
+#include "include/parser.h"
 
-/*
- * 
- */
-int main(int argc, char** argv) {
+#include <iostream>
+
+using namespace std;
+
+int main(int argc, char** argv)
+{
+    list<Border> lst = parseFile("../test.txt");
+
+    for (Border b: lst) {
+        cout << '(' << b.first.x << ", " << b.first.y << ") " <<
+                '(' << b.first.x << ", " << b.first.y << ") " <<
+                b.u << endl;
+    }
 
     return 0;
 }

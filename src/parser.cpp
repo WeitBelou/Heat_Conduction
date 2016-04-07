@@ -32,17 +32,13 @@ Border parseLine(const string & st)
     str >> ch;
     str >> b.first.x;
     str >> ch;
-    str >> ch;
     str >> b.first.y;
     str >> ch;
 
     str >> ch;
-
+    str >> b.second.x;
     str >> ch;
-    str >> b.first.x;
-    str >> ch;
-    str >> ch;
-    str >> b.first.y;
+    str >> b.second.y;
     str >> ch;
 
     str >> ch;

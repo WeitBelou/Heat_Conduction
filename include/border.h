@@ -13,8 +13,8 @@ public:
     double x();
     double y();
 
-    friend std::ostream & operator<<(std::ostream & os, const Point & p);
-    friend std::istream & operator>>(std::istream & is, Point & p);
+    friend std::ostream &operator<<(std::ostream &os, const Point &p);
+    friend std::istream &operator>>(std::istream &is, Point &p);
 private:
     double m_x, m_y;
 };
@@ -22,18 +22,19 @@ private:
 class Border
 {
 public:
-    Point();
-    Point(double x, double y);
-    ~Point();
+    Border();
+    Border(Point first, Point second, double u);
+    ~Border();
 
-    double x();
-    double y();
+    const Point first();
+    const Point second();
+    double u();
 
-    friend std::ostream & operator<<(std::ostream & os, const Point & p);
-    friend std::istream & operator>>(std::istream & is, Point & p);
+    friend std::ostream &operator<<(std::ostream &os, const Border &b);
+    friend std::istream &operator>>(std::istream &is, Border &b);
 private:
-    Point first, second;
-    double u;
+    Point m_first, m_second;
+    double m_u;
 };
 
 
