@@ -12,20 +12,10 @@
 #ifndef PARSER_H
 #define PARSER_H
 
-struct Point
-{
-    double x, y;
-};
-
-struct Border
-{
-    Point first, second;
-    double u;
-};
-
 #include <list>
 #include <fstream>
 #include <sstream>
+#include "include/border.h"
 
 std::list<Border> parseFile(const char * path);
 Border parseLine(const std::string &st);
