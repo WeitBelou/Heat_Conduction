@@ -25,9 +25,10 @@ struct Border
 
 #include <list>
 #include <fstream>
+#include <sstream>
 
 std::list<Border> parseFile(const char * path);
-Border parseLine(const std::stringstream & str);
+Border parseLine(const std::string &st);
 
 #endif /* PARSER_H */
 
