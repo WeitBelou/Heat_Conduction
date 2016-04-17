@@ -20,7 +20,8 @@ void PlottingWidget::setData(const QVector<Layer> &data)
 
 void PlottingWidget::replot()
 {
-	loop->start(1000);
+	loop->start(100);
+	setCurrentIndex(0);
 	drawCurrentLayer();
 }
 
