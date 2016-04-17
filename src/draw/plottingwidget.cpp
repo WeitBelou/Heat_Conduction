@@ -7,6 +7,53 @@ PlottingWidget::PlottingWidget(QWidget *parent) : QWidget(parent)
 	setLayout(l);
 	layout()->addWidget(plot);
 
+	loop = new QTimer(this);
+	connect(loop, &QTimer::timeout, this, &PlottingWidget::drawCurrentLayer);
+
+	configurePlot();
+}
+
+void PlottingWidget::setData(const QVector<Layer> &data)
+{
+	m_data = data;
+}
+
+void PlottingWidget::replot()
+{
+	loop->start(1000);
+	drawCurrentLayer();
+}
+
+void PlottingWidget::drawCurrentLayer()
+{
+	int nx = m_data[currentIndex()].getImax();
+	int ny = m_data[currentIndex()].getJmax();
+
+	colorMap->data()->setSize(nx, ny);
+	colorMap->data()->setRange(QCPRange(-4, 4), QCPRange(-4, 4));
+	double x, y, z;
+
+	for (int xIndex = 0; xIndex < nx; ++xIndex)
+	{
+	  for (int yIndex = 0; yIndex < ny; ++yIndex)
+	  {
+		colorMap->data()->cellToCoord(xIndex, yIndex, &x, &y);
+		z = m_data[currentIndex()](xIndex, yIndex);
+		colorMap->data()->setCell(xIndex, yIndex, z);
+	  }
+	}
+	///
+	colorMap->rescaleDataRange();
+	plot->rescaleAxes();
+	plot->replot();
+
+	if (currentIndex() < m_data.size() - 1) {
+		setCurrentIndex(currentIndex() + 1);
+	}
+}
+
+void PlottingWidget::configurePlot()
+{
 	// configure axis rect:
 	plot->setInteractions(QCP::iRangeDrag|QCP::iRangeZoom);
 	plot->axisRect()->setupFullAxesBox(true);
@@ -30,49 +77,17 @@ PlottingWidget::PlottingWidget(QWidget *parent) : QWidget(parent)
 	colorScale->setMarginGroup(QCP::msBottom|QCP::msTop, marginGroup);
 
 	plot->rescaleAxes();
+
+	setCurrentIndex(0);
 }
 
-void PlottingWidget::setData(const QVector<Layer> &data)
+int PlottingWidget::currentIndex() const
 {
-	m_data = data;
+	return m_currentIndex;
 }
 
-void PlottingWidget::replot()
+void PlottingWidget::setCurrentIndex(const int &currentIndex)
 {
-	Layer l(100, 100);
-
-	int nx = l.getImax();
-	int ny = l.getJmax();
-
-	for (int i = 0; i < nx; ++i) {
-		for (int j = 0; j < ny; ++j) {
-			if (i < j) {
-				l(i, j) = -5;
-			}
-			else {
-				l(i, j) = 5;
-			}
-		}
-	}
-
-	///Генерируем какие-нибудь данные по теплопроводности
-
-	colorMap->data()->setSize(nx, ny);
-	colorMap->data()->setRange(QCPRange(-4, 4), QCPRange(-4, 4));
-	double x, y, z;
-
-	for (int xIndex = 0; xIndex < nx; ++xIndex)
-	{
-	  for (int yIndex = 0; yIndex < ny; ++yIndex)
-	  {
-		colorMap->data()->cellToCoord(xIndex, yIndex, &x, &y);
-		z = l(xIndex, yIndex);
-		colorMap->data()->setCell(xIndex, yIndex, z);
-	  }
-	}
-	///
-	colorMap->rescaleDataRange();
-	plot->rescaleAxes();
-	plot->replot();
+	m_currentIndex = currentIndex;
 }
 

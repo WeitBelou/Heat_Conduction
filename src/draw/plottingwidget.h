@@ -12,12 +12,19 @@ class PlottingWidget : public QWidget
 public:
 	explicit PlottingWidget(QWidget *parent = 0);
 
+	void setCurrentIndex(const int &currentIndex);
+	int currentIndex() const;
+
 public slots:
 	void setData(const QVector<Layer> &data);
-
 	void replot();
 
+private slots:
+	void drawCurrentLayer();
+
 private:
+	void configurePlot();
+
 	QCustomPlot * plot;
 	QCPColorMap * colorMap;
 	QCPColorScale * colorScale;
@@ -26,6 +33,9 @@ private:
 	QHBoxLayout * l;
 
 	QVector<Layer> m_data;
+	int m_currentIndex;
+
+	QTimer * loop;
 };
 
 #endif // PLOTTINGWIDGET_H
