@@ -46,6 +46,16 @@ void Editor::draw()
 	plot->replot();
 }
 
+void Editor::compute()
+{
+	//Сформируем данные
+	int N = 1000;
+	Layer L(N, N);
+	BoolNet B(N, N);
+
+	//outputData = calculateAllLayers();
+}
+
 void Editor::openFile()
 {
 	QString filename = QFileDialog::getOpenFileName(this, tr("Open File"),
@@ -117,7 +127,8 @@ void Editor::createPlot()
 void Editor::createToolbar()
 {
 	tools = new QToolBar(this);
-	tools->addActions({newAct, parseAct, drawAct, openAct, saveAct, closeAct});
+	tools->addActions({newAct, parseAct, computeAct, drawAct,
+					   openAct, saveAct, closeAct});
 	addToolBar(Qt::TopToolBarArea, tools);
 }
 
@@ -132,6 +143,11 @@ void Editor::createActions()
 	parseAct->setStatusTip(tr("Parse file to vector"));
 	parseAct->setShortcut(QString("F5"));
 	connect(parseAct, &QAction::triggered, this, &Editor::parseText);
+
+	computeAct = new QAction(tr("&Compute"), this);
+	computeAct->setStatusTip(tr("Compute layers"));
+	computeAct->setShortcut(QString("F6"));
+	connect(computeAct, &QAction::triggered, this, &Editor::compute);
 
 	drawAct = new QAction(tr("&Draw"), this);
 	drawAct->setStatusTip(tr("Draw"));

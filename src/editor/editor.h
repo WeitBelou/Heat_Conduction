@@ -5,6 +5,7 @@
 #include <QtWidgets>
 #include "../core/layer.h"
 #include "../draw/plottingwidget.h"
+#include "../core/calc_func.h"
 
 class Editor : public QMainWindow
 {
@@ -20,6 +21,7 @@ public slots:
 	void newFile();
 	void parseText();
 	void draw();
+	void compute();
 	void openFile();
 	void saveFile();
 	void closeFile();
@@ -57,12 +59,14 @@ private:
 
 	QAction * newAct;
 	QAction * parseAct;
+	QAction * computeAct;
 	QAction * drawAct;
 	QAction * openAct;
 	QAction * saveAct;
 	QAction * closeAct;
 
 	QVector<Border> inputData;
+
 	QVector<Layer> outputData;
 };
 
