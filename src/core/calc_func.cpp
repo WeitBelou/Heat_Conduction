@@ -2,11 +2,11 @@
 // && - и
 #include "calc_func.h"
 // (lmbd) lambda for heat capacity, p for density, c for thermal conductivity
-vector <Layer> calculateAllLayers(const Layer  & zeroLayer, const BoolNet & idNet,
+QVector <Layer> calculateAllLayers(const Layer  & zeroLayer, const BoolNet & idNet,
 						  int tMax, double tStep, double xStep, double yStep,
 						  double p, double lmbd, double c)
 {
-vector<Layer> allLayers(tMax+1);
+QVector<Layer> allLayers(tMax+1);
 allLayers.push_back(zeroLayer);
 
 if ((zeroLayer.getImax() != idNet.getImax()) || ((zeroLayer.getJmax() != idNet.getJmax())))

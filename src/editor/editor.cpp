@@ -49,11 +49,25 @@ void Editor::draw()
 void Editor::compute()
 {
 	//Сформируем данные
-	int N = 1000;
+	int N = 100;
 	Layer L(N, N);
 	BoolNet B(N, N);
 
-	//outputData = calculateAllLayers();
+	for (int i = 0; i < N; i++) {
+		for (int j = 0; j < N; j++) {
+			if ((10 < i && i < 90) && (10 < j && j < 90))
+			{
+				L(i, j) = 0;
+				B(i, j) = true;
+			}
+			else {
+				L(i, j) = 5;
+				B(i, j) = false;
+			}
+		}
+	}
+
+	outputData = calculateAllLayers(L, B, 100, 0.1, 0.5, 0.5, 1, 1, 1);
 }
 
 void Editor::openFile()
