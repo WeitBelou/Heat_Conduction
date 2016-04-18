@@ -1,0 +1,4 @@
+#ifndef ARGUMENT_STRUCT_H
+#define ARGUMENT_STRUCT_H
+
+#endif // ARGUMENT_STRUCT_H
