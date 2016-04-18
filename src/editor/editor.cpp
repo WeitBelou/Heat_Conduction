@@ -69,7 +69,7 @@ void Editor::compute()
 	L.print();
 	B.print();
 
-	outputData = calculateAllLayers(L, B, 100, 0.1, 0.1, 1.0, 1, 1, 1);
+	outputData = calculateAllLayers(L, B, 200, 1000, 0.1, 1.0, 1, 1, 1);
 
 	plot->setData(outputData);
 }
