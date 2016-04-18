@@ -6,28 +6,32 @@ QVector <Layer> calculateAllLayers(const Layer  & zeroLayer, const BoolNet & idN
 						  int tMax, double tStep, double xStep, double yStep,
 						  double p, double lmbd, double c)
 {
-QVector<Layer> allLayers(tMax+1);
-allLayers.push_back(zeroLayer);
 
-if ((zeroLayer.getImax() != idNet.getImax()) || ((zeroLayer.getJmax() != idNet.getJmax())))
-	throw std::range_error("Размеры матрицы температур и битовой сетки не совпадают!");
+	int iMax = zeroLayer.getImax();
+	int jMax = zeroLayer.getJmax();
 
-int iMax = zeroLayer.getImax();
-int jMax = zeroLayer.getJmax();
+	Layer alpha(iMax, jMax);
+	Layer beta(iMax, jMax);
 
-Layer alpha(iMax, jMax);
-Layer beta(iMax, jMax);
+
+	QVector<Layer> allLayers(tMax + 1, Layer(iMax, jMax));
+	allLayers[0] = zeroLayer;
+
+	if ((zeroLayer.getImax() != idNet.getImax()) || ((zeroLayer.getJmax() != idNet.getJmax())))
+		throw std::range_error("Размеры матрицы температур и битовой сетки не совпадают!");
+
+
 
 
 
 // расчитаем коэфициенты, которые будут постоянны на протяжении всего расчёта
-double Ax = lmbd/(xStep*xStep);
-double & Cx = Ax;
-double Bx = 2*lmbd/(xStep*xStep) + p*c/tStep;
+const double Ax = lmbd/(xStep*xStep);
+const double Cx = Ax;
+const double Bx = 2*lmbd/(xStep*xStep) + p*c/tStep;
 
-double Ay = lmbd/(yStep*yStep);
-double & Cy = Ay;
-double By = 2*lmbd/(yStep*yStep) + p*c/tStep;
+const double Ay = lmbd/(yStep*yStep);
+const double Cy = Ay;
+const double By = 2*lmbd/(yStep*yStep) + p*c/tStep;
 
 double newAlpha; // переменные для временного хранения промежуточных значений
 double newBeta;
@@ -98,7 +102,7 @@ for (int t = 0; t <tMax; t ++)
 			if (!idNet(i,j)) //граница
 				allLayers[t+1](i,j) = allLayers[t](i,j);
 			if (idNet(i,j))
-				allLayers[t+1](i,j) = allLayers[t+1](i,j+2)*alpha(i,j) + beta (i,j);
+				allLayers[t+1](i,j) = allLayers[t+1](i,j+1)*alpha(i,j) + beta (i,j);
 		}
 	}
 

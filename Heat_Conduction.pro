@@ -8,6 +8,7 @@ TARGET = Heat_Conduction
 greaterThan(QT_MAJOR_VERSION, 4.7): QT += widgets
 
 CONFIG += c++11
+CONFIG += console
 
 INCLUDEPATH += .
 

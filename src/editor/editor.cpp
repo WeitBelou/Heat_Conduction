@@ -57,7 +57,7 @@ void Editor::compute()
 		for (int j = 0; j < N; j++) {
 			if ((10 < i && i < 90) && (10 < j && j < 90))
 			{
-				L(i, j) = 0;
+				L(i, j) = 1;
 				B(i, j) = true;
 			}
 			else {
@@ -66,38 +66,12 @@ void Editor::compute()
 			}
 		}
 	}
+	L.print();
+	B.print();
 
-	outputData.push_back(L);
+	outputData = calculateAllLayers(L, B, 100, 0.1, 0.1, 1.0, 1, 1, 1);
 
-	for (int i = 0; i < N; i++) {
-		for (int j = 0; j < N; j++) {
-			if ((20 < i && i < 80) && (20 < j && j < 80))
-			{
-				L(i, j) = 0;
-				B(i, j) = true;
-			}
-			else {
-				L(i, j) = 5;
-				B(i, j) = false;
-			}
-		}
-	}
-	outputData.push_back(L);
-
-	for (int i = 0; i < N; i++) {
-		for (int j = 0; j < N; j++) {
-			if ((30 < i && i < 70) && (30 < j && j < 70))
-			{
-				L(i, j) = 0;
-				B(i, j) = true;
-			}
-			else {
-				L(i, j) = 5;
-				B(i, j) = false;
-			}
-		}
-	}
-	outputData.push_back(L);
+	plot->setData(outputData);
 }
 
 void Editor::openFile()

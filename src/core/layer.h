@@ -125,7 +125,7 @@ template <typename T >
 T TemplateLayer<T>::operator()(int i, int j) const
 {
 	if ((i > iMax-1) || (j > jMax-1) || (i < 0) || (j < 0))
-		throw std::range_error("Попытка получить температуру несуществующей точки");
+		throw std::range_error("Попытка получить температуру несуществующей точки ");
 
 	return m_matrix[i][j];
 }
