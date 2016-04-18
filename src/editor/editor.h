@@ -67,7 +67,8 @@ private:
 
 	QVector<Border> inputData;
 
-	QVector<Layer> outputData;
+	ArgumentForCalc gridData;
+	ArgumentForDraw outputData;
 };
 
 #endif // EDITOR_H

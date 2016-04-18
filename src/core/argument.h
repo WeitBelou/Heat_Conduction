@@ -1,9 +1,17 @@
-#ifndef ARGUMENT_STRUCT_H
-#define ARGUMENT_STRUCT_H
+#ifndef ARGUMENT_H
+#define ARGUMENT_H
 #include "./layer.h"
-struct ArgumentForCalc
-{	const Layer zeroLayer;
-	const BoolNet idNet;
+#include <QVector>
+class ArgumentForCalc
+{
+public:
+	ArgumentForCalc();
+	ArgumentForCalc(const Layer & zeroLayer, const BoolNet & idNet,
+					int tMax,
+					double tStep,double xStep, double yStep,
+					double p, double lmbd, double c);
+	Layer zeroLayer;
+	BoolNet idNet;
 	int tMax;
 	int iMax;
 	int jMax;
@@ -15,9 +23,15 @@ struct ArgumentForCalc
 	double c;
 };
 
-struct ArgumentForDraw
+
+class ArgumentForDraw
 {
-	const QVector<Layer> allLayers;
+public:
+	ArgumentForDraw();
+	ArgumentForDraw(const QVector<Layer> allLayers,
+					int tMax,double tStep,double xStep, double yStep);
+	void operator =(const ArgumentForDraw & anotherArgumentForDraw);
+	QVector<Layer> allLayers;
 	int tMax;
 	int iMax;
 	int jMax;
@@ -26,4 +40,8 @@ struct ArgumentForDraw
 	double yStep;
 };
 
-#endif // ARGUMENT_STRUCT_H
+
+
+
+
+#endif // ARGUMENT_H

@@ -19,7 +19,8 @@ HEADERS += \
 	src/core/layer.h \
 	src/draw/plottingwidget.h \
 	src/editor/editor.h \
-	src/editor/parser.h
+	src/editor/parser.h \
+    src/core/argument.h
 
 SOURCES += \
 	src/core/border.cpp \
@@ -27,7 +28,8 @@ SOURCES += \
 	src/draw/plottingwidget.cpp \
 	src/editor/editor.cpp \
 	src/editor/parser.cpp \
-	src/main.cpp
+	src/main.cpp \
+    src/core/argument.cpp
 
 DEFINES += QCUSTOMPLOT_USE_LIBRARY
 

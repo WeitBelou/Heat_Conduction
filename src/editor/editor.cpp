@@ -42,7 +42,7 @@ void Editor::parseText()
 
 void Editor::draw()
 {
-	plot->setData(outputData);
+	plot->setData(outputData.allLayers);
 	plot->replot();
 }
 
@@ -68,10 +68,10 @@ void Editor::compute()
 	}
 	L.print();
 	B.print();
+	ArgumentForCalc arg(L, B, 100, 100, 0.01, 0.01, 7800, 46, 460);
+	outputData = calculateAllLayers(arg);
 
-	outputData = calculateAllLayers(L, B, 200, 1000, 0.1, 1.0, 1, 1, 1);
-
-	plot->setData(outputData);
+	plot->setData(outputData.allLayers);
 }
 
 void Editor::openFile()
