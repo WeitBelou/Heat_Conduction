@@ -13,25 +13,29 @@ PlottingWidget::PlottingWidget(QWidget *parent) : QWidget(parent)
 	configurePlot();
 }
 
-void PlottingWidget::setData(const QVector<Layer> &data)
+void PlottingWidget::setData(const ArgumentForDraw &data)
 {
 	m_data = data;
+
+	int nx = m_data.iMax;
+	int ny = m_data.jMax;
+
+	colorMap->data()->setSize(nx, ny);
+
+	plot->rescaleAxes();
 }
 
 void PlottingWidget::replot()
 {
-	loop->start(100);
+	loop->start(m_data.tStep * 1000);
 	setCurrentIndex(0);
 	drawCurrentLayer();
 }
 
 void PlottingWidget::drawCurrentLayer()
 {
-	int nx = m_data[currentIndex()].getImax();
-	int ny = m_data[currentIndex()].getJmax();
-
-	colorMap->data()->setSize(nx, ny);
-	colorMap->data()->setRange(QCPRange(-4, 4), QCPRange(-4, 4));
+	int nx = m_data.iMax;
+	int ny = m_data.jMax;
 	double x, y, z;
 
 	for (int xIndex = 0; xIndex < nx; ++xIndex)
@@ -39,16 +43,15 @@ void PlottingWidget::drawCurrentLayer()
 	  for (int yIndex = 0; yIndex < ny; ++yIndex)
 	  {
 		colorMap->data()->cellToCoord(xIndex, yIndex, &x, &y);
-		z = m_data[currentIndex()](xIndex, yIndex);
+		z = m_data.allLayers[currentIndex()](xIndex, yIndex);
 		colorMap->data()->setCell(xIndex, yIndex, z);
 	  }
 	}
-	///
 	colorMap->rescaleDataRange();
-	plot->rescaleAxes();
+	///
 	plot->replot();
 
-	if (currentIndex() < m_data.size() - 1) {
+	if (currentIndex() < m_data.tMax - 1) {
 		setCurrentIndex(currentIndex() + 1);
 	}
 }
@@ -56,7 +59,6 @@ void PlottingWidget::drawCurrentLayer()
 void PlottingWidget::configurePlot()
 {
 	// configure axis rect:
-	plot->setInteractions(QCP::iRangeDrag|QCP::iRangeZoom);
 	plot->axisRect()->setupFullAxesBox(true);
 	plot->xAxis->setLabel("x");
 	plot->yAxis->setLabel("y");

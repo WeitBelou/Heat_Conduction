@@ -42,7 +42,6 @@ void Editor::parseText()
 
 void Editor::draw()
 {
-	plot->setData(outputData.allLayers);
 	plot->replot();
 }
 
@@ -55,23 +54,30 @@ void Editor::compute()
 
 	for (int i = 0; i < N; i++) {
 		for (int j = 0; j < N; j++) {
-			if ((10 < i && i < 90) && (10 < j && j < 90))
-			{
-				L(i, j) = 1;
+			if ((10 < i && i < 90) && (10 < j && j < 90)){
+				L(i, j) = 5;
 				B(i, j) = true;
 			}
 			else {
-				L(i, j) = 5;
-				B(i, j) = false;
+				if ((10 <= j && j <= 90) && (i == 10 || i == 90)) {
+					L(i, j) = 10;
+					B(i, j) = false;
+				}
+				else if ((10 <= i && i <= 90) && (j == 10 || j == 90)) {
+					L(i, j) = 20;
+					B(i, j) = false;
+				}
+				else {
+					L(i, j) = 0;
+					B(i, j) = false;
+				}
 			}
 		}
 	}
-	L.print();
-	B.print();
-	ArgumentForCalc arg(L, B, 100, 100, 0.01, 0.01, 7800, 46, 460);
+	ArgumentForCalc arg(L, B, 100, 1, 0.01, 0.01, 7800, 46, 460);
 	outputData = calculateAllLayers(arg);
 
-	plot->setData(outputData.allLayers);
+	plot->setData(outputData);
 }
 
 void Editor::openFile()

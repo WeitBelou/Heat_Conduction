@@ -5,6 +5,7 @@
 #include <QHBoxLayout>
 #include <qcustomplot.h>
 #include "../core/layer.h"
+#include "../core/argument.h"
 
 class PlottingWidget : public QWidget
 {
@@ -16,7 +17,7 @@ public:
 	int currentIndex() const;
 
 public slots:
-	void setData(const QVector<Layer> &data);
+	void setData(const ArgumentForDraw &data);
 	void replot();
 
 private slots:
@@ -32,7 +33,7 @@ private:
 
 	QHBoxLayout * l;
 
-	QVector<Layer> m_data;
+	ArgumentForDraw m_data;
 	int m_currentIndex;
 
 	QTimer * loop;
