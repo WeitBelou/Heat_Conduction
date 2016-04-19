@@ -17,20 +17,20 @@ HEADERS += \
 	src/core/border.h \
 	src/core/calc_func.h \
 	src/core/layer.h \
+	src/draw/qcustomplot.h \
 	src/draw/plottingwidget.h \
 	src/editor/editor.h \
 	src/editor/parser.h \
 	src/core/argument.h \
-	qcustomplot.h
 
 SOURCES += \
 	src/core/border.cpp \
 	src/core/calc_func.cpp \
+	src/draw/qcustomplot.cpp \
 	src/draw/plottingwidget.cpp \
 	src/editor/editor.cpp \
 	src/editor/parser.cpp \
 	src/main.cpp \
 	src/core/argument.cpp \
-	qcustomplot.cpp
 
 
