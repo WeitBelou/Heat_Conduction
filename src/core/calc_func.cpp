@@ -1,6 +1,7 @@
 // || - или
 // && - и
 #include "calc_func.h"
+#include "stdexcept"
 #include "./argument.h"
 // (lmbd) lambda for heat capacity, p for density, c for thermal conductivity
 ArgumentForDraw calculateAllLayers( ArgumentForCalc const & argument)

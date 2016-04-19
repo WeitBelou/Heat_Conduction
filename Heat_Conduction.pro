@@ -5,7 +5,7 @@
 TEMPLATE = app
 TARGET = Heat_Conduction
 
-greaterThan(QT_MAJOR_VERSION, 4.7): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 4.7): QT += widgets printsupport
 
 CONFIG += c++11
 CONFIG += console
@@ -20,7 +20,8 @@ HEADERS += \
 	src/draw/plottingwidget.h \
 	src/editor/editor.h \
 	src/editor/parser.h \
-    src/core/argument.h
+	src/core/argument.h \
+	qcustomplot.h
 
 SOURCES += \
 	src/core/border.cpp \
@@ -29,15 +30,7 @@ SOURCES += \
 	src/editor/editor.cpp \
 	src/editor/parser.cpp \
 	src/main.cpp \
-    src/core/argument.cpp
+	src/core/argument.cpp \
+	qcustomplot.cpp
 
-DEFINES += QCUSTOMPLOT_USE_LIBRARY
 
-CONFIG(debug, release|debug) {
-  win32:QCPLIB = qcustomplotd1
-  else: QCPLIB = qcustomplotd
-} else {
-  win32:QCPLIB = qcustomplot1
-  else: QCPLIB = qcustomplot
-}
-LIBS += -L./ -l$$QCPLIB

@@ -3,7 +3,7 @@
 
 #include <QWidget>
 #include <QHBoxLayout>
-#include <qcustomplot.h>
+#include "../../qcustomplot.h"
 #include "../core/layer.h"
 #include "../core/argument.h"
 

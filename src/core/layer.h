@@ -1,7 +1,7 @@
 #ifndef LAYER_H
 #define LAYER_H
 #include <iostream>
-#include <exception>
+#include <stdexcept>
 template <typename T>
 class TemplateLayer
 {
