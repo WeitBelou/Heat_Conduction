@@ -22,6 +22,7 @@ HEADERS += \
 	src/editor/editor.h \
 	src/editor/parser.h \
 	src/core/argument.h \
+    src/core/border_interpreter.h
 
 SOURCES += \
 	src/core/border.cpp \
@@ -32,5 +33,6 @@ SOURCES += \
 	src/editor/parser.cpp \
 	src/main.cpp \
 	src/core/argument.cpp \
+    src/core/border_interpreter.cpp
 
 
