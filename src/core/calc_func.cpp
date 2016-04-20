@@ -3,6 +3,7 @@
 #include "calc_func.h"
 #include "stdexcept"
 #include "./argument.h"
+//#include <omp.h>
 // (lmbd) lambda for heat capacity, p for density, c for thermal conductivity
 ArgumentForDraw calculateAllLayers( ArgumentForCalc const & argument)
 {
@@ -50,6 +51,7 @@ double F;
 
 for (int t = 0; t <tMax; t ++)
 {
+
 
 	//alpha and beta calculation
 
