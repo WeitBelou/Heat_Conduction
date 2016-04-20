@@ -21,10 +21,12 @@ signals:
 public slots:
 	void compute();
 
+private slots:
+	void addPlot();
+	void addEditor();
+
 private:
 	void createCentralWidget();
-	void createEditor();
-	void createPlot();
 	void createToolbar();
 	void createActions();
 	void createStatusBar();
@@ -34,9 +36,12 @@ private:
 	QStatusBar * status;
 	QToolBar * tools;
 	QMdiArea * central;
-	Editor * editor;
-	PlottingWidget * plot;
 
+	QList<Editor *> editors;
+	QList<PlottingWidget *> plots;
+
+	QAction * addEditorAct;
+	QAction * addPlotAct;
 	QAction * computeAct;
 
 	QVector<Border> inputData;

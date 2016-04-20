@@ -9,8 +9,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 	createToolbar();
 	createStatusBar();
 	createCentralWidget();
-	createEditor();
-	createPlot();
+	addEditor();
+	addPlot();
 }
 
 MainWindow::~MainWindow()
@@ -50,7 +50,23 @@ void MainWindow::compute()
 	ArgumentForCalc arg(L, B, 100, 1, 0.01, 0.01, 7800, 46, 460);
 	outputData = calculateAllLayers(arg);
 
-	plot->setData(outputData);
+	for (PlottingWidget * plot: plots)
+	{
+		plot->setData(outputData);
+	}
+}
+
+void MainWindow::addPlot()
+{
+	plots.append(new PlottingWidget(this));
+	central->addSubWindow(plots.last());
+}
+
+void MainWindow::addEditor()
+{
+	editors.append(new Editor(this));
+	central->addSubWindow(editors.last());
+	editors.last()->show();
 }
 
 void MainWindow::createCentralWidget()
@@ -60,22 +76,10 @@ void MainWindow::createCentralWidget()
 	setCentralWidget(central);
 }
 
-void MainWindow::createEditor()
-{
-	editor = new Editor(this);
-	central->addSubWindow(editor);
-}
-
-void MainWindow::createPlot()
-{
-	plot = new PlottingWidget(this);
-	central->addSubWindow(plot);
-}
-
 void MainWindow::createToolbar()
 {
 	tools = new QToolBar(this);
-	tools->addAction(computeAct);
+	tools->addActions({addEditorAct, addPlotAct, computeAct});
 	addToolBar(Qt::TopToolBarArea, tools);
 }
 
@@ -83,8 +87,18 @@ void MainWindow::createActions()
 {
 	computeAct = new QAction(tr("&Compute"), this);
 	computeAct->setStatusTip(tr("Compute layers"));
-	computeAct->setShortcut(QString("F6"));
+	computeAct->setShortcut(QString("F2"));
 	connect(computeAct, &QAction::triggered, this, &MainWindow::compute);
+
+	addEditorAct = new QAction(tr("&Add Editor"), this);
+	addEditorAct->setStatusTip(tr("Add Editor"));
+	addEditorAct->setShortcut(QString("F3"));
+	connect(addEditorAct, &QAction::triggered, this, &MainWindow::addEditor);
+
+	addPlotAct = new QAction(tr("&Add Plot"), this);
+	addPlotAct->setStatusTip(tr("Add Plot"));
+	addPlotAct->setShortcut(QString("F4"));
+	connect(addPlotAct, &QAction::triggered, this, &MainWindow::addEditor);
 }
 
 void MainWindow::createStatusBar()
