@@ -10,6 +10,7 @@ public:
 					int tMax,
 					double tStep,double xStep, double yStep,
 					double p, double lmbd, double c);
+	void operator =(const ArgumentForCalc & anotherArgumentForCalc);
 	Layer zeroLayer;
 	BoolNet idNet;
 	int tMax;

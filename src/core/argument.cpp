@@ -25,10 +25,29 @@ ArgumentForCalc::ArgumentForCalc(const Layer & zeroLayer, const BoolNet & idNet,
 	this -> c = c;
 }
 
+void ArgumentForCalc::operator =(const ArgumentForCalc & anotherArgumentForCalc)
+{
+	this->zeroLayer= anotherArgumentForCalc.zeroLayer;
+	this->idNet = anotherArgumentForCalc.idNet;
+	this -> tMax = anotherArgumentForCalc.tMax;
+	this -> iMax = anotherArgumentForCalc.zeroLayer.getImax();
+	this -> jMax = anotherArgumentForCalc.zeroLayer.getJmax();
+	this -> tStep = anotherArgumentForCalc.tStep;
+	this -> xStep = anotherArgumentForCalc.xStep;
+	this -> yStep = anotherArgumentForCalc.yStep;
+	this -> p = anotherArgumentForCalc.p;
+	this -> lmbd = anotherArgumentForCalc.lmbd;
+	this -> c = anotherArgumentForCalc.c;
+
+
+}
+
 ArgumentForDraw::ArgumentForDraw()
 {
 
 }
+
+
 
 ArgumentForDraw::ArgumentForDraw(const QVector<Layer> allLayers,
 								 int tMax,double tStep,double xStep, double yStep)
