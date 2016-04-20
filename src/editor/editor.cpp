@@ -3,6 +3,7 @@
 Editor::Editor(QWidget *parent) : QWidget(parent)
 {
 	setWindowTitle("Editor");
+	setMinimumSize(500, 500);
 
 	main = new QVBoxLayout(this);
 
@@ -91,7 +92,7 @@ void Editor::createPlain()
 
 void Editor::createToolbar()
 {
-	tools = new QHBoxLayout(this);
+	tools = new QHBoxLayout();
 	tools->addWidget(newAct);
 	tools->addWidget(parseAct);
 	tools->addWidget(openAct);
