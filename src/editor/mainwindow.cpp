@@ -5,39 +5,17 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 	setWindowTitle("Editor");
 	resize(1024, 600);
 
-	connect(this, &MainWindow::currentFileChanged, this, &MainWindow::fileChanged);
-
 	createActions();
 	createToolbar();
 	createStatusBar();
 	createCentralWidget();
-	createPlain();
+	createEditor();
 	createPlot();
 }
 
 MainWindow::~MainWindow()
 {
 
-}
-
-void MainWindow::newFile()
-{
-	QString filename = QFileDialog::getSaveFileName(this, tr("New file"),
-													"/home/untitled.txt",
-													tr("Text files (*.txt)"));
-	setCurrentFile(filename);
-}
-
-void MainWindow::parseText()
-{
-	try {
-		inputData = parsePlainText(plain->toPlainText());
-	}
-	catch (ParseError & p) {
-		qWarning() << "On line: " << p.where();
-		qWarning() << p.what();
-		statusBar()->showMessage(p.what());
-	}
 }
 
 void MainWindow::compute()
@@ -75,50 +53,6 @@ void MainWindow::compute()
 	plot->setData(outputData);
 }
 
-void MainWindow::openFile()
-{
-	QString filename = QFileDialog::getOpenFileName(this, tr("Open File"),
-												  "/home", tr("Text files (*.txt)"));
-
-	QFile file(filename);
-
-	if (!file.open(QIODevice::ReadOnly)) {
-		return;
-	}
-	QTextStream tstream(&file);
-
-	plain->setPlainText(tstream.readAll());
-
-	file.close();
-
-	setCurrentFile(filename);
-}
-
-void MainWindow::saveFile()
-{
-	if (m_currentFile.isNull()) {
-		setCurrentFile(QFileDialog::getSaveFileName(this, tr("New file"),
-													"/home/untitled.txt",
-													tr("Text files (*.txt)")));
-	}
-
-	QFile file(m_currentFile);
-
-	if (!file.open(QIODevice::WriteOnly)) {
-		return;
-	}
-	QTextStream tstream(&file);
-
-	tstream << plain->toPlainText();
-
-	file.close();
-}
-
-void MainWindow::closeFile()
-{
-	close();
-}
-
 void MainWindow::createCentralWidget()
 {
 	central = new QMdiArea(this);
@@ -126,15 +60,10 @@ void MainWindow::createCentralWidget()
 	setCentralWidget(central);
 }
 
-void MainWindow::createPlain()
+void MainWindow::createEditor()
 {
-	plain = new QPlainTextEdit(this);
-	QFont font("Helvetica", 12, QFont::Bold);
-	font.setStretch(QFont::SemiExpanded);
-	font.setWordSpacing(4);
-	plain->setFont(font);
-
-	central->addSubWindow(plain);
+	editor = new Editor(this);
+	central->addSubWindow(editor);
 }
 
 void MainWindow::createPlot()
@@ -146,48 +75,20 @@ void MainWindow::createPlot()
 void MainWindow::createToolbar()
 {
 	tools = new QToolBar(this);
-	tools->addActions({newAct, parseAct, computeAct,
-					   openAct, saveAct, closeAct});
+	tools->addAction(computeAct);
 	addToolBar(Qt::TopToolBarArea, tools);
 }
 
 void MainWindow::createActions()
 {
-	newAct = new QAction(tr("&New"), this);
-	newAct->setStatusTip(tr("Create new file"));
-	newAct->setShortcut(QKeySequence::New);
-	connect(newAct, &QAction::triggered, this, &MainWindow::newFile);
-
-	parseAct = new QAction(tr("&Parse"), this);
-	parseAct->setStatusTip(tr("Parse file to vector"));
-	parseAct->setShortcut(QString("F5"));
-	connect(parseAct, &QAction::triggered, this, &MainWindow::parseText);
-
 	computeAct = new QAction(tr("&Compute"), this);
 	computeAct->setStatusTip(tr("Compute layers"));
 	computeAct->setShortcut(QString("F6"));
 	connect(computeAct, &QAction::triggered, this, &MainWindow::compute);
-
-	openAct = new QAction(tr("&Open"), this);
-	openAct->setStatusTip(tr("Open existing file"));
-	openAct->setShortcut(QKeySequence::Open);
-	connect(openAct, &QAction::triggered, this, &MainWindow::openFile);
-
-	saveAct = new QAction(tr("&Save"), this);
-	saveAct->setStatusTip(tr("Save file"));
-	saveAct->setShortcut(QKeySequence::Save);
-	connect(saveAct, &QAction::triggered, this, &MainWindow::saveFile);
-
-	closeAct = new QAction(tr("&Close"), this);
-	closeAct->setStatusTip(tr("Close file"));
-	closeAct->setShortcut(QKeySequence::Close);
-	connect(closeAct, &QAction::triggered, this, &MainWindow::closeFile);
 }
 
 void MainWindow::createStatusBar()
 {
 	status = new QStatusBar(this);
-	currentState = new QLabel(m_currentFile, this);
-	status->addWidget(currentState);
 	setStatusBar(status);
 }

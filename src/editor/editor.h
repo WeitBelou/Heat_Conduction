@@ -4,10 +4,9 @@
 #include "parser.h"
 #include <QtWidgets>
 #include "../core/layer.h"
-#include "../draw/plottingwidget.h"
-#include "../core/calc_func.h"
+#include "../core/argument.h"
 
-class Editor : public QMainWindow
+class Editor : public QWidget
 {
 	Q_OBJECT
 public:
@@ -20,15 +19,9 @@ signals:
 public slots:
 	void newFile();
 	void parseText();
-	void compute();
 	void openFile();
 	void saveFile();
 	void closeFile();
-
-	void fileChanged()
-	{
-		currentState->setText(m_currentFile);
-	}
 
 	void setCurrentFile(QString currentFile)
 	{
@@ -36,37 +29,26 @@ public slots:
 			return;
 
 		m_currentFile = currentFile;
-		emit currentFileChanged(currentFile);
 	}
 
 private:
-	void createCentralWidget();
 	void createPlain();
-	void createPlot();
 	void createToolbar();
 	void createActions();
-	void createStatusBar();
 
 	QString m_currentFile;
-	QLabel * currentState;
 
-	QStatusBar * status;
-	QToolBar * tools;
-	QMdiArea * central;
+	QVBoxLayout * main;
+	QHBoxLayout * tools;
 	QPlainTextEdit * plain;
-	PlottingWidget * plot;
 
-	QAction * newAct;
-	QAction * parseAct;
-	QAction * computeAct;
-	QAction * openAct;
-	QAction * saveAct;
-	QAction * closeAct;
+	QPushButton * newAct;
+	QPushButton * parseAct;
+	QPushButton * openAct;
+	QPushButton * saveAct;
+	QPushButton * closeAct;
 
 	QVector<Border> inputData;
-
-	ArgumentForCalc gridData;
-	ArgumentForDraw outputData;
 };
 
 #endif // EDITOR_H

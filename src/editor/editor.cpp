@@ -1,18 +1,14 @@
 #include "editor.h"
 
-Editor::Editor(QWidget *parent) : QMainWindow(parent)
+Editor::Editor(QWidget *parent) : QWidget(parent)
 {
 	setWindowTitle("Editor");
-	resize(1024, 600);
 
-	connect(this, &Editor::currentFileChanged, this, &Editor::fileChanged);
+	main = new QVBoxLayout(this);
 
 	createActions();
 	createToolbar();
-	createStatusBar();
-	createCentralWidget();
 	createPlain();
-	createPlot();
 }
 
 Editor::~Editor()
@@ -36,43 +32,7 @@ void Editor::parseText()
 	catch (ParseError & p) {
 		qWarning() << "On line: " << p.where();
 		qWarning() << p.what();
-		statusBar()->showMessage(p.what());
 	}
-}
-
-void Editor::compute()
-{
-	//Сформируем данные
-	int N = 100;
-	Layer L(N, N);
-	BoolNet B(N, N);
-
-	for (int i = 0; i < N; i++) {
-		for (int j = 0; j < N; j++) {
-			if ((10 < i && i < 90) && (10 < j && j < 90)){
-				L(i, j) = 5;
-				B(i, j) = true;
-			}
-			else {
-				if ((10 <= j && j <= 90) && (i == 10 || i == 90)) {
-					L(i, j) = 10;
-					B(i, j) = false;
-				}
-				else if ((10 <= i && i <= 90) && (j == 10 || j == 90)) {
-					L(i, j) = 20;
-					B(i, j) = false;
-				}
-				else {
-					L(i, j) = 0;
-					B(i, j) = false;
-				}
-			}
-		}
-	}
-	ArgumentForCalc arg(L, B, 100, 1, 0.01, 0.01, 7800, 46, 460);
-	outputData = calculateAllLayers(arg);
-
-	plot->setData(outputData);
 }
 
 void Editor::openFile()
@@ -119,13 +79,6 @@ void Editor::closeFile()
 	close();
 }
 
-void Editor::createCentralWidget()
-{
-	central = new QMdiArea(this);
-	central->tileSubWindows();
-	setCentralWidget(central);
-}
-
 void Editor::createPlain()
 {
 	plain = new QPlainTextEdit(this);
@@ -133,61 +86,44 @@ void Editor::createPlain()
 	font.setStretch(QFont::SemiExpanded);
 	font.setWordSpacing(4);
 	plain->setFont(font);
-
-	central->addSubWindow(plain);
-}
-
-void Editor::createPlot()
-{
-	plot = new PlottingWidget(this);
-	central->addSubWindow(plot);
+	main->addWidget(plain);
 }
 
 void Editor::createToolbar()
 {
-	tools = new QToolBar(this);
-	tools->addActions({newAct, parseAct, computeAct,
-					   openAct, saveAct, closeAct});
-	addToolBar(Qt::TopToolBarArea, tools);
+	tools = new QHBoxLayout(this);
+	tools->addWidget(newAct);
+	tools->addWidget(parseAct);
+	tools->addWidget(openAct);
+	tools->addWidget(saveAct);
+	tools->addWidget(closeAct);
+	main->addLayout(tools);
 }
 
 void Editor::createActions()
 {
-	newAct = new QAction(tr("&New"), this);
+	newAct = new QPushButton(tr("&New"), this);
 	newAct->setStatusTip(tr("Create new file"));
 	newAct->setShortcut(QKeySequence::New);
-	connect(newAct, &QAction::triggered, this, &Editor::newFile);
+	connect(newAct, &QPushButton::clicked, this, &Editor::newFile);
 
-	parseAct = new QAction(tr("&Parse"), this);
+	parseAct = new QPushButton(tr("&Parse"), this);
 	parseAct->setStatusTip(tr("Parse file to vector"));
 	parseAct->setShortcut(QString("F5"));
-	connect(parseAct, &QAction::triggered, this, &Editor::parseText);
+	connect(parseAct, &QPushButton::clicked, this, &Editor::parseText);
 
-	computeAct = new QAction(tr("&Compute"), this);
-	computeAct->setStatusTip(tr("Compute layers"));
-	computeAct->setShortcut(QString("F6"));
-	connect(computeAct, &QAction::triggered, this, &Editor::compute);
-
-	openAct = new QAction(tr("&Open"), this);
+	openAct = new QPushButton(tr("&Open"), this);
 	openAct->setStatusTip(tr("Open existing file"));
 	openAct->setShortcut(QKeySequence::Open);
-	connect(openAct, &QAction::triggered, this, &Editor::openFile);
+	connect(openAct, &QPushButton::clicked, this, &Editor::openFile);
 
-	saveAct = new QAction(tr("&Save"), this);
+	saveAct = new QPushButton(tr("&Save"), this);
 	saveAct->setStatusTip(tr("Save file"));
 	saveAct->setShortcut(QKeySequence::Save);
-	connect(saveAct, &QAction::triggered, this, &Editor::saveFile);
+	connect(saveAct, &QPushButton::clicked, this, &Editor::saveFile);
 
-	closeAct = new QAction(tr("&Close"), this);
+	closeAct = new QPushButton(tr("&Close"), this);
 	closeAct->setStatusTip(tr("Close file"));
 	closeAct->setShortcut(QKeySequence::Close);
-	connect(closeAct, &QAction::triggered, this, &Editor::closeFile);
-}
-
-void Editor::createStatusBar()
-{
-	status = new QStatusBar(this);
-	currentState = new QLabel(m_currentFile, this);
-	status->addWidget(currentState);
-	setStatusBar(status);
+	connect(closeAct, &QPushButton::clicked, this, &Editor::closeFile);
 }
