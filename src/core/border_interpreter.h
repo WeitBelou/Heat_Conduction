@@ -21,8 +21,8 @@ class Border_interpreter
 private:
 	ArgumentForCalc argument_for_calc;
 	double x_max, x_min, y_max, y_min;
-	double x_length, y_length;
-	void get_maxs_and_mins(const QVector<Border> & Borders);
+	double length, height, x_min_dist, y_min_dist;
+	void get_length_height(const QVector<Border> & Borders);
 };
 
 #endif // BORDER_INTERPRETER_H

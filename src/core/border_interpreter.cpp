@@ -9,7 +9,7 @@ Border_interpreter::Border_interpreter()
 
 Border_interpreter::Border_interpreter(const QVector<Border> & Borders)
 {
-	get_maxs_and_mins(Borders);
+	get_length_height(Borders);
 }
 
 ArgumentForCalc Border_interpreter::get_argument_for_calc()
@@ -17,9 +17,8 @@ ArgumentForCalc Border_interpreter::get_argument_for_calc()
 	return argument_for_calc;
 }
 
-void Border_interpreter::get_maxs_and_mins(const QVector<Border>& Borders)
+void Border_interpreter::get_length_height(const QVector<Border>& Borders)
 {
-	double x_length, y_length;
 	x_max = x_min = Borders[0].first().x();
 	y_max = y_min = Borders[0].first().y();
 
@@ -45,13 +44,13 @@ void Border_interpreter::get_maxs_and_mins(const QVector<Border>& Borders)
 			y_min = b.first().y();
 	}
 
-	x_length = x_max - x_min;
-	y_length = y_max - y_min;
+	length = x_max - x_min;
+	height = y_max - y_min;
 
-	x_max += 0.05 * x_length;
-	y_max += 0.05 * y_length;
-	x_min -= 0.05 * x_length;
-	y_min -= 0.05 * y_length;
+	x_max += 0.05 * length;
+	y_max += 0.05 * length;
+	x_min -= 0.05 * height;
+	y_min -= 0.05 * height;
 
 }
 
