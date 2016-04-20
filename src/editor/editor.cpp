@@ -40,11 +40,6 @@ void Editor::parseText()
 	}
 }
 
-void Editor::draw()
-{
-	plot->replot();
-}
-
 void Editor::compute()
 {
 	//Сформируем данные
@@ -151,7 +146,7 @@ void Editor::createPlot()
 void Editor::createToolbar()
 {
 	tools = new QToolBar(this);
-	tools->addActions({newAct, parseAct, computeAct, drawAct,
+	tools->addActions({newAct, parseAct, computeAct,
 					   openAct, saveAct, closeAct});
 	addToolBar(Qt::TopToolBarArea, tools);
 }
@@ -172,11 +167,6 @@ void Editor::createActions()
 	computeAct->setStatusTip(tr("Compute layers"));
 	computeAct->setShortcut(QString("F6"));
 	connect(computeAct, &QAction::triggered, this, &Editor::compute);
-
-	drawAct = new QAction(tr("&Draw"), this);
-	drawAct->setStatusTip(tr("Draw"));
-	drawAct->setShortcut(QString("F9"));
-	connect(drawAct, &QAction::triggered, this, &Editor::draw);
 
 	openAct = new QAction(tr("&Open"), this);
 	openAct->setStatusTip(tr("Open existing file"));

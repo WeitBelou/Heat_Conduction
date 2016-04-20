@@ -20,7 +20,6 @@ signals:
 public slots:
 	void newFile();
 	void parseText();
-	void draw();
 	void compute();
 	void openFile();
 	void saveFile();
@@ -60,7 +59,6 @@ private:
 	QAction * newAct;
 	QAction * parseAct;
 	QAction * computeAct;
-	QAction * drawAct;
 	QAction * openAct;
 	QAction * saveAct;
 	QAction * closeAct;

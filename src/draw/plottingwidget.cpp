@@ -2,13 +2,45 @@
 
 PlottingWidget::PlottingWidget(QWidget *parent) : QWidget(parent)
 {
-	l = new QHBoxLayout(this);
+	main = new QVBoxLayout(this);
+	down = new QHBoxLayout(this);
+
+	setLayout(main);
+
 	plot = new QCustomPlot(this);
-	setLayout(l);
+	slider = new QSlider(Qt::Horizontal, this);
+	slider->setMaximum(1);
+	slider->setMinimum(0);
+
+	play = new QPushButton("Play", this);
+	pause = new QPushButton("Pause", this);
+	stop = new QPushButton("Stop", this);
+
+	speed = new QDoubleSpinBox(this);
+	speed->setMinimum(0.1);
+	speed->setMaximum(100);
+	speed->setSingleStep(0.1);
+	speed->setValue(1);
+
 	layout()->addWidget(plot);
+	layout()->addItem(down);
+
+	down->addWidget(play);
+	down->addWidget(pause);
+	down->addWidget(stop);
+	down->addWidget(slider);
+	down->addWidget(speed);
+
+	connect(play, &QPushButton::clicked, this, &PlottingWidget::startDrawing);
+	connect(pause, &QPushButton::clicked, this, &PlottingWidget::pauseDrawing);
+	connect(stop, &QPushButton::clicked, this, &PlottingWidget::stopDrawing);
+	connect(slider, &QSlider::valueChanged, this, &PlottingWidget::setCurrentIndex);
+	connect(slider, &QSlider::valueChanged, this, &PlottingWidget::drawCurrentLayer);
+	connect(speed, SIGNAL(valueChanged(double)), this, SLOT(setSpeed(double)));
 
 	loop = new QTimer(this);
-	connect(loop, &QTimer::timeout, this, &PlottingWidget::drawCurrentLayer);
+	connect(loop, &QTimer::timeout, this,
+			[this](){slider->setValue(this->currentIndex() + 1);});
 
 	configurePlot();
 }
@@ -21,16 +53,33 @@ void PlottingWidget::setData(const ArgumentForDraw &data)
 	int ny = m_data.jMax;
 
 	colorMap->data()->setSize(nx, ny);
+	slider->setMaximum(m_data.tMax - 1);
+	slider->setValue(0);
+	m_speed = 1;
 
 	plot->rescaleAxes();
 }
 
-void PlottingWidget::replot()
+void PlottingWidget::startDrawing()
 {
-	loop->start(m_data.tStep * 1000);
-	setCurrentIndex(0);
-	drawCurrentLayer();
+	loop->stop();
+	loop->start(int (m_data.tStep * 1000.0 / m_speed));
+	if (currentIndex() < m_data.tMax - 1) {
+		slider->setValue(currentIndex() + 1);
+	}
 }
+
+void PlottingWidget::pauseDrawing()
+{
+	loop->stop();
+}
+
+void PlottingWidget::stopDrawing()
+{
+	loop->stop();
+	slider->setValue(0);
+}
+
 
 void PlottingWidget::drawCurrentLayer()
 {
@@ -50,10 +99,6 @@ void PlottingWidget::drawCurrentLayer()
 	colorMap->rescaleDataRange();
 	///
 	plot->replot();
-
-	if (currentIndex() < m_data.tMax - 1) {
-		setCurrentIndex(currentIndex() + 1);
-	}
 }
 
 void PlottingWidget::configurePlot()
@@ -89,8 +134,13 @@ int PlottingWidget::currentIndex() const
 	return m_currentIndex;
 }
 
-void PlottingWidget::setCurrentIndex(const int &currentIndex)
+void PlottingWidget::setCurrentIndex(int currentIndex)
 {
 	m_currentIndex = currentIndex;
+}
+
+void PlottingWidget::setSpeed(double d)
+{
+	m_speed = d;
 }
 

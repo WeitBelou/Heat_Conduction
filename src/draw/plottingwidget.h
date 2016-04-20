@@ -1,8 +1,7 @@
 #ifndef PLOTTINGWIDGET_H
 #define PLOTTINGWIDGET_H
 
-#include <QWidget>
-#include <QHBoxLayout>
+#include <QtWidgets>
 #include "qcustomplot.h"
 #include "../core/layer.h"
 #include "../core/argument.h"
@@ -13,30 +12,43 @@ class PlottingWidget : public QWidget
 public:
 	explicit PlottingWidget(QWidget *parent = 0);
 
-	void setCurrentIndex(const int &currentIndex);
-	int currentIndex() const;
-
 public slots:
 	void setData(const ArgumentForDraw &data);
-	void replot();
 
 private slots:
+	void startDrawing();
+	void pauseDrawing();
+	void stopDrawing();
 	void drawCurrentLayer();
+
+	void setCurrentIndex(int currentIndex);
+
+	void setSpeed(double d);
 
 private:
 	void configurePlot();
+
+	int currentIndex() const;
 
 	QCustomPlot * plot;
 	QCPColorMap * colorMap;
 	QCPColorScale * colorScale;
 	QCPMarginGroup * marginGroup;
 
-	QHBoxLayout * l;
+	QVBoxLayout * main;
+	QHBoxLayout * down;
+
+	QSlider * slider;
+	QPushButton * play;
+	QPushButton * pause;
+	QPushButton * stop;
+	QDoubleSpinBox * speed;
 
 	ArgumentForDraw m_data;
 	int m_currentIndex;
 
 	QTimer * loop;
+	double m_speed;
 };
 
 #endif // PLOTTINGWIDGET_H
