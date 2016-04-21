@@ -6,7 +6,7 @@
 #include "../core/layer.h"
 #include "../editor/editor.h"
 #include "../draw/plottingwidget.h"
-#include "../core/calc_func.h"
+#include "../core/layercalc.h"
 
 class MainWindow : public QMainWindow
 {

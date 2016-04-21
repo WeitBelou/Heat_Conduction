@@ -48,6 +48,8 @@ void MainWindow::compute()
 		}
 	}
 	ArgumentForCalc arg(L, B, 100, 1, 0.01, 0.01, 7800, 46, 460);
+
+	LayerCalc calculateAllLayers;
 	outputData = calculateAllLayers(arg);
 
 	for (PlottingWidget * plot: plots)

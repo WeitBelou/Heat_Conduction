@@ -1,14 +1,19 @@
+#include "layercalc.h"
 // || - или
 // && - и
-#include "calc_func.h"
 #include "stdexcept"
 #include "./argument.h"
 //#include <omp.h>
 // (lmbd) lambda for heat capacity, p for density, c for thermal conductivity
-ArgumentForDraw calculateAllLayers( ArgumentForCalc const & argument)
+
+LayerCalc::LayerCalc(QObject *parent) : QObject(parent)
 {
 
+}
 
+
+ArgumentForDraw LayerCalc::operator()(ArgumentForCalc const & argument)
+{
 	const Layer zeroLayer = argument.zeroLayer;
 	const BoolNet idNet = argument.idNet;
 	int tMax = argument.tMax;
@@ -20,6 +25,7 @@ ArgumentForDraw calculateAllLayers( ArgumentForCalc const & argument)
 	double p = argument.p;
 	double lmbd = argument.lmbd;
 	double c = argument.c;
+	double executionState;
 
 	Layer alpha(iMax, jMax);
 	Layer beta(iMax, jMax);
@@ -121,6 +127,9 @@ for (int t = 0; t <tMax; t ++)
 				allLayers[t+1](i,j) = allLayers[t+1](i,j+1)*alpha(i,j) + beta (i,j);
 		}
 	}
+	// посылаю сигнал
+	executionState = double(t)/double(tMax);
+	emit oneLayerCalcSignal(executionState);
 
 }
 
