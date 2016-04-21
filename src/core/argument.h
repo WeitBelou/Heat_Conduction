@@ -39,6 +39,7 @@ public:
 	double tStep;
 	double xStep;
 	double yStep;
+	double uMax;
 };
 
 

@@ -22,6 +22,7 @@ MainWindow::~MainWindow()
 void MainWindow::compute()
 {
 <<<<<<< HEAD
+<<<<<<< HEAD
 	//Сформируем данные
 	int N = 100;
 	Layer L(N, N);
@@ -54,6 +55,9 @@ void MainWindow::compute()
 	LayerCalc calculateAllLayers;
 =======
 	Border_interpreter borderInterpreter(inputData);
+=======
+	Border_interpreter borderInterpreter(inputData, 100);
+>>>>>>> origin/master
 //	//Сформируем данные
 //	int N = 100;
 //	Layer L(N, N);
