@@ -46,7 +46,7 @@ private:
 						const int& min_number_of_points_per_dimension,
 						const int& min_number_of_points_between_close_borders);
 	void make_grid();
-	void draw_borders(const QVector<Border>& Borders);
+	void draw_borders(const QVector<Border>& Borders, int accuracy);
 	Grid_point p_to_gp(const Point& p);
 	Grid_point move_point(const Grid_point& p1, const Grid_point& p2);
 	void put_point(const Grid_point& p, const double& u);

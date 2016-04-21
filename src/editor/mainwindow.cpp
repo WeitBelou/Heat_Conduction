@@ -25,7 +25,7 @@ void MainWindow::compute()
 		return;
 	}
 
-	Border_interpreter borderInterpreter(inputData, 100);
+	Border_interpreter borderInterpreter(inputData, 200);
 	ArgumentForCalc arg = borderInterpreter.get_argument_for_calc();
 	LayerCalc calculateAllLayers;
 	outputData = calculateAllLayers(arg);

@@ -48,7 +48,7 @@ Border_interpreter::Border_interpreter(const QVector<Border>& Borders,
 	//нанесение границ
 	qDebug() << "Borders drawing" << endl;
 	logstream << "Borders drawing" << endl;
-	draw_borders(Borders);
+	draw_borders(Borders, 200);// коэффициент количества разбиений одной границы на меньшие
 	qDebug() << "Borders are drawn" << endl;
 	logstream << "Borders are drawn" << endl;
 
@@ -244,7 +244,7 @@ void Border_interpreter::make_grid()
 
 
 //Нанесение границ
-void Border_interpreter::draw_borders(const QVector<Border>& Borders)
+void Border_interpreter::draw_borders(const QVector<Border>& Borders, int accuracy)
 {
 	qDebug() << "Border drawing start" << endl;
 	logstream << "Border drawing start" << endl;
@@ -252,7 +252,6 @@ void Border_interpreter::draw_borders(const QVector<Border>& Borders)
 	//Выбор точки следующей точки границы осуществляется с помощью вектора
 	//направления от текущей точки к конечной
 	Grid_point p1, p_end;
-	int accuracy = 100; // коэффициент количества разбиений одной границы на меньшие
 	int number_of_sublines;
 	for(Border b: Borders) {
 
