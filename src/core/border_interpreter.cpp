@@ -189,7 +189,7 @@ void Border_interpreter::put_point(const Grid_point& p, const double& u)
 
 void Border_interpreter::paint_blank_area(const Grid_point& p)
 {
-	if( p.x() < 0 && p.x() >= argument_for_calc.iMax && p.y() < 0 && p.y() >= argument_for_calc.jMax)
+	if( p.x() < 0 || p.x() >= argument_for_calc.iMax || p.y() < 0 || p.y() >= argument_for_calc.jMax)
 		return;
 	if( argument_for_calc.idNet(p.x(), p.y()) != false)
 		return;
