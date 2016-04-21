@@ -17,15 +17,17 @@
 #include <QFile>
 
 
-class Border_interpreter
+class BorderInterpreter : public QObject
 {
+	Q_OBJECT
 	public:
-	Border_interpreter();
-	Border_interpreter(const QVector<Border> & Borders,
+	BorderInterpreter(QObject * parent = 0);
+	BorderInterpreter(const QVector<Border> & Borders,
 					   const int max_number_of_points_per_dimension = 1000,
 					   const int min_number_of_points_per_dimension = 100,
-					   const int min_number_of_points_between_close_borders = 10);
-	~Border_interpreter();
+					   const int min_number_of_points_between_close_borders = 10,
+					   QObject * parent = 0);
+	~BorderInterpreter();
 	ArgumentForCalc get_argument_for_calc();
 
 

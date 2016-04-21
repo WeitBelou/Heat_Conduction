@@ -1,18 +1,18 @@
 #include "border_interpreter.h"
 
 //Конструктор по умолчанию
-Border_interpreter::Border_interpreter() :
-	log("./log")
+BorderInterpreter::BorderInterpreter(QObject *parent)
+	: QObject(parent), log("./log")
 {
 	this->argument_for_calc = ArgumentForCalc();
 }
 
 //Основной конструктор
-Border_interpreter::Border_interpreter(const QVector<Border>& Borders,
+BorderInterpreter::BorderInterpreter(const QVector<Border>& Borders,
 					const int max_number_of_points_per_dimension,
 					const int min_number_of_points_per_dimension,
-					const int min_number_of_points_between_close_borders)
-	: log("./log")
+					const int min_number_of_points_between_close_borders, QObject *parent)
+	: QObject(parent), log("./log")
 {
 	//Открытие файла лога
 	if (!log.open(QIODevice::WriteOnly))
@@ -64,7 +64,7 @@ Border_interpreter::Border_interpreter(const QVector<Border>& Borders,
 }
 
 //Деструктор
-Border_interpreter::~Border_interpreter()
+BorderInterpreter::~BorderInterpreter()
 {
 	qDebug() << "Border interpretation destructor" << endl;
 	logstream << "Border interpretation destructor" << endl;
@@ -72,13 +72,13 @@ Border_interpreter::~Border_interpreter()
 }
 
 //Гетер важной структуры
-ArgumentForCalc Border_interpreter::get_argument_for_calc()
+ArgumentForCalc BorderInterpreter::get_argument_for_calc()
 {
 	return argument_for_calc;
 }
 
 //Вычисление основных параметров будущей сетки: абсолютных размеров и мелкости
-void Border_interpreter::find_area_parameters(const QVector<Border>& Borders,
+void BorderInterpreter::find_area_parameters(const QVector<Border>& Borders,
 					const int& max_number_of_points_per_dimension,
 					const int& min_number_of_points_per_dimension,
 					const int& min_number_of_points_between_close_borders)
@@ -225,7 +225,7 @@ void Border_interpreter::check_min_dist(const QVector<Border>& Borders,
 */
 
 //Построение сетки
-void Border_interpreter::make_grid()
+void BorderInterpreter::make_grid()
 {
 	qDebug() << "Grid construction start" << endl;
 	logstream << "Grid construction start" << endl;
@@ -285,14 +285,14 @@ void Border_interpreter::draw_borders(const QVector<Border>& Borders, int accura
 }
 
 //Перевод точки из абсолютной системы в сетку
-Grid_point Border_interpreter::p_to_gp(const Point& p)
+Grid_point BorderInterpreter::p_to_gp(const Point& p)
 {
 	return Grid_point(	(p.x() - x_min) / argument_for_calc.xStep,
 						(p.y() - y_min) / argument_for_calc.yStep);
 }
 
 //Выбор следующей точки границы
-Grid_point Border_interpreter::move_point(const Grid_point& p1, const Grid_point& p2)
+Grid_point BorderInterpreter::move_point(const Grid_point& p1, const Grid_point& p2)
 {
 	if(p1 == p2)
 		return p1;
@@ -313,14 +313,14 @@ Grid_point Border_interpreter::move_point(const Grid_point& p1, const Grid_point
 }
 
 //Нанесение точки границы на сетку
-void Border_interpreter::put_point(const Grid_point& p, const double& u)
+void BorderInterpreter::put_point(const Grid_point& p, const double& u)
 {
 	argument_for_calc.zeroLayer(p.x(), p.y()) = u;
 	argument_for_calc.idNet(p.x(), p.y()) = false;
 }
 
 //Заполнение области вне тела
-void Border_interpreter::paint_blank_area(const int& i, const int& j)
+void BorderInterpreter::paint_blank_area(const int& i, const int& j)
 {
 	if( i < 0 || i > argument_for_calc.iMax-1 || j < 0 || j > argument_for_calc.jMax-1)
 		return;
