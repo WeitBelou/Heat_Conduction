@@ -8,7 +8,7 @@ QVector<Border> parsePlainText(QString src)
 	QVector<Border> data;
 	size_t i = 0;
 
-	if (src.isEmpty()) {
+	if (src.trimmed().isEmpty()) {
 		throw ParseError("Is empty");
 	}
 
@@ -16,7 +16,7 @@ QVector<Border> parsePlainText(QString src)
 
 	for (QString s: str.readAll().split("\n")) {
 		try {
-			if (!s.isEmpty()){
+			if (!s.trimmed().isEmpty()){
 				i++;
 				data.push_back(parseLine(s));
 			}
