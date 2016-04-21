@@ -28,7 +28,8 @@ void Editor::newFile()
 void Editor::parseText()
 {
 	try {
-		inputData = parsePlainText(plain->toPlainText());
+		QVector<Border> inputData = parsePlainText(plain->toPlainText());
+		emit bordersParsed(inputData);
 	}
 	catch (ParseError & p) {
 		qWarning() << "On line: " << p.where();

@@ -31,6 +31,9 @@ public slots:
 		m_currentFile = currentFile;
 	}
 
+signals:
+	void bordersParsed(const QVector<Border> & borders);
+
 private:
 	void createPlain();
 	void createMenu();
@@ -50,8 +53,6 @@ private:
 	QAction * openAct;
 	QAction * saveAct;
 	QAction * closeAct;
-
-	QVector<Border> inputData;
 };
 
 #endif // EDITOR_H
