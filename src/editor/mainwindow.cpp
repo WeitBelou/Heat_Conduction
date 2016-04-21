@@ -21,6 +21,10 @@ MainWindow::~MainWindow()
 
 void MainWindow::compute()
 {
+	if (inputData.isEmpty()) {
+		return;
+	}
+
 	Border_interpreter borderInterpreter(inputData, 100);
 	ArgumentForCalc arg = borderInterpreter.get_argument_for_calc();
 	LayerCalc calculateAllLayers;
