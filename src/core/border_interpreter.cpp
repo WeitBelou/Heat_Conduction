@@ -252,21 +252,31 @@ void Border_interpreter::draw_borders(const QVector<Border>& Borders)
 	//Выбор точки следующей точки границы осуществляется с помощью вектора
 	//направления от текущей точки к конечной
 	Grid_point p1, p_end;
+	int accuracy = 100;
 	int number_of_sublines;
 	for(Border b: Borders) {
+
 		p1 = p_to_gp(b.first());
 		p_end = p_to_gp(b.second());
-		number_of_sublines = 100 * sqrt( ( (p_end.x()-p1.x())*(p_end.x()-p1.x()) +
+
+		number_of_sublines = accuracy * sqrt( ( (p_end.x()-p1.x())*(p_end.x()-p1.x()) +
 										(p_end.y()-p1.y())*(p_end.y()-p1.y()) ) /
 										( argument_for_calc.iMax*argument_for_calc.iMax +
 										argument_for_calc.jMax*argument_for_calc.jMax) );
-
-
-		do {
-			put_point(p1, b.u());
-			p1 = move_point(p1, p_end);
+		Grid_point p2[number_of_sublines];
+		for(int i = 0; i < number_of_sublines - 2; i++) {
+			p2[i] = p1 + (p_end - p1)*(i*1.0/100);
 		}
-		while(p1 != p_end);
+		p2[number_of_sublines-1] = p_end;
+
+		for(int i = 0; i < number_of_sublines; i++) {
+			do {
+				put_point(p1, b.u());
+				p1 = move_point(p1, p2[i]);
+			}
+			while(p1 != p2[i]);
+		}
+
 		qDebug() << "Border is set" << endl;
 		logstream << "Border is set" << endl;
 	}
