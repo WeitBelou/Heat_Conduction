@@ -2,6 +2,7 @@
  */
 
 #include "parser.h"
+using namespace Parser;
 
 QVector<Border> parsePlainText(QString src)
 {
@@ -18,7 +19,7 @@ QVector<Border> parsePlainText(QString src)
 		try {
 			if (!s.trimmed().isEmpty()){
 				i++;
-				data.push_back(parseLine(s));
+				data.push_back(parseBorder(s));
 			}
 		}
 		catch (ParseError & p) {
@@ -34,18 +35,9 @@ QVector<Border> parsePlainText(QString src)
 }
 
 
-Border parseLine(QString st)
+Border parseBorder(QString st)
 {
-	//const char * floatToken = "[+-]?\\d*\\.\\d+";
-	QString floatToken("[+-]?\\d*(\\.\\d+)?");
-
-	QString pointToken;
-	pointToken = QString("\\(%1\\,\\s%1\\)").arg(floatToken);
-
-	QString good;
-	good += QString("%1(\\s)*%1(\\s)*%2").arg(pointToken, floatToken);
-
-	if (!QRegExp(good).exactMatch(st)) {
+	if (!QRegExp(m_borderToken).exactMatch(st)) {
 		throw ParseError("Bad format");
 	}
 

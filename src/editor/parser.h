@@ -18,7 +18,7 @@
 
 QVector<Border> parsePlainText(QString src);
 
-Border parseLine(QString st);
+Border parseBorder(QString st);
 
 void dataChecker(const QVector<Border> &data);
 
@@ -35,5 +35,12 @@ private:
 	const QString m_what;
 	const QString m_where;
 };
+
+namespace Parser
+{
+	const static QString m_floatToken = QString("[+-]?\\d*(\\.\\d+)?");
+	const static QString m_pointToken = QString("\\(%1\\,\\s%1\\)").arg(m_floatToken);
+	const static QString m_borderToken = QString("%1(\\s)*%1(\\s)*%2").arg(m_pointToken, m_floatToken);
+}
 
 #endif /* PARSER_H */
