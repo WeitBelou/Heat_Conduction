@@ -21,7 +21,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::compute()
 {
-	Border_interpreter borderInterpreter(inputData, 1000);
+	Border_interpreter borderInterpreter(inputData, 100);
 //	//Сформируем данные
 //	int N = 100;
 //	Layer L(N, N);
