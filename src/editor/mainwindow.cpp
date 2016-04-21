@@ -50,12 +50,12 @@ void MainWindow::compute()
 //		}
 //	}
 	ArgumentForCalc arg = borderInterpreter.get_argument_for_calc();
-//	outputData = calculateAllLayers(arg);
+	outputData = calculateAllLayers(arg);
 
-//	for (PlottingWidget * plot: plots)
-//	{
-//		plot->setData(outputData);
-//	}
+	for (PlottingWidget * plot: plots)
+	{
+		plot->setData(outputData);
+	}
 }
 
 void MainWindow::addPlot()
