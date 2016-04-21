@@ -18,7 +18,7 @@ Border_interpreter::Border_interpreter(const QVector<Border>& Borders,
 	//создание сетки
 	make_grid();
 	draw_borders(Borders);
-
+	paint_blank_area(Grid_point(0, 0));
 }
 
 
@@ -134,6 +134,12 @@ void Border_interpreter::make_grid()
 {
 	argument_for_calc.zeroLayer = Layer(argument_for_calc.iMax, argument_for_calc.jMax);
 	argument_for_calc.idNet = BoolNet(argument_for_calc.iMax, argument_for_calc.jMax);
+
+	for(int i = 0; i < argument_for_calc.iMax; i++) {
+		for(int j = 0; j < argument_for_calc.jMax; j++)
+			argument_for_calc.idNet(i, j) = true;
+
+	}
 }
 
 void Border_interpreter::draw_borders(const QVector<Border>& Borders)
@@ -149,21 +155,49 @@ void Border_interpreter::draw_borders(const QVector<Border>& Borders)
 			move_point(p1, p2);
 		}
 		while(p1 != p2);
-
 	}
 }
 
 Grid_point Border_interpreter::p_to_gp(const Point& p)
 {
+	return Grid_point(	(p.x() - x_min) / argument_for_calc.xStep,
+						(p.y() - y_min) / argument_for_calc.yStep);
 }
 
-void Border_interpreter::move_point(Grid_point& p1, const Grid_point& p2)
+Grid_point Border_interpreter::move_point(Grid_point& p1, const Grid_point& p2)
 {
-
+	if( std::fabs(p2.x() - p1.x()) > std::fabs(p2.y() - p1.y()) ) {
+		if( (p2.x() - p1.x()) > 0)
+			return Grid_point( p1.x() + 1, p1.y() );
+		else
+			return Grid_point( p1.x() - 1, p1.y() );
+	}
+	else
+	{
+		if( (p2.y() - p1.y()) > 0)
+			return Grid_point( p1.x(), p1.y() + 1 );
+		else
+			return Grid_point( p1.x(), p1.y() - 1 );
+	}
 }
 
 void Border_interpreter::put_point(const Grid_point& p, const double& u)
 {
+	argument_for_calc.zeroLayer(p.x(), p.y()) = u;
+	argument_for_calc.idNet(p.x(), p.y()) = 0;
+}
 
+void Border_interpreter::paint_blank_area(const Grid_point& p)
+{
+	if( p.x() < 0 && p.x() >= argument_for_calc.iMax && p.y() < 0 && p.y() >= argument_for_calc.jMax)
+		return;
+	if( argument_for_calc.idNet(p.x(), p.y()) != false)
+		return;
+
+	argument_for_calc.idNet( p.x(), p.y()) = false;
+	paint_blank_area(Grid_point(p.x() + 1, p.y()));
+	paint_blank_area(Grid_point(p.x() - 1, p.y()));
+	paint_blank_area(Grid_point(p.x(), p.y() + 1));
+	paint_blank_area(Grid_point(p.x(), p.y() - 1));
 }
 

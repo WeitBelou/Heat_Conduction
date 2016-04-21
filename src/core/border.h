@@ -15,8 +15,9 @@ public:
 	T x() const;
 	T y() const;
 
-	bool operator ==(const TemplatePoint<T> &p) const;
+	bool operator ==(const TemplatePoint<T>& p) const;
 	bool operator !=(const TemplatePoint<T>& p) const;
+	void operator = (const TemplatePoint<T>& p);
 
 	template <typename T1>
 	friend QTextStream &operator<<(QTextStream &os, const TemplatePoint<T1> &p);
@@ -71,6 +72,16 @@ template <typename T>
 bool TemplatePoint<T>::operator !=(const TemplatePoint<T> &p) const
 {
 	return !(*this == p);
+}
+
+template <typename T>
+void TemplatePoint<T>::operator = (const TemplatePoint<T>& p)
+{
+	if(*this == p) {
+		return;
+	}
+	m_x = p.m_x;
+	m_y = p.m_y;
 }
 
 template <typename T>
