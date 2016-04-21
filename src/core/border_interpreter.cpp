@@ -24,7 +24,7 @@ Border_interpreter::Border_interpreter(const QVector<Border>& Borders,
 	logstream << "Start border interpretation" << endl;
 
 	//тестовые значения
-	argument_for_calc.p = argument_for_calc.c = argument_for_calc.lmbd = argument_for_calc.tMax = 1;
+	argument_for_calc.p = argument_for_calc.c = argument_for_calc.lmbd = argument_for_calc.tMax = 2;
 	argument_for_calc.tStep = 0.01;
 
 
