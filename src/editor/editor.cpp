@@ -7,8 +7,10 @@ Editor::Editor(QWidget *parent) : QWidget(parent)
 
 	main = new QVBoxLayout(this);
 
+	err = new QErrorMessage(this);
+
 	createActions();
-	createToolbar();
+	createMenu();
 	createPlain();
 }
 
@@ -28,11 +30,15 @@ void Editor::newFile()
 void Editor::parseText()
 {
 	try {
-		inputData = parsePlainText(plain->toPlainText());
+		QVector<Border> inputData = parsePlainText(plain->toPlainText());
+		emit bordersParsed(inputData);
+
+		for (Border b: inputData) {
+			//qDebug() << b;
+		}
 	}
 	catch (ParseError & p) {
-		qWarning() << "On line: " << p.where();
-		qWarning() << p.what();
+		err->showMessage(QString("%1\t%2").arg(p.where(), p.what()));
 	}
 }
 
@@ -90,41 +96,47 @@ void Editor::createPlain()
 	main->addWidget(plain);
 }
 
-void Editor::createToolbar()
+void Editor::createMenu()
 {
-	tools = new QHBoxLayout();
-	tools->addWidget(newAct);
-	tools->addWidget(parseAct);
-	tools->addWidget(openAct);
-	tools->addWidget(saveAct);
-	tools->addWidget(closeAct);
-	main->addLayout(tools);
+	menuBar = new QMenuBar(this);
+
+	fileMenu = new QMenu("File", menuBar);
+	fileMenu->addActions({newAct, openAct,saveAct, closeAct});
+	menuBar->addMenu(fileMenu);
+
+	menuBar->addSeparator();
+
+	parseMenu = new QMenu("Parse", menuBar);
+	parseMenu->addActions({parseAct});
+	menuBar->addMenu(parseMenu);
+
+	main->addWidget(menuBar, 0, Qt::AlignTop);
 }
 
 void Editor::createActions()
 {
-	newAct = new QPushButton(tr("&New"), this);
+	newAct = new QAction(tr("&New"), this);
 	newAct->setStatusTip(tr("Create new file"));
 	newAct->setShortcut(QKeySequence::New);
-	connect(newAct, &QPushButton::clicked, this, &Editor::newFile);
+	connect(newAct, &QAction::triggered, this, &Editor::newFile);
 
-	parseAct = new QPushButton(tr("&Parse"), this);
+	parseAct = new QAction(tr("&Parse"), this);
 	parseAct->setStatusTip(tr("Parse file to vector"));
 	parseAct->setShortcut(QString("F5"));
-	connect(parseAct, &QPushButton::clicked, this, &Editor::parseText);
+	connect(parseAct, &QAction::triggered, this, &Editor::parseText);
 
-	openAct = new QPushButton(tr("&Open"), this);
+	openAct = new QAction(tr("&Open"), this);
 	openAct->setStatusTip(tr("Open existing file"));
 	openAct->setShortcut(QKeySequence::Open);
-	connect(openAct, &QPushButton::clicked, this, &Editor::openFile);
+	connect(openAct, &QAction::triggered, this, &Editor::openFile);
 
-	saveAct = new QPushButton(tr("&Save"), this);
+	saveAct = new QAction(tr("&Save"), this);
 	saveAct->setStatusTip(tr("Save file"));
 	saveAct->setShortcut(QKeySequence::Save);
-	connect(saveAct, &QPushButton::clicked, this, &Editor::saveFile);
+	connect(saveAct, &QAction::triggered, this, &Editor::saveFile);
 
-	closeAct = new QPushButton(tr("&Close"), this);
+	closeAct = new QAction(tr("&Close"), this);
 	closeAct->setStatusTip(tr("Close file"));
 	closeAct->setShortcut(QKeySequence::Close);
-	connect(closeAct, &QPushButton::clicked, this, &Editor::closeFile);
+	connect(closeAct, &QAction::triggered, this, &Editor::closeFile);
 }

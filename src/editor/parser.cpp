@@ -8,7 +8,7 @@ QVector<Border> parsePlainText(QString src)
 	QVector<Border> data;
 	size_t i = 0;
 
-	if (src.isEmpty()) {
+	if (src.trimmed().isEmpty()) {
 		throw ParseError("Is empty");
 	}
 
@@ -16,15 +16,14 @@ QVector<Border> parsePlainText(QString src)
 
 	for (QString s: str.readAll().split("\n")) {
 		try {
-			if (!s.isEmpty()){
+			if (!s.trimmed().isEmpty()){
 				i++;
 				data.push_back(parseLine(s));
 			}
 		}
 		catch (ParseError & p) {
-			QString what;
-			int where = i;
-			what += p.what();
+			QString what = p.what();
+			QString where = QString("On line: %1").arg(i + 1);
 			throw ParseError(what, where);
 		}
 	}
@@ -52,12 +51,12 @@ Border parseLine(QString st)
 
 /******************************************************************************/
 ParseError::ParseError():
-	m_what("Unknow ParseError"), m_where(-1)
+	m_what("Unknow ParseError"), m_where(QString("Nowhere"))
 {
 
 }
 
-ParseError::ParseError(const QString &what, const int where):
+ParseError::ParseError(const QString &what, const QString &where):
 	m_what(what), m_where(where)
 {
 
@@ -68,7 +67,7 @@ const QString ParseError::what() const noexcept
 	return m_what;
 }
 
-int ParseError::where() const noexcept
+const QString ParseError::where() const noexcept
 {
 	return m_where;
 }
@@ -80,29 +79,28 @@ void dataChecker(const QVector<Border> &data)
 	for (int i = 1; i < data.size(); i++) {
 		if (data[i - 1].second() != data[i].first()) {
 			QString what("Region must be closed");
-			int where = i;
+			QString where = QString("On lines: %1 and %2").arg(i, i + 1);
 
 			throw ParseError(what, where);
 		}
 
 		if (data[i].first() == data[i].second()) {
 			QString what("Border can\'t be one point");
-			int where = i;
+			QString where = QString("On line: %1").arg(i + 1);
 
 			throw ParseError(what, where);
 		}
 	}
 
 	if (data.front().first() != data.back().second()) {
-		throw ParseError("First point must be equal to last", 1);
+		throw ParseError("First point must be equal to last", "On first and last");
 	}
 
 	for (int i = 0; i < data.size(); i++) {
 		for (int j = i; j < data.size(); j++) {
 			if (data[i].checkIntersect(data[j])) {
-				QString what;
-				int where = i + 1;
-				what += "Borders intersect";
+				QString what("Borders intersect");
+				QString where = QString("On lines: %1 and %2").arg(i + 1, j + 1);
 				throw ParseError(what, where);
 			}
 		}

@@ -1,64 +1,6 @@
 #include "border.h"
 
 
-Point::Point()
-{
-	m_x = m_y = 0;
-}
-
-Point::Point(double x, double y)
-{
-	m_x = x;
-	m_y = y;
-}
-
-Point::~Point()
-{
-
-}
-
-double Point::x() const
-{
-	return m_x;
-}
-
-double Point::y() const
-{
-	return m_y;
-}
-
-bool Point::operator ==(const Point &p) const
-{
-	return x() == p.x() && y() == p.y();
-}
-
-bool Point::operator !=(const Point &p) const
-{
-	return !(*this == p);
-}
-
-QTextStream &operator<<(QTextStream &os, const Point &p)
-{
-	os << "(" << p.x() << ", " << p.y() << ")";
-	return os;
-}
-
-QTextStream &operator>>(QTextStream &is, Point &p)
-{
-	QChar ch;
-
-	is >> ch;
-	is >> p.m_x;
-	is >> ch;
-	is.skipWhiteSpace();
-	is >> p.m_y;
-	is >> ch; // (d, d)
-
-	return is;
-}
-
-/******************************************************************************/
-
 Border::Border()
 {
 	m_first = Point();

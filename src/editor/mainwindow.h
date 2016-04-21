@@ -20,6 +20,7 @@ signals:
 
 public slots:
 	void compute();
+	void setInputData(const QVector<Border> &value);
 
 private slots:
 	void addPlot();
@@ -45,7 +46,6 @@ private:
 	QAction * computeAct;
 
 	QVector<Border> inputData;
-
 	ArgumentForCalc gridData;
 	ArgumentForDraw outputData;
 };
