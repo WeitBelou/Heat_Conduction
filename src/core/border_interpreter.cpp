@@ -15,8 +15,10 @@ Border_interpreter::Border_interpreter(const QVector<Border>& Borders,
 	find_area_parameters(Borders, max_number_of_points_per_dimension,
 						 min_number_of_points_per_dimension,
 						 min_number_of_points_between_close_borders);
+
 	//создание сетки
 	make_grid();
+
 	draw_borders(Borders);
 	paint_blank_area(Grid_point(0, 0));
 }
@@ -45,9 +47,9 @@ void Border_interpreter::find_area_parameters(const QVector<Border>& Borders,
 			x_max = Borders[i].first().x();
 
 		if(y_max < Borders[i].first().y())
-			x_max = Borders[i].first().y();
+			y_max = Borders[i].first().y();
 		if(y_max < Borders[i].second().y())
-			x_max = Borders[i].first().y();
+			y_max = Borders[i].first().y();
 
 		if(x_min > Borders[i].first().x())
 			x_min = Borders[i].first().x();
@@ -59,10 +61,8 @@ void Border_interpreter::find_area_parameters(const QVector<Border>& Borders,
 		if(y_min > Borders[i].second().y())
 			y_min = Borders[i].first().y();
 
-		for(int j = i; j < max; j++) {
-			check_min_dist(Borders, i, j);
-		}
 	}
+
 
 	length = x_max - x_min;
 	height = y_max - y_min;
@@ -73,8 +73,7 @@ void Border_interpreter::find_area_parameters(const QVector<Border>& Borders,
 	y_min -= 0.05 * height;
 
 
-
-
+	/*
 	//некоторые неочевидные вычисления необходимы для гарантированного
 	//наличия пустого простанства между краями области построения и
 	//границами тела
@@ -94,9 +93,9 @@ void Border_interpreter::find_area_parameters(const QVector<Border>& Borders,
 		argument_for_calc.xStep = length / max_number_of_points_per_dimension;
 	}
 
-	x_max += argument_for_calc.xStep;
-	x_min -= argument_for_calc.xStep;
-	length += 2*argument_for_calc.xStep;
+	x_max += 2*argument_for_calc.xStep;
+	x_min -= 2*argument_for_calc.xStep;
+	length += 4*argument_for_calc.xStep;
 	argument_for_calc.iMax = length / argument_for_calc.xStep;
 
 
@@ -114,24 +113,48 @@ void Border_interpreter::find_area_parameters(const QVector<Border>& Borders,
 		argument_for_calc.yStep = height / max_number_of_points_per_dimension;
 	}
 
+
 	y_max += argument_for_calc.yStep;
 	y_min -= argument_for_calc.yStep;
 	height += 2*argument_for_calc.yStep;
 	argument_for_calc.jMax = height / argument_for_calc.yStep;
+	*/
+
+	argument_for_calc.xStep = length / max_number_of_points_per_dimension;
+	argument_for_calc.yStep = height / max_number_of_points_per_dimension;
+
+	argument_for_calc.iMax = max_number_of_points_per_dimension;
+	argument_for_calc.jMax = max_number_of_points_per_dimension;
+
+
+	qDebug() << "length - " << length << ", height - " << height << endl;
+	qDebug() << "x min dist - " << x_min_dist << ", y min dist - " << y_min_dist << endl;
+	qDebug() << "iMax - " << argument_for_calc.iMax << ", jMax - " << argument_for_calc.jMax << endl;
 
 }
 
-void Border_interpreter::check_min_dist(const QVector<Border>& Borders, const int& i, const int& j)
+ /*
+void Border_interpreter::check_min_dist(const QVector<Border>& Borders,
+							const int& i, const int& j,
+							const int& max_number_of_points_per_dimension,
+							const int& min_number_of_points_per_dimension,
+							const int& min_number_of_points_between_close_borders)
 {
-	if(	std::fabs(Borders[i].first().x() - Borders[j].first().x()) < x_min_dist	)
+	if(	std::fabs(Borders[i].first().x() - Borders[j].first().x()) < x_min_dist	&&
+			std::fabs(Borders[i].first().x() - Borders[j].first().x()) > (length / max_number_of_points_per_dimension))
+
 		x_min_dist = std::fabs(Borders[i].first().x() - Borders[j].first().x());
 
-	if(	std::fabs(Borders[i].first().y() - Borders[j].first().y()) < y_min_dist	)
+	if(	std::fabs(Borders[i].first().y() - Borders[j].first().y()) < y_min_dist &&
+			std::fabs(Borders[i].first().y() - Borders[j].first().y()) > (height / max_number_of_points_per_dimension))
+
 		y_min_dist = std::fabs(Borders[i].first().y() - Borders[j].first().y());
 }
+*/
 
 void Border_interpreter::make_grid()
 {
+	qDebug() << "iMax - " << argument_for_calc.iMax << ", jMax - " << argument_for_calc.jMax << endl;
 	argument_for_calc.zeroLayer = Layer(argument_for_calc.iMax, argument_for_calc.jMax);
 	argument_for_calc.idNet = BoolNet(argument_for_calc.iMax, argument_for_calc.jMax);
 
@@ -141,6 +164,8 @@ void Border_interpreter::make_grid()
 
 	}
 }
+
+
 
 void Border_interpreter::draw_borders(const QVector<Border>& Borders)
 {

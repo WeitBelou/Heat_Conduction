@@ -16,7 +16,7 @@ class Border_interpreter
 	public:
 	Border_interpreter();
 	Border_interpreter(const QVector<Border> & Borders,
-					   const int max_number_of_points_per_dimension = 10000,
+					   const int max_number_of_points_per_dimension = 1000,
 					   const int min_number_of_points_per_dimension = 100,
 					   const int min_number_of_points_between_close_borders = 10);
 	ArgumentForCalc get_argument_for_calc();
@@ -31,7 +31,11 @@ private:
 						const int& max_number_of_points_per_dimension,
 						const int& min_number_of_points_per_dimension,
 						const int& min_number_of_points_between_close_borders);
-	void check_min_dist(const QVector<Border>& Borders, const int& i, const int& j);
+	void check_min_dist(const QVector<Border>& Borders,
+						const int& i, const int& j,
+						const int& max_number_of_points_per_dimension,
+						const int& min_number_of_points_per_dimension,
+						const int& min_number_of_points_between_close_borders);
 	void make_grid();
 	void draw_borders(const QVector<Border>& Borders);
 	Grid_point p_to_gp(const Point& p);
