@@ -24,7 +24,8 @@ Border_interpreter::Border_interpreter(const QVector<Border>& Borders,
 	logstream << "Start border interpretation" << endl;
 
 	//тестовые значения
-	argument_for_calc.p = argument_for_calc.c = argument_for_calc.lmbd = argument_for_calc.tMax = 2;
+	argument_for_calc.p = argument_for_calc.c = argument_for_calc.lmbd = 2;
+	argument_for_calc.tMax = 100;
 	argument_for_calc.tStep = 0.01;
 
 
@@ -232,10 +233,12 @@ void Border_interpreter::make_grid()
 	argument_for_calc.zeroLayer = Layer(argument_for_calc.iMax, argument_for_calc.jMax);
 	argument_for_calc.idNet = BoolNet(argument_for_calc.iMax, argument_for_calc.jMax);
 
-	//Заполнение сетки состояний единицами - необходимо для заполнения пустых областей
+	//Заполнение сеткок
 	for(int i = 0; i < argument_for_calc.iMax; i++) {
-		for(int j = 0; j < argument_for_calc.jMax; j++)
+		for(int j = 0; j < argument_for_calc.jMax; j++) {
 			argument_for_calc.idNet(i, j) = true;
+			argument_for_calc.zeroLayer(i, j) = 0;
+		}
 	}
 }
 
