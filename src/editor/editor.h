@@ -33,20 +33,23 @@ public slots:
 
 private:
 	void createPlain();
-	void createToolbar();
+	void createMenu();
 	void createActions();
 
 	QString m_currentFile;
 
 	QVBoxLayout * main;
-	QHBoxLayout * tools;
 	QPlainTextEdit * plain;
 
-	QPushButton * newAct;
-	QPushButton * parseAct;
-	QPushButton * openAct;
-	QPushButton * saveAct;
-	QPushButton * closeAct;
+	QMenuBar * menuBar;
+	QMenu * fileMenu;
+	QMenu * parseMenu;
+
+	QAction * newAct;
+	QAction * parseAct;
+	QAction * openAct;
+	QAction * saveAct;
+	QAction * closeAct;
 
 	QVector<Border> inputData;
 };
