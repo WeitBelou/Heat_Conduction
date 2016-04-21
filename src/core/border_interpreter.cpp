@@ -252,24 +252,27 @@ void Border_interpreter::draw_borders(const QVector<Border>& Borders)
 	//Выбор точки следующей точки границы осуществляется с помощью вектора
 	//направления от текущей точки к конечной
 	Grid_point p1, p_end;
-	int accuracy = 100;
+	int accuracy = 1000;
 	int number_of_sublines;
 	for(Border b: Borders) {
 
 		p1 = p_to_gp(b.first());
 		p_end = p_to_gp(b.second());
 
-		number_of_sublines = accuracy * sqrt( ( (p_end.x()-p1.x())*(p_end.x()-p1.x()) +
+		number_of_sublines = accuracy * sqrt( 1.0*( (p_end.x()-p1.x())*(p_end.x()-p1.x()) +
 										(p_end.y()-p1.y())*(p_end.y()-p1.y()) ) /
 										( argument_for_calc.iMax*argument_for_calc.iMax +
 										argument_for_calc.jMax*argument_for_calc.jMax) );
+		if(number_of_sublines < 1 )
+			number_of_sublines = 1;
 		Grid_point p2[number_of_sublines];
-		for(int i = 0; i < number_of_sublines - 2; i++) {
-			p2[i] = p1 + (p_end - p1)*(i*1.0/100);
+		for(int i = 0; i < number_of_sublines - 1; i++) {
+			p2[i] = p1 + (p_end - p1)*((i+1)*1.0/number_of_sublines);
 		}
 		p2[number_of_sublines-1] = p_end;
 
 		for(int i = 0; i < number_of_sublines; i++) {
+
 			do {
 				put_point(p1, b.u());
 				p1 = move_point(p1, p2[i]);
@@ -290,8 +293,11 @@ Grid_point Border_interpreter::p_to_gp(const Point& p)
 }
 
 //Выбор следующей точки границы
-Grid_point Border_interpreter::move_point(Grid_point& p1, const Grid_point& p2)
+Grid_point Border_interpreter::move_point(const Grid_point& p1, const Grid_point& p2)
 {
+	if(p1 == p2)
+		return p1;
+
 	if( std::fabs(p2.x() - p1.x()) > std::fabs(p2.y() - p1.y()) ) {
 		if( (p2.x() - p1.x()) > 0)
 			return Grid_point( p1.x() + 1, p1.y() );

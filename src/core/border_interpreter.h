@@ -48,7 +48,7 @@ private:
 	void make_grid();
 	void draw_borders(const QVector<Border>& Borders);
 	Grid_point p_to_gp(const Point& p);
-	Grid_point move_point(Grid_point& p1, const Grid_point& p2);
+	Grid_point move_point(const Grid_point& p1, const Grid_point& p2);
 	void put_point(const Grid_point& p, const double& u);
 	void put_point(const Grid_point& p);
 	void paint_blank_area(const int& i, const int& j);
