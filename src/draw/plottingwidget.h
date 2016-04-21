@@ -20,13 +20,13 @@ private slots:
 	void pauseDrawing();
 	void stopDrawing();
 	void drawCurrentLayer();
-
 	void setCurrentIndex(int currentIndex);
-
-	void setSpeed(double d);
+	void setSpeed(double d = 1);
 
 private:
-	void configurePlot();
+	void createCentral();
+	void createPlot();
+	void createControls();
 
 	int currentIndex() const;
 

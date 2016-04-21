@@ -60,6 +60,7 @@ void MainWindow::addPlot()
 {
 	plots.append(new PlottingWidget(this));
 	central->addSubWindow(plots.last());
+	plots.last()->show();
 }
 
 void MainWindow::addEditor()
@@ -98,7 +99,7 @@ void MainWindow::createActions()
 	addPlotAct = new QAction(tr("&Add Plot"), this);
 	addPlotAct->setStatusTip(tr("Add Plot"));
 	addPlotAct->setShortcut(QString("F4"));
-	connect(addPlotAct, &QAction::triggered, this, &MainWindow::addEditor);
+	connect(addPlotAct, &QAction::triggered, this, &MainWindow::addPlot);
 }
 
 void MainWindow::createStatusBar()

@@ -2,47 +2,16 @@
 
 PlottingWidget::PlottingWidget(QWidget *parent) : QWidget(parent)
 {
-	main = new QVBoxLayout(this);
-	down = new QHBoxLayout(this);
+	setMinimumSize(500, 500);
 
-	setLayout(main);
-
-	plot = new QCustomPlot(this);
-	slider = new QSlider(Qt::Horizontal, this);
-	slider->setMaximum(1);
-	slider->setMinimum(0);
-
-	play = new QPushButton("Play", this);
-	pause = new QPushButton("Pause", this);
-	stop = new QPushButton("Stop", this);
-
-	speed = new QDoubleSpinBox(this);
-	speed->setMinimum(0.1);
-	speed->setMaximum(100);
-	speed->setSingleStep(0.1);
-	speed->setValue(1);
-
-	layout()->addWidget(plot);
-	layout()->addItem(down);
-
-	down->addWidget(play);
-	down->addWidget(pause);
-	down->addWidget(stop);
-	down->addWidget(slider);
-	down->addWidget(speed);
-
-	connect(play, &QPushButton::clicked, this, &PlottingWidget::startDrawing);
-	connect(pause, &QPushButton::clicked, this, &PlottingWidget::pauseDrawing);
-	connect(stop, &QPushButton::clicked, this, &PlottingWidget::stopDrawing);
-	connect(slider, &QSlider::valueChanged, this, &PlottingWidget::setCurrentIndex);
-	connect(slider, &QSlider::valueChanged, this, &PlottingWidget::drawCurrentLayer);
-	connect(speed, SIGNAL(valueChanged(double)), this, SLOT(setSpeed(double)));
+	createCentral();
+	createPlot();
+	createControls();
 
 	loop = new QTimer(this);
 	connect(loop, &QTimer::timeout, this,
 			[this](){slider->setValue(this->currentIndex() + 1);});
 
-	configurePlot();
 }
 
 void PlottingWidget::setData(const ArgumentForDraw &data)
@@ -97,18 +66,27 @@ void PlottingWidget::drawCurrentLayer()
 	  }
 	}
 	colorMap->rescaleDataRange();
-	///
+
 	plot->replot();
 }
 
-void PlottingWidget::configurePlot()
+void PlottingWidget::createCentral()
 {
-	// configure axis rect:
+	main = new QVBoxLayout(this);
+	down = new QHBoxLayout();
+
+	setLayout(main);
+	layout()->addItem(down);
+}
+
+void PlottingWidget::createPlot()
+{
+	plot = new QCustomPlot(this);
+
 	plot->axisRect()->setupFullAxesBox(true);
 	plot->xAxis->setLabel("x");
 	plot->yAxis->setLabel("y");
 
-	// set up the QCPColorMap:
 	colorMap = new QCPColorMap(plot->xAxis, plot->yAxis);
 	plot->addPlottable(colorMap);
 
@@ -126,7 +104,40 @@ void PlottingWidget::configurePlot()
 
 	plot->rescaleAxes();
 
-	setCurrentIndex(0);
+	layout()->addWidget(plot);
+}
+
+void PlottingWidget::createControls()
+{
+	slider = new QSlider(Qt::Horizontal, this);
+	slider->setMinimum(0);
+	slider->setMaximum(1);
+	slider->setValue(0);
+
+	play = new QPushButton("Play", this);
+	pause = new QPushButton("Pause", this);
+	stop = new QPushButton("Stop", this);
+
+	speed = new QDoubleSpinBox(this);
+	speed->setMinimum(0.1);
+	speed->setMaximum(100);
+	speed->setSingleStep(0.1);
+	speed->setValue(1);
+
+	down->addWidget(play);
+	down->addWidget(pause);
+	down->addWidget(stop);
+	down->addWidget(slider);
+	down->addWidget(speed);
+
+
+	connect(play, &QPushButton::clicked, this, &PlottingWidget::startDrawing);
+	connect(pause, &QPushButton::clicked, this, &PlottingWidget::pauseDrawing);
+	connect(stop, &QPushButton::clicked, this, &PlottingWidget::stopDrawing);
+	connect(slider, &QSlider::valueChanged, this, &PlottingWidget::setCurrentIndex);
+	connect(slider, &QSlider::valueChanged, this, &PlottingWidget::drawCurrentLayer);
+	connect(speed, (void (QDoubleSpinBox:: *)(double))&QDoubleSpinBox::valueChanged,
+			this, &PlottingWidget::setSpeed);
 }
 
 int PlottingWidget::currentIndex() const
