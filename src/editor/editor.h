@@ -53,6 +53,8 @@ private:
 	QAction * openAct;
 	QAction * saveAct;
 	QAction * closeAct;
+
+	QErrorMessage * err;
 };
 
 #endif // EDITOR_H

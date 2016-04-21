@@ -7,6 +7,8 @@ Editor::Editor(QWidget *parent) : QWidget(parent)
 
 	main = new QVBoxLayout(this);
 
+	err = new QErrorMessage(this);
+
 	createActions();
 	createMenu();
 	createPlain();
@@ -32,8 +34,7 @@ void Editor::parseText()
 		emit bordersParsed(inputData);
 	}
 	catch (ParseError & p) {
-		qWarning() << "On line: " << p.where();
-		qWarning() << p.what();
+		err->showMessage(QString("%1\t%2").arg(p.where(), p.what()));
 	}
 }
 
