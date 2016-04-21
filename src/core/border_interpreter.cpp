@@ -155,7 +155,6 @@ void Border_interpreter::draw_borders(const QVector<Border>& Borders)
 
 Grid_point Border_interpreter::p_to_gp(const Point& p)
 {
-	return Grid
 }
 
 void Border_interpreter::move_point(Grid_point& p1, const Grid_point& p2)
