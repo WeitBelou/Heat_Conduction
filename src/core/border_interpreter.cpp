@@ -244,7 +244,7 @@ void BorderInterpreter::make_grid()
 
 
 //Нанесение границ
-void Border_interpreter::draw_borders(const QVector<Border>& Borders, int accuracy)
+void BorderInterpreter::draw_borders(const QVector<Border>& Borders, int accuracy)
 {
 	qDebug() << "Border drawing start" << endl;
 	logstream << "Border drawing start" << endl;

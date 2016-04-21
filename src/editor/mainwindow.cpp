@@ -25,13 +25,9 @@ void MainWindow::compute()
 		return;
 	}
 
-	Border_interpreter borderInterpreter(inputData, 200);
+	BorderInterpreter borderInterpreter(inputData, 200);
 	ArgumentForCalc arg = borderInterpreter.get_argument_for_calc();
 	LayerCalc calculateAllLayers;
-
-	connect(&calculateAllLayers, &LayerCalc::oneLayerCalcSignal,
-			this, &MainWindow::setState);
-
 	outputData = calculateAllLayers(arg);
 
 	for (PlottingWidget * plot: plots)
@@ -53,11 +49,6 @@ void MainWindow::addEditor()
 	central->addSubWindow(editors.last());
 	editors.last()->show();
 	connect(editors.last(), &Editor::bordersParsed, this, &MainWindow::setInputData);
-}
-
-void MainWindow::setState(double percent)
-{
-	currentState->setValue(100 * percent);
 }
 
 void MainWindow::createCentralWidget()
@@ -94,14 +85,8 @@ void MainWindow::createActions()
 
 void MainWindow::createStatusBar()
 {
-	currentState = new QProgressBar(this);
-	currentState->setMaximum(98);
-	currentState->setValue(0);
-	currentState->setTextVisible(true);
-
 	status = new QStatusBar(this);
 	setStatusBar(status);
-	statusBar()->addPermanentWidget(currentState, 1);
 }
 
 void MainWindow::setInputData(const QVector<Border> &value)

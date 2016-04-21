@@ -15,6 +15,9 @@ public:
 	explicit MainWindow(QWidget *parent = 0);
 	~MainWindow();
 
+signals:
+	void currentFileChanged(QString currentFile);
+
 public slots:
 	void compute();
 	void setInputData(const QVector<Border> &value);
@@ -22,7 +25,6 @@ public slots:
 private slots:
 	void addPlot();
 	void addEditor();
-	void setState(double percent);
 
 private:
 	void createCentralWidget();
@@ -30,7 +32,7 @@ private:
 	void createActions();
 	void createStatusBar();
 
-	QProgressBar * currentState;
+	QLabel * currentState;
 
 	QStatusBar * status;
 	QToolBar * tools;
