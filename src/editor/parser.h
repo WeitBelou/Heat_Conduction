@@ -26,14 +26,14 @@ class ParseError
 {
 public:
 	ParseError();
-	ParseError(const QString &what, const int where = -1);
+	ParseError(const QString &what, const QString & where = QString("Nowhere"));
 
 	const QString what() const noexcept;
-	int where() const noexcept;
+	const QString where() const noexcept;
 
 private:
 	const QString m_what;
-	const int m_where;
+	const QString m_where;
 };
 
 #endif /* PARSER_H */
