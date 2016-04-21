@@ -21,7 +21,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::compute()
 {
-	Border_interpreter borderInterpreter(inputData);
+	Border_interpreter borderInterpreter(inputData, 1000);
 //	//Сформируем данные
 //	int N = 100;
 //	Layer L(N, N);
@@ -50,12 +50,12 @@ void MainWindow::compute()
 //		}
 //	}
 	ArgumentForCalc arg = borderInterpreter.get_argument_for_calc();
-	outputData = calculateAllLayers(arg);
+//	outputData = calculateAllLayers(arg);
 
-	for (PlottingWidget * plot: plots)
-	{
-		plot->setData(outputData);
-	}
+//	for (PlottingWidget * plot: plots)
+//	{
+//		plot->setData(outputData);
+//	}
 }
 
 void MainWindow::addPlot()
