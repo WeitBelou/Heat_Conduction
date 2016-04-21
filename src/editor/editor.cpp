@@ -22,7 +22,7 @@ Editor::~Editor()
 void Editor::newFile()
 {
 	QString filename = QFileDialog::getSaveFileName(this, tr("New file"),
-													"/home/untitled.txt",
+													"./untitled.txt",
 													tr("Text files (*.txt)"));
 	setCurrentFile(filename);
 }
@@ -32,10 +32,6 @@ void Editor::parseText()
 	try {
 		QVector<Border> inputData = parsePlainText(plain->toPlainText());
 		emit bordersParsed(inputData);
-
-		for (Border b: inputData) {
-			//qDebug() << b;
-		}
 	}
 	catch (ParseError & p) {
 		err->showMessage(QString("%1\t%2").arg(p.where(), p.what()));
@@ -45,7 +41,7 @@ void Editor::parseText()
 void Editor::openFile()
 {
 	QString filename = QFileDialog::getOpenFileName(this, tr("Open File"),
-												  "/home", tr("Text files (*.txt)"));
+												  "./", tr("Text files (*.txt)"));
 
 	QFile file(filename);
 
@@ -65,7 +61,7 @@ void Editor::saveFile()
 {
 	if (m_currentFile.isNull()) {
 		setCurrentFile(QFileDialog::getSaveFileName(this, tr("New file"),
-													"/home/untitled.txt",
+													"./untitled.txt",
 													tr("Text files (*.txt)")));
 	}
 
