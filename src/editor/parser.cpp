@@ -37,9 +37,15 @@ QVector<Border> parsePlainText(QString src)
 Border parseLine(QString st)
 {
 	//const char * floatToken = "[+-]?\\d*\\.\\d+";
-	QRegExp good("(\\([+-]?\\d*\\.\\d+\\,\\s[+-]?\\d*\\.\\d+\\)\\s){2}[+-]?\\d*\\.\\d+");
+	QString floatToken("[+-]?\\d*(\\.\\d+)?");
 
-	if (!good.exactMatch(st)) {
+	QString pointToken;
+	pointToken = QString("\\(%1\\,\\s%1\\)").arg(floatToken);
+
+	QString good;
+	good += QString("%1(\\s)*%1(\\s)*%2").arg(pointToken, floatToken);
+
+	if (!QRegExp(good).exactMatch(st)) {
 		throw ParseError("Bad format");
 	}
 
