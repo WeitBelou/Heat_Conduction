@@ -20,7 +20,13 @@ Border_interpreter::Border_interpreter(const QVector<Border>& Borders,
 	else
 		logstream.setDevice(&log);
 
+	qDebug() << "Start border interpretation" << endl;
 	logstream << "Start border interpretation" << endl;
+
+	//тестовые значения
+	argument_for_calc.p = argument_for_calc.c = argument_for_calc.lmbd = argument_for_calc.tMax = 1;
+	argument_for_calc.tStep = 0.01;
+
 
 	//рассчёт параметров области построения
 	qDebug() << "Area analysis" << endl;
@@ -287,7 +293,7 @@ Grid_point Border_interpreter::move_point(Grid_point& p1, const Grid_point& p2)
 void Border_interpreter::put_point(const Grid_point& p, const double& u)
 {
 	argument_for_calc.zeroLayer(p.x(), p.y()) = u;
-	argument_for_calc.idNet(p.x(), p.y()) = 0;
+	argument_for_calc.idNet(p.x(), p.y()) = false;
 }
 
 //Заполнение области вне тела
