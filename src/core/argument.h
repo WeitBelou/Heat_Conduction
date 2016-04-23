@@ -2,6 +2,39 @@
 #define ARGUMENT_H
 #include "./layer.h"
 #include <QVector>
+
+class Argument
+{
+public:
+	Argument();
+	Argument(double tMax, double tStep,
+			 double p = 7800, double lambda = 46, double c = 460);
+	~Argument();
+
+	double tMax() const;
+	void setTMax(double tMax);
+
+	double tStep() const;
+	void setTStep(double tStep);
+
+	double p() const;
+	void setP(double p);
+
+	double lambda() const;
+	void setLambda(double lambda);
+
+	double c() const;
+	void setC(double c);
+
+private:
+	double m_tMax;
+	double m_tStep;
+
+	double m_p;
+	double m_lambda;
+	double m_c;
+};
+
 class ArgumentForCalc
 {
 public:
