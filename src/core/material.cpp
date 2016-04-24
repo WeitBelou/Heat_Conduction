@@ -74,28 +74,17 @@ QTextStream & operator <<(QTextStream & os, const Material & m)
 
 QTextStream & operator >>(QTextStream & is, const Material & m)
 {
-	//Rho = DOUBLE
-	//Lambda = DOUBLE
-	//C = DOUBLE
+	//DOUBLE DOUBLE DOUBLE
 
-	QString buf;
 	double tmp;
 
-	is >> buf << buf;
 	is >> tmp;
-
 	m.setRho(tmp);
 
-
-	is >> buf << buf;
 	is >> tmp;
-
 	m.setLambda(tmp);
 
-
-	is >> buf << buf;
 	is >> tmp;
-
 	m.setC(tmp);
 
 	return is;
