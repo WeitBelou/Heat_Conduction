@@ -7,9 +7,6 @@ TFGeometry::TFGeometry()
 
 	m_xStep = 1;
 	m_yStep = 1;
-
-	m_iMax = m_idNet.iMax();
-	m_jMax = m_idNet.jMax();
 }
 
 TFGeometry::TFGeometry(const TemperatureField& zeroLayer, const BoolGrid& idNet)
@@ -19,9 +16,6 @@ TFGeometry::TFGeometry(const TemperatureField& zeroLayer, const BoolGrid& idNet)
 
 	m_xStep = 1;
 	m_yStep = 1;
-
-	m_iMax = m_idNet.iMax();
-	m_jMax = m_idNet.jMax();
 }
 
 TFGeometry::TFGeometry(const TemperatureField& zeroLayer, const BoolGrid& idNet,
@@ -32,9 +26,6 @@ TFGeometry::TFGeometry(const TemperatureField& zeroLayer, const BoolGrid& idNet,
 
 	m_xStep = xStep;
 	m_yStep = yStep;
-
-	m_iMax = m_idNet.iMax();
-	m_jMax = m_idNet.jMax();
 }
 
 TFGeometry::TFGeometry(const TFGeometry& other)
@@ -44,9 +35,6 @@ TFGeometry::TFGeometry(const TFGeometry& other)
 
 	m_xStep = other.xStep();
 	m_yStep = other.yStep();
-
-	m_iMax = other.iMax();
-	m_jMax = other.jMax();
 }
 
 const TFGeometry TFGeometry::operator =(const TFGeometry& other)
@@ -105,11 +93,11 @@ void TFGeometry::setYStep(double yStep)
 
 int TFGeometry::iMax() const
 {
-	return m_iMax;
+	return idNet().iMax();
 }
 
 int TFGeometry::jMax() const
 {
-	return m_jMax;
+	return idNet().jMax();
 }
 

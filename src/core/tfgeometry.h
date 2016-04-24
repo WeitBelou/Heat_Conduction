@@ -35,8 +35,5 @@ private:
 
 	double m_xStep;
 	double m_yStep;
-
-	int m_iMax;
-	int m_jMax;
 };
 #endif // TFGEOMETRY_H
