@@ -11,7 +11,7 @@
 #ifndef BORDER_INTERPRETER_H
 #define BORDER_INTERPRETER_H
 
-#include "argument.h"
+#include "tfdinamics.h"
 #include "border.h"
 #include <limits>
 #include <QFile>
