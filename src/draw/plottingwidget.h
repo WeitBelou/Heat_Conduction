@@ -4,7 +4,7 @@
 #include <QtWidgets>
 #include "qcustomplot.h"
 #include "../core/layer.h"
-#include "../core/tfdinamics.h"
+#include "../core/tfdynamics.h"
 
 class PlottingWidget : public QWidget
 {
@@ -13,7 +13,7 @@ public:
 	explicit PlottingWidget(QWidget *parent = 0);
 
 public slots:
-	void setData(const TFDinamics &data);
+	void setData(const TFDynamics &data);
 
 private slots:
 	void startDrawing();
@@ -44,7 +44,7 @@ private:
 	QPushButton * stop;
 	QDoubleSpinBox * speed;
 
-	TFDinamics m_data;
+	TFDynamics m_data;
 	int m_iMax;
 	int m_jMax;
 	int m_tMax;

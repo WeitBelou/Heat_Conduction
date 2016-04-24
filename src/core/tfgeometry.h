@@ -8,7 +8,7 @@ public:
 	TFGeometry();
 	TFGeometry(const TemperatureField & zeroLayer, const BoolGrid & idNet);
 	TFGeometry(const TemperatureField & zeroLayer, const BoolGrid & idNet,
-				 int xStep, int yStep);
+				 double xStep, double yStep);
 	TFGeometry(const TFGeometry & other);
 
 	const TFGeometry operator =(const TFGeometry & other);

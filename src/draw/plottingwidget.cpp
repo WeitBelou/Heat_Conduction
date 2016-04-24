@@ -14,7 +14,7 @@ PlottingWidget::PlottingWidget(QWidget *parent) : QWidget(parent)
 
 }
 
-void PlottingWidget::setData(const TFDinamics& data)
+void PlottingWidget::setData(const TFDynamics& data)
 {
 	m_data = data;
 
@@ -60,7 +60,7 @@ void PlottingWidget::drawCurrentLayer()
 	  for (int j = 0; j < m_jMax; ++j)
 	  {
 		colorMap->data()->cellToCoord(i, j, &x, &y);
-		z = m_data.allLayers[currentIndex()](i, j);
+		z = m_data.temperatureFields()[currentIndex()](i, j);
 		colorMap->data()->setCell(i, j, z);
 	  }
 	}

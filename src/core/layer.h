@@ -74,7 +74,7 @@ TemplateLayer<T>::TemplateLayer(const TemplateLayer & previousLayer)
 }
 
 template <typename T>
-TemplateLayer TemplateLayer<T>::operator =(const TemplateLayer & anotherLayer)
+TemplateLayer<T> TemplateLayer<T>::operator =(const TemplateLayer & anotherLayer)
 {
 	if (*this == anotherLayer)
 		{ }
@@ -148,12 +148,16 @@ void TemplateLayer<T>::print() const
 
 }
 
-int TemplateLayer::iMax() const
+
+template <typename T>
+int TemplateLayer<T>::iMax() const
 {
 	return m_iMax;
 }
 
-int TemplateLayer::jMax() const
+
+template <typename T>
+int TemplateLayer<T>::jMax() const
 {
 	return m_jMax;
 }

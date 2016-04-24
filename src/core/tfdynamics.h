@@ -1,19 +1,20 @@
-#ifndef TFDINAMICS_H
-#define TFDINAMICS_H
+#ifndef TFDYNAMICS_H
+#define TFDYNAMICS_H
 #include "layer.h"
 #include <QVector>
 
-class TFDinamics
+class TFDynamics
 {
 public:
-	TFDinamics();
-	TFDinamics(const QVector<TemperatureField>& temperatureFields);
-	TFDinamics(const QVector<TemperatureField>& temperatureFields, tStep);
-	TFDinamics(const QVector<TemperatureField>& temperatureFields,
-			   tStep, xStep, yStep);
-	TFDinamics(const TFDinamics& other);
+	TFDynamics();
+	TFDynamics(const QVector<TemperatureField>& temperatureFields);
+	TFDynamics(const QVector<TemperatureField>& temperatureFields, double tStep);
 
-	const TFDinamics operator =(const TFDinamics& other);
+	TFDynamics(const QVector<TemperatureField>& temperatureFields,
+			  double  tStep, double  xStep, double  yStep);
+	TFDynamics(const TFDynamics& other);
+
+	const TFDynamics operator =(const TFDynamics& other);
 
 	QVector<TemperatureField> temperatureFields() const;
 	void setTemperatureFields(const QVector<TemperatureField>& temperatureFields);
@@ -39,4 +40,4 @@ private:
 
 
 
-#endif // TFDINAMICS_H
+#endif // TFDYNAMICS_H

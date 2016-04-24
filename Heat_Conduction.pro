@@ -25,8 +25,9 @@ HEADERS += \
     src/core/layercalc.h \
     src/core/material.h \
     src/core/tfgeometry.h \
-    src/core/tfdinamics.h \
-    src/core/point.h
+    src/core/point.h \
+    src/core/problem.h \
+    src/core/tfdynamics.h
 
 SOURCES += \
 	src/core/border.cpp \
@@ -40,6 +41,7 @@ SOURCES += \
     src/core/layercalc.cpp \
     src/core/material.cpp \
     src/core/tfgeometry.cpp \
-    src/core/tfdinamics.cpp
+    src/core/problem.cpp \
+    src/core/tfdynamics.cpp
 
 

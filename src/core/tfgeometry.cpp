@@ -19,7 +19,7 @@ TFGeometry::TFGeometry(const TemperatureField& zeroLayer, const BoolGrid& idNet)
 }
 
 TFGeometry::TFGeometry(const TemperatureField& zeroLayer, const BoolGrid& idNet,
-						   int xStep, int yStep)
+						   double xStep, double yStep)
 {
 	m_zeroLayer = zeroLayer;
 	m_idNet = idNet;

@@ -4,7 +4,7 @@
 #include "parser.h"
 #include <QtWidgets>
 #include "../core/layer.h"
-#include "../core/tfdinamics.h"
+#include "../core/tfdynamics.h"
 
 class Editor : public QWidget
 {
