@@ -1,5 +1,12 @@
 #include "material.h"
 
+Material::Material()
+{
+	m_ro = 7800;
+	m_lambda = 46;
+	m_c = 460;
+}
+
 Material::Material(double ro, double lambda, double c)
 {
 	m_ro = ro;

@@ -5,7 +5,8 @@
 class Material
 {
 public:
-	Material( double ro = 7800, double lambda = 46, double c = 460);
+	Material();
+	Material(double ro, double lambda, double c);
 	Material(Material const& other);
 
 	const Material operator =(const Material & other);
