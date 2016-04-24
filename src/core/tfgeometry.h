@@ -6,18 +6,18 @@ class TFGeometry
 {
 public:
 	TFGeometry();
-	TFGeometry(const Layer & zeroLayer, const BoolNet & idNet);
-	TFGeometry(const Layer & zeroLayer, const BoolNet & idNet,
+	TFGeometry(const TemperatureField & zeroLayer, const BoolGrid & idNet);
+	TFGeometry(const TemperatureField & zeroLayer, const BoolGrid & idNet,
 				 int xStep, int yStep);
 	TFGeometry(const TFGeometry & other);
 
 	const TFGeometry operator =(const TFGeometry & other);
 
-	Layer zeroLayer() const;
-	void setZeroLayer(const Layer& zeroLayer);
+	TemperatureField zeroLayer() const;
+	void setZeroLayer(const TemperatureField& zeroLayer);
 
-	BoolNet idNet() const;
-	void setIdNet(const BoolNet& idNet);
+	BoolGrid idNet() const;
+	void setIdNet(const BoolGrid& idNet);
 
 	double xStep() const;
 	void setXStep(double xStep);
@@ -30,8 +30,8 @@ public:
 	int jMax() const;
 
 private:
-	Layer m_zeroLayer;
-	BoolNet m_idNet;
+	TemperatureField m_zeroLayer;
+	BoolGrid m_idNet;
 
 	double m_xStep;
 	double m_yStep;

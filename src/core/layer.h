@@ -24,8 +24,8 @@ private:
 	T ** m_matrix;
 };
 
-typedef TemplateLayer<bool> BoolNet;
-typedef TemplateLayer<double> Layer;
+typedef TemplateLayer<bool> BoolGrid;
+typedef TemplateLayer<double> TemperatureField;
 
 template <typename T>
 TemplateLayer<T>::TemplateLayer()

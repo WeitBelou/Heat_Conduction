@@ -7,16 +7,16 @@ class TFDinamics
 {
 public:
 	TFDinamics();
-	TFDinamics(const QVector<Layer>& temperatureFields);
-	TFDinamics(const QVector<Layer>& temperatureFields, tStep);
-	TFDinamics(const QVector<Layer>& temperatureFields,
+	TFDinamics(const QVector<TemperatureField>& temperatureFields);
+	TFDinamics(const QVector<TemperatureField>& temperatureFields, tStep);
+	TFDinamics(const QVector<TemperatureField>& temperatureFields,
 			   tStep, xStep, yStep);
 	TFDinamics(const TFDinamics& other);
 
 	const TFDinamics operator =(const TFDinamics& other);
 
-	QVector<Layer> temperatureFields() const;
-	void setTemperatureFields(const QVector<Layer>& temperatureFields);
+	QVector<TemperatureField> temperatureFields() const;
+	void setTemperatureFields(const QVector<TemperatureField>& temperatureFields);
 
 	double tStep() const;
 	void setTStep(double tStep);
@@ -28,7 +28,7 @@ public:
 	void setYStep(double yStep);
 
 private:
-	QVector<Layer> m_temperatureFields;
+	QVector<TemperatureField> m_temperatureFields;
 
 	double m_tStep;
 	double m_xStep;

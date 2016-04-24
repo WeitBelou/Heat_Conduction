@@ -14,8 +14,8 @@ LayerCalc::LayerCalc(QObject *parent) : QObject(parent)
 
 ArgumentForDraw LayerCalc::operator()(ArgumentForCalc const & argument)
 {
-	const Layer zeroLayer = argument.zeroLayer;
-	const BoolNet idNet = argument.idNet;
+	const TemperatureField zeroLayer = argument.zeroLayer;
+	const BoolGrid idNet = argument.idNet;
 	int tMax = argument.tMax;
 	int iMax = argument.iMax;
 	int jMax = argument.jMax;
@@ -27,11 +27,11 @@ ArgumentForDraw LayerCalc::operator()(ArgumentForCalc const & argument)
 	double c = argument.c;
 	double executionState;
 
-	Layer alpha(iMax, jMax);
-	Layer beta(iMax, jMax);
+	TemperatureField alpha(iMax, jMax);
+	TemperatureField beta(iMax, jMax);
 
 
-	QVector<Layer> allLayers(tMax + 1, Layer(iMax, jMax));
+	QVector<TemperatureField> allLayers(tMax + 1, TemperatureField(iMax, jMax));
 	allLayers[0] = zeroLayer;
 
 	if ((zeroLayer.iMax() != idNet.iMax()) || ((zeroLayer.jMax() != idNet.jMax())))

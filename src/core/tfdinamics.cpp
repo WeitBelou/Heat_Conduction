@@ -3,14 +3,14 @@
 
 TFDinamics::TFDinamics()
 {
-	m_temperatureFields = QVector<Layer>(1, Layer());
+	m_temperatureFields = QVector<TemperatureField>(1, TemperatureField());
 
 	m_xStep = 1;
 	m_yStep = 1;
 	m_tStep = 1;
 }
 
-TFDinamics::TFDinamics(const QVector<Layer>& temperatureFields)
+TFDinamics::TFDinamics(const QVector<TemperatureField>& temperatureFields)
 {
 	m_temperatureFields = temperatureFields;
 
@@ -19,7 +19,7 @@ TFDinamics::TFDinamics(const QVector<Layer>& temperatureFields)
 	m_yStep = 1;
 }
 
-TFDinamics::TFDinamics(const QVector<Layer>& temperatureFields, TFDinamics::tStep)
+TFDinamics::TFDinamics(const QVector<TemperatureField>& temperatureFields, TFDinamics::tStep)
 {
 	m_temperatureFields = temperatureFields;
 
@@ -28,7 +28,7 @@ TFDinamics::TFDinamics(const QVector<Layer>& temperatureFields, TFDinamics::tSte
 	m_yStep = 1;
 }
 
-TFDinamics::TFDinamics(const QVector<Layer>& temperatureFields, tStep, xStep, yStep)
+TFDinamics::TFDinamics(const QVector<TemperatureField>& temperatureFields, tStep, xStep, yStep)
 {
 	m_temperatureFields = temperatureFields;
 
@@ -57,12 +57,12 @@ const TFDinamics TFDinamics::operator =(const TFDinamics& other)
 	return *this;
 }
 
-QVector<Layer> TFDinamics::temperatureFields() const
+QVector<TemperatureField> TFDinamics::temperatureFields() const
 {
 	return m_temperatureFields;
 }
 
-void TFDinamics::setTemperatureFields(const QVector<Layer>& temperatureFields)
+void TFDinamics::setTemperatureFields(const QVector<TemperatureField>& temperatureFields)
 {
 	m_temperatureFields = temperatureFields;
 }

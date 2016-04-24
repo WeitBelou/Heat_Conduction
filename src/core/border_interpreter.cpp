@@ -230,8 +230,8 @@ void BorderInterpreter::make_grid()
 	qDebug() << "Grid construction start" << endl;
 	logstream << "Grid construction start" << endl;
 
-	argument_for_calc.zeroLayer = Layer(argument_for_calc.iMax, argument_for_calc.jMax);
-	argument_for_calc.idNet = BoolNet(argument_for_calc.iMax, argument_for_calc.jMax);
+	argument_for_calc.zeroLayer = TemperatureField(argument_for_calc.iMax, argument_for_calc.jMax);
+	argument_for_calc.idNet = BoolGrid(argument_for_calc.iMax, argument_for_calc.jMax);
 
 	//Заполнение сеткок
 	for(int i = 0; i < argument_for_calc.iMax; i++) {

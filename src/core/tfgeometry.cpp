@@ -2,8 +2,8 @@
 
 TFGeometry::TFGeometry()
 {
-	m_zeroLayer = Layer();
-	m_idNet = BoolNet();
+	m_zeroLayer = TemperatureField();
+	m_idNet = BoolGrid();
 
 	m_xStep = 1;
 	m_yStep = 1;
@@ -12,7 +12,7 @@ TFGeometry::TFGeometry()
 	m_jMax = m_idNet.jMax();
 }
 
-TFGeometry::TFGeometry(const Layer& zeroLayer, const BoolNet& idNet)
+TFGeometry::TFGeometry(const TemperatureField& zeroLayer, const BoolGrid& idNet)
 {
 	m_zeroLayer = zeroLayer;
 	m_idNet = idNet;
@@ -24,7 +24,7 @@ TFGeometry::TFGeometry(const Layer& zeroLayer, const BoolNet& idNet)
 	m_jMax = m_idNet.jMax();
 }
 
-TFGeometry::TFGeometry(const Layer& zeroLayer, const BoolNet& idNet,
+TFGeometry::TFGeometry(const TemperatureField& zeroLayer, const BoolGrid& idNet,
 						   int xStep, int yStep)
 {
 	m_zeroLayer = zeroLayer;
@@ -63,22 +63,22 @@ const TFGeometry TFGeometry::operator =(const TFGeometry& other)
 	return *this;
 }
 
-Layer TFGeometry::zeroLayer() const
+TemperatureField TFGeometry::zeroLayer() const
 {
 	return m_zeroLayer;
 }
 
-void TFGeometry::setZeroLayer(const Layer& zeroLayer)
+void TFGeometry::setZeroLayer(const TemperatureField& zeroLayer)
 {
 	m_zeroLayer = zeroLayer;
 }
 
-BoolNet TFGeometry::idNet() const
+BoolGrid TFGeometry::idNet() const
 {
 	return m_idNet;
 }
 
-void TFGeometry::setIdNet(const BoolNet& idNet)
+void TFGeometry::setIdNet(const BoolGrid& idNet)
 {
 	m_idNet = idNet;
 }
