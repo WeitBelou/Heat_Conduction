@@ -20,10 +20,12 @@ HEADERS += \
 	src/draw/plottingwidget.h \
 	src/editor/editor.h \
 	src/editor/parser.h \
-	src/core/argument.h \
     src/core/border_interpreter.h \
     src/editor/mainwindow.h \
-    src/core/layercalc.h
+    src/core/layercalc.h \
+    src/core/material.h \
+    src/core/tfgeometry.h \
+    src/core/tfdinamics.h
 
 SOURCES += \
 	src/core/border.cpp \
@@ -32,9 +34,11 @@ SOURCES += \
 	src/editor/editor.cpp \
 	src/editor/parser.cpp \
 	src/main.cpp \
-	src/core/argument.cpp \
     src/core/border_interpreter.cpp \
     src/editor/mainwindow.cpp \
-    src/core/layercalc.cpp
+    src/core/layercalc.cpp \
+    src/core/material.cpp \
+    src/core/tfgeometry.cpp \
+    src/core/tfdinamics.cpp
 
 

@@ -31,8 +31,8 @@ template <typename T>
 TemplateLayer<T>::TemplateLayer()
 {
 	// во избежание некоторых ошибок
-		this->iMax = 0;
-		this->jMax = 0;
+		this->iMax = 1;
+		this->jMax = 1;
 		m_matrix = new T * [iMax];
 			for (int i = 0; i < iMax; i++)
 				m_matrix[i] = new T [jMax];

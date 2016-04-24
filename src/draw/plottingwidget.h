@@ -4,7 +4,7 @@
 #include <QtWidgets>
 #include "qcustomplot.h"
 #include "../core/layer.h"
-#include "../core/argument.h"
+#include "../core/tfdinamics.h"
 
 class PlottingWidget : public QWidget
 {

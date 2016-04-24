@@ -2,7 +2,7 @@
 // || - или
 // && - и
 #include "stdexcept"
-#include "./argument.h"
+#include "./tfdinamics.h"
 //#include <omp.h>
 // (lmbd) lambda for heat capacity, p for density, c for thermal conductivity
 

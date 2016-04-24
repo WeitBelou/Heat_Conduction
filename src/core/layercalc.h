@@ -2,7 +2,7 @@
 #define LAYERCALC_H
 
 #include <QObject>
-#include "./argument.h"
+#include "./tfdinamics.h"
 #include "./layer.h"
 #include <QVector>
 #include <exception>
