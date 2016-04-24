@@ -58,3 +58,45 @@ void Material::setC(double c)
 {
 	m_c = c;
 }
+
+QTextStream & operator <<(QTextStream & os, const Material & m)
+{
+	//Rho = DOUBLE
+	//Lambda = DOUBLE
+	//C = DOUBLE
+
+	os << "Rho = " << m.rho() << endl;
+	os << "Lambda = " << m.lambda() << endl;
+	os << "C = " << m.c() << endl;
+
+	return os;
+}
+
+QTextStream & operator >>(QTextStream & is, const Material & m)
+{
+	//Rho = DOUBLE
+	//Lambda = DOUBLE
+	//C = DOUBLE
+
+	QString buf;
+	double tmp;
+
+	is >> buf << buf;
+	is >> tmp;
+
+	m.setRho(tmp);
+
+
+	is >> buf << buf;
+	is >> tmp;
+
+	m.setLambda(tmp);
+
+
+	is >> buf << buf;
+	is >> tmp;
+
+	m.setC(tmp);
+
+	return is;
+}
