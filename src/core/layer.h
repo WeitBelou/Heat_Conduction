@@ -12,13 +12,11 @@ public:
 	~TemplateLayer();
 	T operator()(int i, int j)const;
 	T & operator()(int i, int j);
-	void operator =(const TemplateLayer & anotherLayer);
+	TemplateLayer operator =(const TemplateLayer & anotherLayer);
 	bool operator ==(const TemplateLayer & anotherLayer)const;
 	void print() const;
-	int iMax() const
-	{return m_iMax;}
-	int jMax() const
-	{return m_jMax;}
+	int iMax() const;
+	int jMax() const;
 private:
 	int m_iMax, m_jMax;
 	T ** m_matrix;
@@ -98,10 +96,8 @@ void TemplateLayer<T>::operator =(const TemplateLayer & anotherLayer)
 					m_matrix[i][j] = anotherLayer(i, j);
 				}
 			}
-
-
-
 	}
+	return *this;
 }
 
 template <typename T>
@@ -150,5 +146,15 @@ void TemplateLayer<T>::print() const
 		std::cout << std::endl;
 	}
 
+}
+
+int TemplateLayer::iMax() const
+{
+	return m_iMax;
+}
+
+int TemplateLayer::jMax() const
+{
+	return m_jMax;
 }
 #endif // LAYER_H
