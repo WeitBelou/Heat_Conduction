@@ -14,15 +14,16 @@ PlottingWidget::PlottingWidget(QWidget *parent) : QWidget(parent)
 
 }
 
-void PlottingWidget::setData(const ArgumentForDraw &data)
+void PlottingWidget::setData(const TFDinamics& data)
 {
 	m_data = data;
 
-	int nx = m_data.iMax;
-	int ny = m_data.jMax;
+	m_iMax = m_data.temperatureFields()[0].iMax();
+	m_jMax = m_data.temperatureFields()[0].jMax();
+	m_tMax = m_data.temperatureFields().size();
 
-	colorMap->data()->setSize(nx, ny);
-	slider->setMaximum(m_data.tMax - 1);
+	colorMap->data()->setSize(m_iMax, m_jMax);
+	slider->setMaximum(m_data.temperatureFields().size() - 1);
 	slider->setValue(0);
 	m_speed = 1;
 
@@ -32,8 +33,8 @@ void PlottingWidget::setData(const ArgumentForDraw &data)
 void PlottingWidget::startDrawing()
 {
 	loop->stop();
-	loop->start(int (m_data.tStep * 1000.0 / m_speed));
-	if (currentIndex() < m_data.tMax - 1) {
+	loop->start(int (m_data.tStep() * 1000.0 / m_speed));
+	if (currentIndex() < m_tMax - 1) {
 		slider->setValue(currentIndex() + 1);
 	}
 }
@@ -52,17 +53,15 @@ void PlottingWidget::stopDrawing()
 
 void PlottingWidget::drawCurrentLayer()
 {
-	int nx = m_data.iMax;
-	int ny = m_data.jMax;
 	double x, y, z;
 
-	for (int xIndex = 0; xIndex < nx; ++xIndex)
+	for (int i = 0; i < m_iMax; ++i)
 	{
-	  for (int yIndex = 0; yIndex < ny; ++yIndex)
+	  for (int j = 0; j < m_jMax; ++j)
 	  {
-		colorMap->data()->cellToCoord(xIndex, yIndex, &x, &y);
-		z = m_data.allLayers[currentIndex()](xIndex, yIndex);
-		colorMap->data()->setCell(xIndex, yIndex, z);
+		colorMap->data()->cellToCoord(i, j, &x, &y);
+		z = m_data.allLayers[currentIndex()](i, j);
+		colorMap->data()->setCell(i, j, z);
 	  }
 	}
 	colorMap->rescaleDataRange();

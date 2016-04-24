@@ -13,7 +13,7 @@ public:
 	explicit PlottingWidget(QWidget *parent = 0);
 
 public slots:
-	void setData(const ArgumentForDraw &data);
+	void setData(const TFDinamics &data);
 
 private slots:
 	void startDrawing();
@@ -44,7 +44,11 @@ private:
 	QPushButton * stop;
 	QDoubleSpinBox * speed;
 
-	ArgumentForDraw m_data;
+	TFDinamics m_data;
+	int m_iMax;
+	int m_jMax;
+	int m_tMax;
+
 	int m_currentIndex;
 
 	QTimer * loop;
