@@ -2,28 +2,28 @@
 
 Material::Material()
 {
-	m_ro = 7800;
+	m_rho = 7800;
 	m_lambda = 46;
 	m_c = 460;
 }
 
 Material::Material(double ro, double lambda, double c)
 {
-	m_ro = ro;
+	m_rho = ro;
 	m_lambda = lambda;
 	m_c = c;
 }
 
 Material::Material(const Material & other)
 {
-	m_ro = other.ro();
+	m_rho = other.rho();
 	m_lambda = other.lambda();
 	m_c = other.c();
 }
 
 const Material Material::operator =(const Material& other)
 {
-	setRo(other.ro());
+	setRho(other.rho());
 	setLambda(other.lambda());
 	setC(other.c());
 	return *this;

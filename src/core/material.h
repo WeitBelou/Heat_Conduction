@@ -6,13 +6,13 @@ class Material
 {
 public:
 	Material();
-	Material(double ro, double lambda, double c);
+	Material(double rho, double lambda, double c);
 	Material(Material const& other);
 
 	const Material operator =(const Material & other);
 
-	double ro() const;
-	void setRo(double ro);
+	double rho() const;
+	void setRho(double rho);
 
 	double lambda() const;
 	void setLambda(double lambda);
@@ -21,7 +21,7 @@ public:
 	void setC(double c);
 
 private:
-	double m_ro;
+	double m_rho;
 	double m_lambda;
 	double m_c;
 };
