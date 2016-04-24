@@ -34,7 +34,7 @@ ArgumentForDraw LayerCalc::operator()(ArgumentForCalc const & argument)
 	QVector<Layer> allLayers(tMax + 1, Layer(iMax, jMax));
 	allLayers[0] = zeroLayer;
 
-	if ((zeroLayer.getImax() != idNet.getImax()) || ((zeroLayer.getJmax() != idNet.getJmax())))
+	if ((zeroLayer.iMax() != idNet.iMax()) || ((zeroLayer.jMax() != idNet.jMax())))
 		throw std::range_error("Размеры матрицы температур и битовой сетки не совпадают!");
 
 

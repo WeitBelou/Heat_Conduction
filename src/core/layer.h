@@ -7,7 +7,7 @@ class TemplateLayer
 {
 public:
 	TemplateLayer();
-	TemplateLayer(int _iMax, int _jMax);
+	TemplateLayer(int iMax, int jMax);
 	TemplateLayer(const TemplateLayer & previousLayer);
 	~TemplateLayer();
 	T operator()(int i, int j)const;
@@ -15,12 +15,12 @@ public:
 	void operator =(const TemplateLayer & anotherLayer);
 	bool operator ==(const TemplateLayer & anotherLayer)const;
 	void print() const;
-	int getImax() const
-	{return iMax;}
-	int getJmax() const
-	{return jMax;}
+	int iMax() const
+	{return m_iMax;}
+	int jMax() const
+	{return m_jMax;}
 private:
-	int iMax, jMax;
+	int m_iMax, m_jMax;
 	T ** m_matrix;
 };
 
@@ -31,29 +31,29 @@ template <typename T>
 TemplateLayer<T>::TemplateLayer()
 {
 	// во избежание некоторых ошибок
-		this->iMax = 1;
-		this->jMax = 1;
-		m_matrix = new T * [iMax];
-			for (int i = 0; i < iMax; i++)
-				m_matrix[i] = new T [jMax];
+		this->m_iMax = 1;
+		this->m_jMax = 1;
+		m_matrix = new T * [m_iMax];
+			for (int i = 0; i < m_iMax; i++)
+				m_matrix[i] = new T [m_jMax];
 
 }
 
 template <typename T>
-TemplateLayer<T>::TemplateLayer(int _iMax, int _jMax)
+TemplateLayer<T>::TemplateLayer(int iMax, int jMax)
 {
-	this->iMax = _iMax;
-	this->jMax = _jMax;
-	m_matrix = new T* [iMax];
-		for (int i = 0; i < iMax; i++)
-			m_matrix[i] = new T [jMax];
+	this->m_iMax = iMax;
+	this->m_jMax = jMax;
+	m_matrix = new T* [m_iMax];
+		for (int i = 0; i < m_iMax; i++)
+			m_matrix[i] = new T [m_jMax];
 
 }
 
 template <typename T >
 TemplateLayer<T>::~TemplateLayer()
 {
-		for (int i = 0; i < iMax; i++)
+		for (int i = 0; i < m_iMax; i++)
 			delete [] m_matrix[i];
 		delete [] m_matrix;
 }
@@ -61,14 +61,14 @@ TemplateLayer<T>::~TemplateLayer()
 template <typename T>
 TemplateLayer<T>::TemplateLayer(const TemplateLayer & previousLayer)
 {
-	this->iMax = previousLayer.iMax;
-	this->jMax = previousLayer.jMax;
-	m_matrix = new T* [iMax];
-		for (int i = 0; i < iMax; i++)
-			m_matrix[i] = new T [jMax];
-		for (int i = 0; i < iMax; i++)
+	this->m_iMax = previousLayer.m_iMax;
+	this->m_jMax = previousLayer.m_jMax;
+	m_matrix = new T* [m_iMax];
+		for (int i = 0; i < m_iMax; i++)
+			m_matrix[i] = new T [m_jMax];
+		for (int i = 0; i < m_iMax; i++)
 		{
-			for (int j = 0; j < jMax; j++)
+			for (int j = 0; j < m_jMax; j++)
 			{
 				m_matrix[i][j] = previousLayer(i, j);
 			}
@@ -82,18 +82,18 @@ void TemplateLayer<T>::operator =(const TemplateLayer & anotherLayer)
 		{ }
 	else
 	{
-		for (int i = 0; i < iMax; i++)
+		for (int i = 0; i < m_iMax; i++)
 			delete [] m_matrix[i];
 		delete [] m_matrix;
 
-		this->iMax = anotherLayer.iMax;
-		this->jMax = anotherLayer.jMax;
-		m_matrix = new T* [iMax];
-			for (int i = 0; i < iMax; i++)
-				m_matrix[i] = new T [jMax];
-			for (int i = 0; i < iMax; i++)
+		this->m_iMax = anotherLayer.m_iMax;
+		this->m_jMax = anotherLayer.m_jMax;
+		m_matrix = new T* [m_iMax];
+			for (int i = 0; i < m_iMax; i++)
+				m_matrix[i] = new T [m_jMax];
+			for (int i = 0; i < m_iMax; i++)
 			{
-				for (int j = 0; j < jMax; j++)
+				for (int j = 0; j < m_jMax; j++)
 				{
 					m_matrix[i][j] = anotherLayer(i, j);
 				}
@@ -107,11 +107,11 @@ void TemplateLayer<T>::operator =(const TemplateLayer & anotherLayer)
 template <typename T>
 bool TemplateLayer<T>::operator ==(const TemplateLayer & anotherLayer) const
 {
-	if (this->getImax() != anotherLayer.getImax() || (this->getImax() != anotherLayer.getImax()))
+	if (this->iMax() != anotherLayer.iMax() || (this->iMax() != anotherLayer.iMax()))
 	return false;
-	for (int i = 0; i < iMax; i++)
+	for (int i = 0; i < m_iMax; i++)
 	{
-		for (int j = 0; j < jMax; j++)
+		for (int j = 0; j < m_jMax; j++)
 		{
 			if (m_matrix[i][j] != anotherLayer(i, j))
 				return false;
@@ -124,7 +124,7 @@ bool TemplateLayer<T>::operator ==(const TemplateLayer & anotherLayer) const
 template <typename T >
 T TemplateLayer<T>::operator()(int i, int j) const
 {
-	if ((i > iMax-1) || (j > jMax-1) || (i < 0) || (j < 0))
+	if ((i > m_iMax-1) || (j > m_jMax-1) || (i < 0) || (j < 0))
 		throw std::range_error("Попытка получить температуру несуществующей точки ");
 
 	return m_matrix[i][j];
@@ -133,7 +133,7 @@ T TemplateLayer<T>::operator()(int i, int j) const
 template <typename T>
 T & TemplateLayer<T>::operator()(int i, int j)
 {
-	if ((i > iMax-1) || (j > jMax-1) || (i < 0) || (j < 0))
+	if ((i > m_iMax-1) || (j > m_jMax-1) || (i < 0) || (j < 0))
 		throw std::range_error("Попытка получить температуру несуществующей точки");
 
 	return m_matrix[i][j];
@@ -143,9 +143,9 @@ T & TemplateLayer<T>::operator()(int i, int j)
 template <typename T>
 void TemplateLayer<T>::print() const
 {
-	for (int i = 0; i<iMax; i++)
+	for (int i = 0; i<m_iMax; i++)
 	{
-		for (int j = 0; j<jMax; j++)
+		for (int j = 0; j<m_jMax; j++)
 		{std::cout << "[" << m_matrix[i][j] << "]";}
 		std::cout << std::endl;
 	}

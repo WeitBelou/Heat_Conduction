@@ -8,8 +8,8 @@ TFGeometry::TFGeometry()
 	m_xStep = 1;
 	m_yStep = 1;
 
-	m_iMax = m_idNet.getImax();
-	m_jMax = m_idNet.getJmax();
+	m_iMax = m_idNet.iMax();
+	m_jMax = m_idNet.jMax();
 }
 
 TFGeometry::TFGeometry(const Layer& zeroLayer, const BoolNet& idNet)
@@ -20,8 +20,8 @@ TFGeometry::TFGeometry(const Layer& zeroLayer, const BoolNet& idNet)
 	m_xStep = 1;
 	m_yStep = 1;
 
-	m_iMax = m_idNet.getImax();
-	m_jMax = m_idNet.getJmax();
+	m_iMax = m_idNet.iMax();
+	m_jMax = m_idNet.jMax();
 }
 
 TFGeometry::TFGeometry(const Layer& zeroLayer, const BoolNet& idNet,
@@ -33,8 +33,8 @@ TFGeometry::TFGeometry(const Layer& zeroLayer, const BoolNet& idNet,
 	m_xStep = xStep;
 	m_yStep = yStep;
 
-	m_iMax = m_idNet.getImax();
-	m_jMax = m_idNet.getJmax();
+	m_iMax = m_idNet.iMax();
+	m_jMax = m_idNet.jMax();
 }
 
 TFGeometry::TFGeometry(const TFGeometry& other)
