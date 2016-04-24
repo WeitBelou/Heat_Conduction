@@ -74,7 +74,7 @@ TemplateLayer<T>::TemplateLayer(const TemplateLayer & previousLayer)
 }
 
 template <typename T>
-void TemplateLayer<T>::operator =(const TemplateLayer & anotherLayer)
+TemplateLayer TemplateLayer<T>::operator =(const TemplateLayer & anotherLayer)
 {
 	if (*this == anotherLayer)
 		{ }
