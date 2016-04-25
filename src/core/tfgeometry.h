@@ -13,10 +13,12 @@ public:
 
 	const TFGeometry operator =(const TFGeometry & other);
 
-	TemperatureField zeroLayer() const;
+	TemperatureField & zeroLayer();
+	const TemperatureField & zeroLayer() const;
 	void setZeroLayer(const TemperatureField& zeroLayer);
 
-	BoolGrid idNet() const;
+	BoolGrid & idNet();
+	const BoolGrid & idNet() const;
 	void setIdNet(const BoolGrid& idNet);
 
 	double xStep() const;

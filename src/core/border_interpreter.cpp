@@ -163,12 +163,12 @@ void BorderInterpreter::makeGrid()
 	//Заполнение сеткок
 	qDebug() << "Grid construction done, filling the grid" << endl;
 	logstream << "Grid construction done, filling the grid" << endl;
-//	for(int i = 0; i < iMax; i++) {
-//		for(int j = 0; j < jMax; j++) {
-//			m_workingArea.idNet()(i, j) = true;
-//			m_workingArea.zeroLayer()(i, j) = 0;
-//		}
-//	}
+	for(int i = 0; i < iMax; i++) {
+		for(int j = 0; j < jMax; j++) {
+			m_workingArea.idNet()(i, j) = true;
+			m_workingArea.zeroLayer()(i, j) = 0;
+		}
+	}
 }
 
 

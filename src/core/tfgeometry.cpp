@@ -48,7 +48,12 @@ const TFGeometry TFGeometry::operator =(const TFGeometry& other)
 	return *this;
 }
 
-TemperatureField TFGeometry::zeroLayer() const
+TemperatureField & TFGeometry::zeroLayer()
+{
+	return m_zeroLayer;
+}
+
+const TemperatureField &TFGeometry::zeroLayer() const
 {
 	return m_zeroLayer;
 }
@@ -58,7 +63,12 @@ void TFGeometry::setZeroLayer(const TemperatureField& zeroLayer)
 	m_zeroLayer = zeroLayer;
 }
 
-BoolGrid TFGeometry::idNet() const
+BoolGrid & TFGeometry::idNet()
+{
+	return m_idNet;
+}
+
+const BoolGrid &TFGeometry::idNet() const
 {
 	return m_idNet;
 }
