@@ -21,7 +21,7 @@ public:
 	void setC(double c);
 
 	friend QTextStream & operator <<(QTextStream & os, const Material & m);
-	friend QTextStream & operator <<(QTextStream & is, const Material & m);
+	friend QTextStream & operator >>(QTextStream & is, Material & m);
 private:
 	double m_rho;
 	double m_lambda;

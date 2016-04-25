@@ -29,14 +29,14 @@ const Material Material::operator =(const Material& other)
 	return *this;
 }
 
-double Material::p() const
+double Material::rho() const
 {
-	return m_p;
+	return m_rho;
 }
 
-void Material::setP(double p)
+void Material::setRho(double rho)
 {
-	m_p = p;
+	m_rho = rho;
 }
 
 double Material::lambda() const
@@ -72,7 +72,7 @@ QTextStream & operator <<(QTextStream & os, const Material & m)
 	return os;
 }
 
-QTextStream & operator >>(QTextStream & is, const Material & m)
+QTextStream & operator >>(QTextStream & is, Material & m)
 {
 	//DOUBLE DOUBLE DOUBLE
 
