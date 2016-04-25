@@ -3,6 +3,7 @@
 #include "layer.h"
 #include <QVector>
 
+
 class TFDynamics
 {
 public:

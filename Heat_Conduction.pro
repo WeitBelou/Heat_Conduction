@@ -22,12 +22,11 @@ HEADERS += \
 	src/editor/parser.h \
     src/core/border_interpreter.h \
     src/editor/mainwindow.h \
-    src/core/layercalc.h \
     src/core/material.h \
     src/core/tfgeometry.h \
     src/core/point.h \
-    src/core/problem.h \
-    src/core/tfdynamics.h
+    src/core/tfdynamics.h \
+    src/core/problem.h
 
 SOURCES += \
 	src/core/border.cpp \
@@ -38,10 +37,9 @@ SOURCES += \
 	src/main.cpp \
     src/core/border_interpreter.cpp \
     src/editor/mainwindow.cpp \
-    src/core/layercalc.cpp \
     src/core/material.cpp \
     src/core/tfgeometry.cpp \
-    src/core/problem.cpp \
-    src/core/tfdynamics.cpp
+    src/core/tfdynamics.cpp \
+    src/core/problem.cpp
 
 

@@ -1,6 +1,8 @@
-#ifndef LAYERCALC_H
-#define LAYERCALC_H
-
+#ifndef PROBLEM_H
+#define PROBLEM_H
+#include "material.h"
+#include "tfdynamics.h"
+#include "tfgeometry.h"
 #include <QObject>
 #include "./tfdynamics.h"
 #include "./layer.h"
@@ -8,15 +10,36 @@
 #include <exception>
 #include <iostream>
 
-class LayerCalc : public QObject
+class Problem: public QObject
 {
 	Q_OBJECT
 public:
-	explicit LayerCalc(QObject *parent = 0);
-	ArgumentForDraw operator()(ArgumentForCalc const & argument);
+	explicit Problem (QObject *parent = 0);
+	Problem();
+	Problem(const Material & material, const TFGeometry & TFGeometry,
+			double tMax, double tStep);
+	TFDynamics solve() const;
+	~Problem();
+
+private:
+	const TemperatureField nextTF(const TemperatureField & currentTF) const;
+
+	Material m_material;
+	TFGeometry m_TFGeometry;
+	double m_tMax;
+	double m_tStep;
+
+	const double Ax;
+	const double Cx;
+	const double Bx;
+
+	const double Ay;
+	const double Cy;
+	const double By;
+
 signals:
 	void oneLayerCalcSignal(double executionState);
 public slots:
 };
 
-#endif // LAYERCALC_H
+#endif // PROBLEM_H
