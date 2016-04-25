@@ -1,7 +1,6 @@
 #include "mainwindow.h"
 #include "../core/border_interpreter.h"
 
-
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {
 	setWindowTitle("Editor");
@@ -26,12 +25,25 @@ void MainWindow::compute()
 		return;
 	}
 
-	BorderInterpreter borderInterpreter(inputData);
+	BorderInterpreter borderInterpreter(inputData, 100);
 	TFGeometry geom = borderInterpreter.workingArea();
 
+	QFile logg("./loggg.txt");
+	logg.open(QIODevice::WriteOnly);
+	QTextStream str(&logg);
+	str << geom.idNet() << endl;
+	logg.close();
+
 	Material m;
-	double tMax = 10;
-	double tStep = 0.1;
+
+	double tMax = 100;
+	double tStep = 1;
+
+	tMax = QInputDialog::getDouble(this, tr("Input max time"),
+								   tr("Max time"), tMax, 0, 100000);
+
+	tStep = QInputDialog::getDouble(this, tr("Input time step"),
+								   tr("Time step"), tStep, 0, 100);
 
 	Problem p(m, geom, tMax, tStep);
 

@@ -83,8 +83,6 @@ void PlottingWidget::createPlot()
 	plot = new QCustomPlot(this);
 
 	plot->axisRect()->setupFullAxesBox(true);
-	plot->xAxis->setLabel("x");
-	plot->yAxis->setLabel("y");
 
 	colorMap = new QCPColorMap(plot->xAxis, plot->yAxis);
 	plot->addPlottable(colorMap);

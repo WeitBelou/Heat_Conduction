@@ -2,6 +2,7 @@
 #define LAYER_H
 #include <iostream>
 #include <stdexcept>
+#include <QTextStream>
 template <typename T>
 class TemplateLayer
 {
@@ -161,4 +162,24 @@ int TemplateLayer<T>::jMax() const
 {
 	return m_jMax;
 }
+
+inline QTextStream & operator <<(QTextStream & os, const BoolGrid & b)
+{
+	int iMax = b.iMax();
+	int jMax = b.jMax();
+	for (int i = 0; i < iMax; ++i){
+		for (int j = 0; j < jMax; ++j) {
+			if (b(i, j)) {
+				os << QChar(0x25A0);
+			}
+			else {
+				os << QChar(0x25A1);
+			}
+		}
+		os << endl;
+	}
+
+	return os;
+}
+
 #endif // LAYER_H

@@ -122,13 +122,14 @@ const TemperatureField Problem::nextTF(const TemperatureField & current) const
 TFDynamics Problem::solve() const
 {
 	int tMax = m_tMax/m_tStep;
-	int iMax = geometry.iMax();
-	int jMax = geometry.jMax();
+	//int iMax = geometry.iMax();
+	//int jMax = geometry.jMax();
 	double executionState;
 
 
-	QVector<TemperatureField> temperatureFields(m_tMax + 1, TemperatureField(iMax, jMax));
-	temperatureFields[0] = geometry.zeroLayer();
+	QVector<TemperatureField> temperatureFields;
+	temperatureFields.reserve(tMax + 1);
+	temperatureFields.push_back(geometry.zeroLayer());
 
 	TFDynamics allLayers(temperatureFields, m_tStep, geometry.xStep(),
 						 geometry.yStep());
