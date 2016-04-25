@@ -2,7 +2,7 @@
 
 //Конструктор по умолчанию
 BorderInterpreter::BorderInterpreter(QObject *parent)
-	: QObject(parent), log("./log"),
+	: QObject(parent), logpath("./log"),
 	  m_maxPointsPerDimension(0),
 	  m_minPointsPerDimension(0),
 	  m_minPointsBetweenBorders(0)
@@ -15,12 +15,13 @@ BorderInterpreter::BorderInterpreter(const QVector<Border>& Borders,
 					const int maxPointsPerDimension,
 					const int minPointsPerDimension,
 					const int minPointsBetweenBorders, QObject *parent)
-	: QObject(parent), log("./log"),
+	: QObject(parent), logpath("./log"),
 	m_maxPointsPerDimension(maxPointsPerDimension),
 	m_minPointsPerDimension(minPointsPerDimension),
 	m_minPointsBetweenBorders(minPointsBetweenBorders)
 {
 	//Открытие файла лога
+	QFile log(logpath);
 	if (!log.open(QIODevice::WriteOnly))
 		qDebug() << "Failed to create log file" << endl;
 	else
@@ -52,22 +53,23 @@ BorderInterpreter::BorderInterpreter(const QVector<Border>& Borders,
 	logstream << "Borders are drawn" << endl;
 
 	//заполнение области вне тела
+	QVector<GridPoint> set1, set2;
 	qDebug() << "Blank area painting" << endl;
 	logstream << "Blank area painting" << endl;
-	paintBlankArea(0, 0);
+	set1 << GridPoint(0, 0);
+	paintBlankArea(set1, set2);
 	qDebug() << "Blank area is painted" << endl;
 	logstream << "Blank area is painted" << endl;
 
 	qDebug() << "Border interpretation is done" << endl;
-	logstream << "Border interpretation is done" << endl;
+	logstream << "Border interpretation is done, closing the logfile" << endl;
+	log.close();
 }
 
 //Деструктор
 BorderInterpreter::~BorderInterpreter()
 {
 	qDebug() << "Border interpretation destructor" << endl;
-	logstream << "Border interpretation destructor" << endl;
-	log.close();
 }
 
 TFGeometry BorderInterpreter::workingArea() const
@@ -246,17 +248,24 @@ void BorderInterpreter::putPoint(const GridPoint& p, const double& u)
 }
 
 //Заполнение области вне тела
-void BorderInterpreter::paintBlankArea(const int& i, const int& j)
+void BorderInterpreter::paintBlankArea(QVector<GridPoint>& set1, QVector<GridPoint>& set2)
 {
-	if( i < 0 || i > iMax-1 || j < 0 || j > jMax-1)
-		return;
-	if( m_workingArea.idNet()(i, j) == false)
+	if(set1.isEmpty())
 		return;
 
-	m_workingArea.idNet()( i, j) = false;
-	paintBlankArea(i + 1, j);
-	paintBlankArea(i - 1, j);
-	paintBlankArea(i, j + 1);
-	paintBlankArea(i, j - 1);
+	QVector<GridPoint>::const_iterator it;
+
+	for(it = set1.cbegin(); it != set1.cend(); ++it) {
+		if( it->x() < 0 || it->x() > iMax-1 || it->y() < 0 || it->y() > jMax-1)
+			continue;
+		if(m_workingArea.idNet()(it->x(), it->y()) == false)
+			continue;
+		m_workingArea.idNet()(it->x(), it->y()) = false;
+		set2 << GridPoint(it->x() + 1, it->y()) << GridPoint(it->x() - 1, it->y()) <<
+				GridPoint(it->x(), it->y() + 1) << GridPoint(it->x(), it->y() - 1);
+	}
+
+	set1.clear();
+	paintBlankArea(set2, set1);
 }
 

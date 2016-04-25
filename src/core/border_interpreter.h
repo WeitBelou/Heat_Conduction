@@ -37,7 +37,7 @@ private:
 	const int m_minPointsBetweenBorders;
 
 	QTextStream logstream;
-	QFile log;
+	QString logpath;
 
 	TFGeometry m_workingArea;
 	double xMax, xMin, yMax, yMin;
@@ -50,7 +50,7 @@ private:
 	GridPoint movePoint(const GridPoint& p1, const GridPoint& p2);
 	void putPoint(const GridPoint& p, const double& u);
 	void putPoint(const GridPoint& p);
-	void paintBlankArea(const int& i, const int& j);
+	void paintBlankArea(QVector<GridPoint>& set1, QVector<GridPoint>& set2);
 };
 
 #endif // BORDER_INTERPRETER_H

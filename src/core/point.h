@@ -15,7 +15,7 @@ public:
 
 	bool operator ==(const TemplatePoint<T>& p) const;
 	bool operator !=(const TemplatePoint<T>& p) const;
-	void operator = (const TemplatePoint<T>& p);
+	void operator =(const TemplatePoint<T>& p);
 	TemplatePoint<T> operator + (const TemplatePoint<T>& p) const;
 	TemplatePoint<T> operator - (const TemplatePoint<T>& p) const;
 	TemplatePoint<T> operator * (const double& m) const;
@@ -84,6 +84,7 @@ void TemplatePoint<T>::operator = (const TemplatePoint<T>& p)
 	m_x = p.m_x;
 	m_y = p.m_y;
 }
+
 
 template <typename T>
 TemplatePoint<T> TemplatePoint<T>::operator + (const TemplatePoint<T>& p) const{
