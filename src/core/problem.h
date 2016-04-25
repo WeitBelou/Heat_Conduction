@@ -18,6 +18,18 @@ private:
 	TFGeometry m_TFGeometry;
 	double m_tMax;
 	double m_tStep;
+
+	const double Ax = lambda/(xStep*xStep);
+	const double Cx = Ax;
+	const double Bx = 2*lambda/(xStep*xStep) + p*c/tStep;
+
+	const double Ay = lambda/(yStep*yStep);
+	const double Cy = Ay;
+	const double By = 2*lambda/(yStep*yStep) + p*c/tStep;
+
+	double newAlpha; // переменные для временного хранения промежуточных значений
+	double newBeta;
+	double F;
 };
 
 #endif // PROBLEM_H

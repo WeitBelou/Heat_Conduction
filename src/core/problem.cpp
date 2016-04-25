@@ -13,6 +13,16 @@ Problem::Problem(const Material & material, const TFGeometry & TFGeometry,
 	m_TFGeometry = TFGeometry;
 	m_tMax = tMax;
 	m_tStep = tStep;
+	const double m_Ax = material.lambda()/(TFGeometry.xStep() * TFGeometry.xStep());
+	const double m_Cx = material.lambda()/(TFGeometry.xStep() * TFGeometry.xStep());
+	const double m_Bx = 2*material.lambda()/(TFGeometry.xStep() * TFGeometry.xStep())
+						+ material.rho()*material.c()/tStep;
+
+
+	const double m_Ay = material.lambda()/(TFGeometry.yStep() * TFGeometry.yStep());
+	const double m_Cy = material.lambda()/(TFGeometry.yStep() * TFGeometry.yStep());
+	const double m_By = 2*material.lambda()/(TFGeometry.yStep() * TFGeometry.yStep())
+						+ material.rho()*material.c()/tStep;
 }
 
 
@@ -39,29 +49,23 @@ TFDynamics Problem::solve() const
 	TemperatureField alpha(iMax, jMax);
 	TemperatureField beta(iMax, jMax);
 
-
-	QVector<TemperatureField> allLayers(tMax + 1, TemperatureField(iMax, jMax));
+//!
+	TFDynamics allLayers(tMax + 1, TemperatureField(iMax, jMax));
 	allLayers[0] = zeroLayer;
-
-	if ((zeroLayer.iMax() != idNet.iMax()) || ((zeroLayer.jMax() != idNet.jMax())))
-		throw std::range_error("Размеры матрицы температур и битовой сетки не совпадают!");
+//!
 
 
 
 
 
 // расчитаем коэфициенты, которые будут постоянны на протяжении всего расчёта
-const double Ax = lambda/(xStep*xStep);
-const double Cx = Ax;
-const double Bx = 2*lambda/(xStep*xStep) + p*c/tStep;
 
-const double Ay = lambda/(yStep*yStep);
-const double Cy = Ay;
-const double By = 2*lambda/(yStep*yStep) + p*c/tStep;
 
 double newAlpha; // переменные для временного хранения промежуточных значений
 double newBeta;
 double F;
+
+f
 }
 
 
