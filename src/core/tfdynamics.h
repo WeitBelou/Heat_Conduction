@@ -22,7 +22,8 @@ public:
 
 	void push_back(const TemperatureField & field);
 
-	QVector<TemperatureField> temperatureFields() const;
+	const QVector<TemperatureField> & temperatureFields() const;
+
 
 	double tStep() const;
 	void setTStep(double tStep);

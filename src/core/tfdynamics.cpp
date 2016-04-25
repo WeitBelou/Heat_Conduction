@@ -73,7 +73,7 @@ void TFDynamics::push_back(const TemperatureField & field)
 	m_temperatureFields.push_back(field);
 }
 
-QVector<TemperatureField> TFDynamics::temperatureFields() const
+const QVector<TemperatureField> & TFDynamics::temperatureFields() const
 {
 	return m_temperatureFields;
 }
