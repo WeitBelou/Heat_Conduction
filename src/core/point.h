@@ -30,7 +30,7 @@ private:
 };
 
 typedef TemplatePoint<double> Point;
-typedef TemplatePoint<int> Grid_point;
+typedef TemplatePoint<int> GridPoint;
 
 /***********************************************************/
 template <typename T>

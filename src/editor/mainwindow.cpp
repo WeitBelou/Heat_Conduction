@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "../core/border_interpreter.h"
 
+
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {
 	setWindowTitle("Editor");
@@ -25,18 +26,18 @@ void MainWindow::compute()
 		return;
 	}
 
-	BorderInterpreter borderInterpreter(inputData, 200);
-	ArgumentForCalc arg = borderInterpreter.get_argument_for_calc();
+	BorderInterpreter borderInterpreter(inputData);
+	TFGeometry arg = borderInterpreter.workingArea();
 
-	LayerCalc calculateAllLayers;
-	connect(&calculateAllLayers, &LayerCalc::oneLayerCalcSignal,
-			this, &MainWindow::setCurrentState);
-	outputData = calculateAllLayers(arg);
+//	LayerCalc calculateAllLayers;
+//	connect(&calculateAllLayers, &LayerCalc::oneLayerCalcSignal,
+//			this, &MainWindow::setCurrentState);
+//	TFDynamics outputData = calculateAllLayers(arg);
 
-	for (PlottingWidget * plot: plots)
-	{
-		plot->setData(outputData);
-	}
+//	for (PlottingWidget * plot: plots)
+//	{
+//		plot->setData(outputData);
+//	}
 }
 
 void MainWindow::addPlot()
