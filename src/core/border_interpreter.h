@@ -11,49 +11,46 @@
 #ifndef BORDER_INTERPRETER_H
 #define BORDER_INTERPRETER_H
 
-#include "tfdynamics.h"
+#include "tfgeometry.h"
 #include "border.h"
 #include <limits>
 #include <QFile>
+#include <QDebug>
 
 
 class BorderInterpreter : public QObject
 {
 	Q_OBJECT
-	public:
+public:
 	BorderInterpreter(QObject * parent = 0);
 	BorderInterpreter(const QVector<Border> & Borders,
-					   const int max_number_of_points_per_dimension = 1000,
-					   const int min_number_of_points_per_dimension = 100,
-					   const int min_number_of_points_between_close_borders = 10,
+					   const int maxPointsPerDimension = 1000,
+					   const int minPointsPerDimension = 100,
+					   const int minPointsBetweenBorders = 10,
 					   QObject * parent = 0);
 	~BorderInterpreter();
-	ArgumentForCalc get_argument_for_calc();
-
-
+	TFGeometry workingArea() const;
 
 private:
+	const int m_maxPointsPerDimension;
+	const int m_minPointsPerDimension;
+	const int m_minPointsBetweenBorders;
+
 	QTextStream logstream;
 	QFile log;
-	ArgumentForCalc argument_for_calc;
-	double x_max, x_min, y_max, y_min;
-	double length, height, x_min_dist, y_min_dist;
-	void find_area_parameters(const QVector<Border>& Borders,
-						const int& max_number_of_points_per_dimension,
-						const int& min_number_of_points_per_dimension,
-						const int& min_number_of_points_between_close_borders);
-	void check_min_dist(const QVector<Border>& Borders,
-						const int& i, const int& j,
-						const int& max_number_of_points_per_dimension,
-						const int& min_number_of_points_per_dimension,
-						const int& min_number_of_points_between_close_borders);
-	void make_grid();
-	void draw_borders(const QVector<Border>& Borders, int accuracy);
-	Grid_point p_to_gp(const Point& p);
-	Grid_point move_point(const Grid_point& p1, const Grid_point& p2);
-	void put_point(const Grid_point& p, const double& u);
-	void put_point(const Grid_point& p);
-	void paint_blank_area(const int& i, const int& j);
+
+	TFGeometry m_workingArea;
+	double xMax, xMin, yMax, yMin;
+	int iMax, jMax;
+	double length, height, xMinDist, yMinDist;
+	void findAreaParameters(const QVector<Border>& Borders);
+	void makeGrid();
+	void drawBorders(const QVector<Border>& Borders, int accuracy = 200);
+	GridPoint pToGp(const Point& p);
+	GridPoint movePoint(const GridPoint& p1, const GridPoint& p2);
+	void putPoint(const GridPoint& p, const double& u);
+	void putPoint(const GridPoint& p);
+	void paintBlankArea(const int& i, const int& j);
 };
 
 #endif // BORDER_INTERPRETER_H

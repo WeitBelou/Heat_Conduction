@@ -26,7 +26,6 @@ public:
 	void setYStep(double yStep);
 
 	int iMax() const;
-
 	int jMax() const;
 
 private:

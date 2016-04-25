@@ -6,7 +6,8 @@
 #include "../core/layer.h"
 #include "../editor/editor.h"
 #include "../draw/plottingwidget.h"
-#include "../core/layercalc.h"
+#include "../core/tfgeometry.h"
+#include "../core/tfdynamics.h"
 
 class MainWindow : public QMainWindow
 {
@@ -44,8 +45,6 @@ private:
 	QAction * computeAct;
 
 	QVector<Border> inputData;
-	ArgumentForCalc gridData;
-	ArgumentForDraw outputData;
 };
 
 #endif // MAINWINDOW_H
