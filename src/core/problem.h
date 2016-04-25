@@ -1,35 +1,22 @@
-#ifndef PROBLEM_H
-#define PROBLEM_H
-#include "material.h"
-#include "tfdynamics.h"
-#include "tfgeometry.h"
-class Problem
+#ifndef LAYERCALC_H
+#define LAYERCALC_H
+
+#include <QObject>
+#include "./tfdynamics.h"
+#include "./layer.h"
+#include <QVector>
+#include <exception>
+#include <iostream>
+
+class LayerCalc : public QObject
 {
+	Q_OBJECT
 public:
-	Problem();
-	Problem(const Material & material, const TFGeometry & TFGeometry,
-			double tMax, double tStep);
-	TFDynamics solve() const;
-	~Problem();
-private:
-	const TemperatureField nextTF(const TemperatureField & currentTF) const;
-
-	Material m_material;
-	TFGeometry m_TFGeometry;
-	double m_tMax;
-	double m_tStep;
-
-	const double Ax = lambda/(xStep*xStep);
-	const double Cx = Ax;
-	const double Bx = 2*lambda/(xStep*xStep) + p*c/tStep;
-
-	const double Ay = lambda/(yStep*yStep);
-	const double Cy = Ay;
-	const double By = 2*lambda/(yStep*yStep) + p*c/tStep;
-
-	double newAlpha; // переменные для временного хранения промежуточных значений
-	double newBeta;
-	double F;
+	explicit LayerCalc(QObject *parent = 0);
+	ArgumentForDraw operator()(ArgumentForCalc const & argument);
+signals:
+	void oneLayerCalcSignal(double executionState);
+public slots:
 };
 
-#endif // PROBLEM_H
+#endif // LAYERCALC_H
