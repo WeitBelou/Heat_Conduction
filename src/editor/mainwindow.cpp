@@ -27,17 +27,21 @@ void MainWindow::compute()
 	}
 
 	BorderInterpreter borderInterpreter(inputData);
-	TFGeometry arg = borderInterpreter.workingArea();
+	TFGeometry geom = borderInterpreter.workingArea();
 
-//	LayerCalc calculateAllLayers;
-//	connect(&calculateAllLayers, &LayerCalc::oneLayerCalcSignal,
-//			this, &MainWindow::setCurrentState);
-//	TFDynamics outputData = calculateAllLayers(arg);
+	Material m;
+	double tMax = 10;
+	double tStep = 0.1;
 
-//	for (PlottingWidget * plot: plots)
-//	{
-//		plot->setData(outputData);
-//	}
+	Problem p(m, geom, tMax, tStep);
+
+	connect(&p, &Problem::oneLayerCalcSignal, this, &MainWindow::setCurrentState);
+
+	TFDynamics dyn = p.solve();
+
+	for (PlottingWidget & plot: plots) {
+		plot.setData(dyn);
+	}
 }
 
 void MainWindow::addPlot()
