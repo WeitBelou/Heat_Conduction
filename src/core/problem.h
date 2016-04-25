@@ -15,30 +15,29 @@ class Problem: public QObject
 	Q_OBJECT
 public:
 	explicit Problem (QObject *parent = 0);
-	Problem();
-	Problem(const Material & material, const TFGeometry & TFGeometry,
-			double tMax, double tStep);
+	Problem(const Material & material, const TFGeometry & geometry,
+			double tMax, double tStep, QObject * parent = 0);
 	TFDynamics solve() const;
 	~Problem();
 
 private:
 	const TemperatureField nextTF(const TemperatureField & currentTF) const;
 
-	Material m_material;
-	TFGeometry m_TFGeometry;
+	Material material;
+	TFGeometry geometry;
 	double m_tMax;
 	double m_tStep;
 
-	const double Ax;
-	const double Cx;
-	const double Bx;
+	double Ax;
+	double Cx;
+	double Bx;
 
-	const double Ay;
-	const double Cy;
-	const double By;
+	double Ay;
+	double Cy;
+	double By;
 
 signals:
-	void oneLayerCalcSignal(double executionState);
+	void oneLayerCalcSignal(double executionState) const;
 public slots:
 };
 

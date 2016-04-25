@@ -39,8 +39,8 @@ void MainWindow::compute()
 
 	TFDynamics dyn = p.solve();
 
-	for (PlottingWidget & plot: plots) {
-		plot.setData(dyn);
+	for (PlottingWidget * plot: plots) {
+		plot->setData(dyn);
 	}
 }
 
