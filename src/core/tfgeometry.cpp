@@ -30,7 +30,7 @@ TFGeometry::TFGeometry(const TemperatureField& zeroLayer, const BoolGrid& idNet,
 
 TFGeometry::TFGeometry(const TFGeometry& other)
 {
-	m_zeroLayer = other.zeroLayer;
+	m_zeroLayer = other.zeroLayer();
 	m_idNet = other.idNet();
 
 	m_xStep = other.xStep();
@@ -44,9 +44,6 @@ const TFGeometry TFGeometry::operator =(const TFGeometry& other)
 
 	setXStep(other.xStep());
 	setYStep(other.yStep());
-
-	m_iMax = other.iMax();
-	m_jMax = other.jMax();
 
 	return *this;
 }
