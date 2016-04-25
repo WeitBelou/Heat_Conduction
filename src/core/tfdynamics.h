@@ -11,13 +11,17 @@ public:
 	TFDynamics(const QVector<TemperatureField>& temperatureFields, double tStep);
 
 	TFDynamics(const QVector<TemperatureField>& temperatureFields,
-			  double  tStep, double  xStep, double  yStep);
+			  double tStep, double xStep, double yStep);
 	TFDynamics(const TFDynamics& other);
 
 	const TFDynamics operator =(const TFDynamics& other);
 
+	const TemperatureField operator [](int i) const;
+	TemperatureField & operator [] (int i);
+
+	void push_back(const TemperatureField & field);
+
 	QVector<TemperatureField> temperatureFields() const;
-	void setTemperatureFields(const QVector<TemperatureField>& temperatureFields);
 
 	double tStep() const;
 	void setTStep(double tStep);
@@ -35,9 +39,5 @@ private:
 	double m_xStep;
 	double m_yStep;
 };
-
-
-
-
 
 #endif // TFDYNAMICS_H
