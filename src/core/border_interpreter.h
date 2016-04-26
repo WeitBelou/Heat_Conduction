@@ -32,6 +32,16 @@ public:
 	TFGeometry workingArea() const;
 
 private:
+	void findAreaParameters(const QVector<Border>& Borders);
+	void makeGrid();
+	void drawBorders(const QVector<Border>& Borders, int accuracy = 200);
+	void paintBlankArea(QVector<GridPoint>& set1, QVector<GridPoint>& set2);
+
+	GridPoint pToGp(const Point& p);
+	GridPoint movePoint(const GridPoint& p1, const GridPoint& p2);
+
+	void putPoint(const GridPoint& p, const double& u);
+
 	const int m_maxPointsPerDimension;
 	const int m_minPointsPerDimension;
 	const int m_minPointsBetweenBorders;
@@ -43,14 +53,6 @@ private:
 	double xMax, xMin, yMax, yMin;
 	int iMax, jMax;
 	double length, height, xMinDist, yMinDist;
-	void findAreaParameters(const QVector<Border>& Borders);
-	void makeGrid();
-	void drawBorders(const QVector<Border>& Borders, int accuracy = 200);
-	GridPoint pToGp(const Point& p);
-	GridPoint movePoint(const GridPoint& p1, const GridPoint& p2);
-	void putPoint(const GridPoint& p, const double& u);
-	void putPoint(const GridPoint& p);
-	void paintBlankArea(QVector<GridPoint>& set1, QVector<GridPoint>& set2);
 };
 
 #endif // BORDER_INTERPRETER_H
