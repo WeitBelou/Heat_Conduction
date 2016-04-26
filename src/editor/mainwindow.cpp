@@ -36,14 +36,11 @@ void MainWindow::compute()
 
 	Material m;
 
-	double tMax = 100;
-	double tStep = 1;
+	double tMax = QInputDialog::getDouble(this, tr("Input max time"),
+								   tr("Max time"), 100, 0, 100000);
 
-	tMax = QInputDialog::getDouble(this, tr("Input max time"),
-								   tr("Max time"), tMax, 0, 100000);
-
-	tStep = QInputDialog::getDouble(this, tr("Input time step"),
-								   tr("Time step"), tStep, 0, 100);
+	double tStep = QInputDialog::getDouble(this, tr("Input time step"),
+								   tr("Time step"), 1, 0, 100);
 
 	Problem p(m, geom, tMax, tStep);
 
