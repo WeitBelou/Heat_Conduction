@@ -1,7 +1,5 @@
 HEADERS += \
-    $$PWD/plottingwidget.h \
-    $$PWD/qcustomplot.h
+	$$PWD/*.h
 
 SOURCES += \
-    $$PWD/plottingwidget.cpp \
-    $$PWD/qcustomplot.cpp
+	$$PWD/*.cpp
