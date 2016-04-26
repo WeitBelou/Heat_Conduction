@@ -10,8 +10,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 	createToolbar();
 	createStatusBar();
 	createCentralWidget();
-	addEditor();
-	addPlot();
+
+	createEditor();
+	createPlot();
 }
 
 MainWindow::~MainWindow()
@@ -48,24 +49,20 @@ void MainWindow::compute()
 
 	TFDynamics dyn = p.solve();
 
-	for (PlottingWidget * plot: plots) {
-		plot->setData(dyn);
-	}
+	plot->setData(dyn);
 }
 
-void MainWindow::addPlot()
+void MainWindow::createPlot()
 {
-	plots.append(new PlottingWidget(this));
-	central->addSubWindow(plots.last());
-	plots.last()->show();
+	plot = new PlottingWidget(this);
+	centralWidget()->layout()->addWidget(plot);
 }
 
-void MainWindow::addEditor()
+void MainWindow::createEditor()
 {
-	editors.append(new Editor(this));
-	central->addSubWindow(editors.last());
-	editors.last()->show();
-	connect(editors.last(), &Editor::bordersParsed, this, &MainWindow::setInputData);
+	editor = new Editor(this);
+	centralWidget()->layout()->addWidget(editor);
+	connect(editor, &Editor::bordersParsed, this, &MainWindow::setInputData);
 }
 
 void MainWindow::setCurrentState(double percent)
@@ -75,15 +72,15 @@ void MainWindow::setCurrentState(double percent)
 
 void MainWindow::createCentralWidget()
 {
-	central = new QMdiArea(this);
-	central->tileSubWindows();
+	central = new QWidget(this);
+	central->setLayout(new QHBoxLayout(this));
 	setCentralWidget(central);
 }
 
 void MainWindow::createToolbar()
 {
 	tools = new QToolBar(this);
-	tools->addActions({addEditorAct, addPlotAct, computeAct});
+	tools->addActions({computeAct});
 	addToolBar(Qt::TopToolBarArea, tools);
 }
 
@@ -93,16 +90,6 @@ void MainWindow::createActions()
 	computeAct->setStatusTip(tr("Compute layers"));
 	computeAct->setShortcut(QString("F2"));
 	connect(computeAct, &QAction::triggered, this, &MainWindow::compute);
-
-	addEditorAct = new QAction(tr("&Add Editor"), this);
-	addEditorAct->setStatusTip(tr("Add Editor"));
-	addEditorAct->setShortcut(QString("F3"));
-	connect(addEditorAct, &QAction::triggered, this, &MainWindow::addEditor);
-
-	addPlotAct = new QAction(tr("&Add Plot"), this);
-	addPlotAct->setStatusTip(tr("Add Plot"));
-	addPlotAct->setShortcut(QString("F4"));
-	connect(addPlotAct, &QAction::triggered, this, &MainWindow::addPlot);
 }
 
 void MainWindow::createStatusBar()
