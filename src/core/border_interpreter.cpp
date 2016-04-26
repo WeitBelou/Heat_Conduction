@@ -2,10 +2,11 @@
 
 //Конструктор по умолчанию
 BorderInterpreter::BorderInterpreter(QObject *parent)
-	: QObject(parent), logpath("./log"),
+	: QObject(parent),
 	  m_maxPointsPerDimension(0),
 	  m_minPointsPerDimension(0),
-	  m_minPointsBetweenBorders(0)
+	  m_minPointsBetweenBorders(0),
+	  logpath("./log")
 {
 	this->m_workingArea = TFGeometry();
 }
