@@ -4,6 +4,43 @@
 #include "parser.h"
 using namespace Parser;
 
+QVector<QVector<Border>> MultiParse( QString src ){
+
+    QVector<QVector<Border>> data;
+    QString tmp;
+    int i;
+
+    if ( src.trimmed().isEmpty() ) {
+        throw ParseError("Empty input!");
+    }
+
+    src.remove(QChar('{'), Qt::CaseInsensitive);
+
+    if ( src.lastIndexOf("}") != -1 )
+    {
+        i = src.lastIndexOf( "}" );
+        src.remove( i, 1 );
+    }
+
+    QTextStream str( &src );
+    i = 0;
+
+    for (QString s: str.readAll().split("}")) {
+        try {
+            if (!s.trimmed().isEmpty()){
+                i++;
+                data.push_back(parsePlainText(s));
+            }
+        }
+        catch (ParseError & p) {
+            QString what = p.what();
+            QString where = QString("On line: %1").arg(i + 1);
+            throw ParseError(what, where);
+        }
+    }
+    return data;
+}
+
 QVector<Border> parsePlainText(QString src)
 {
 	QVector<Border> data;
