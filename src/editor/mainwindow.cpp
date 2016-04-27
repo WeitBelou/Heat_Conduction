@@ -43,11 +43,20 @@ void MainWindow::compute()
 	double tStep = QInputDialog::getDouble(this, tr("Input time step"),
 								   tr("Time step"), 1, 0, 100);
 
-	Problem p(m, geom, tMax, tStep);
+	Problem * p =  new Problem(m, geom, tMax, tStep, this);
 
-	connect(&p, &Problem::oneLayerCalcSignal, this, &MainWindow::setCurrentState);
+	QProgressDialog * progress = new QProgressDialog("Calculate", "Cancel", 0, 98, this);
+	progress->setMinimumDuration(0);
 
-	TFDynamics dyn = p.solve();
+	connect(p, &Problem::oneLayerCalcSignal, [progress](double percent){
+		qApp->processEvents();
+		progress->setValue(100 * percent);
+	});
+
+	TFDynamics dyn = p->solve();
+
+	delete p;
+	delete progress;
 
 	plot->setData(dyn);
 }
@@ -65,15 +74,10 @@ void MainWindow::createEditor()
 	connect(editor, &Editor::bordersParsed, this, &MainWindow::setInputData);
 }
 
-void MainWindow::setCurrentState(double percent)
-{
-	currentState->setValue(100 * percent);
-}
-
 void MainWindow::createCentralWidget()
 {
 	central = new QWidget(this);
-	central->setLayout(new QHBoxLayout(this));
+	central->setLayout(new QHBoxLayout(central));
 	setCentralWidget(central);
 }
 
@@ -96,14 +100,6 @@ void MainWindow::createStatusBar()
 {
 	status = new QStatusBar(this);
 	setStatusBar(status);
-
-	currentState = new QProgressBar(this);
-	currentState->setMinimum(0);
-	currentState->setMaximum(98);
-	currentState->setValue(0);
-	currentState->setTextVisible(true);
-
-	statusBar()->addPermanentWidget(currentState, 1);
 }
 
 void MainWindow::setInputData(const QVector<Border> &value)

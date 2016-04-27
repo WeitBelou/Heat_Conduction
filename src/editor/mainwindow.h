@@ -21,9 +21,6 @@ public slots:
 	void compute();
 	void setInputData(const QVector<Border> &value);
 
-private slots:
-	void setCurrentState(double percent);
-
 private:
 	void createCentralWidget();
 	void createPlot();
@@ -32,8 +29,6 @@ private:
 	void createToolbar();
 	void createActions();
 	void createStatusBar();
-
-	QProgressBar * currentState;
 
 	QStatusBar * status;
 	QToolBar * tools;
