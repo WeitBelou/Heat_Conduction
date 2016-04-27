@@ -14,6 +14,7 @@
 #include "tfgeometry.h"
 #include "border.h"
 #include <limits>
+#include <cmath>
 #include <QFile>
 #include <QDebug>
 

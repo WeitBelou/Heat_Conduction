@@ -198,7 +198,7 @@ void BorderInterpreter::drawBorders(const QVector<Border>& Borders, int accuracy
 			numberOfSublines = 1;
 
 
-		GridPoint p2[numberOfSublines];
+        GridPoint * p2 = new GridPoint[numberOfSublines];
 		for(int i = 0; i < numberOfSublines - 1; i++) {
 			p2[i] = p1 + (pEnd - p1)*( 1.0 * (i+1) / numberOfSublines);
 		}
@@ -211,6 +211,7 @@ void BorderInterpreter::drawBorders(const QVector<Border>& Borders, int accuracy
 			}
 		}
 
+        delete [] p2;
 		qDebug() << "Border is set" << endl;
 		logstream << "Border is set" << endl;
 	}
