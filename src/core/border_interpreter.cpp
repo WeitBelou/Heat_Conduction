@@ -2,10 +2,11 @@
 
 //Конструктор по умолчанию
 BorderInterpreter::BorderInterpreter(QObject *parent)
-	: QObject(parent), logpath("./log"),
+	: QObject(parent),
 	  m_maxPointsPerDimension(0),
 	  m_minPointsPerDimension(0),
-	  m_minPointsBetweenBorders(0)
+	  m_minPointsBetweenBorders(0),
+	  logpath("./log")
 {
 	this->m_workingArea = TFGeometry();
 }
@@ -15,10 +16,11 @@ BorderInterpreter::BorderInterpreter(const QVector<Border>& Borders,
 					const int maxPointsPerDimension,
 					const int minPointsPerDimension,
 					const int minPointsBetweenBorders, QObject *parent)
-	: QObject(parent), logpath("./log"),
+	: QObject(parent),
 	m_maxPointsPerDimension(maxPointsPerDimension),
 	m_minPointsPerDimension(minPointsPerDimension),
-	m_minPointsBetweenBorders(minPointsBetweenBorders)
+	m_minPointsBetweenBorders(minPointsBetweenBorders),
+	logpath("./log")
 {
 	//Открытие файла лога
 	QFile log(logpath);

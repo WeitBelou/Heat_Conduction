@@ -22,12 +22,13 @@ public slots:
 	void setInputData(const QVector<Border> &value);
 
 private slots:
-	void addPlot();
-	void addEditor();
 	void setCurrentState(double percent);
 
 private:
 	void createCentralWidget();
+	void createPlot();
+	void createEditor();
+
 	void createToolbar();
 	void createActions();
 	void createStatusBar();
@@ -36,13 +37,12 @@ private:
 
 	QStatusBar * status;
 	QToolBar * tools;
-	QMdiArea * central;
 
-	QList<Editor *> editors;
-	QList<PlottingWidget *> plots;
+	QWidget * central;
 
-	QAction * addEditorAct;
-	QAction * addPlotAct;
+	PlottingWidget * plot;
+	Editor * editor;
+
 	QAction * computeAct;
 
 	QVector<Border> inputData;
