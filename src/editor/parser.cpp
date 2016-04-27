@@ -7,7 +7,7 @@ using namespace Parser;
 QVector<QVector<Border>> MultiParse( QString src ){
 
     QVector<QVector<Border>> data;
-    QString tmp;
+    //QString tmp;
     int i;
 
     if ( src.trimmed().isEmpty() ) {
@@ -38,6 +38,15 @@ QVector<QVector<Border>> MultiParse( QString src ){
             throw ParseError(what, where);
         }
     }
+
+    QVector<Border> temp;
+    for (QVector<Border> b: data) {
+        for (Border bor: b) {
+            temp.push_back(bor);
+        }
+    }
+    dataChecker(temp);
+
     return data;
 }
 
@@ -66,9 +75,9 @@ QVector<Border> parsePlainText(QString src)
 		}
 	}
 
-	dataChecker(data);
+    dataChecker(data);
 
-	return data;
+    return data;
 }
 
 
