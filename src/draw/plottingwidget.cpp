@@ -22,6 +22,9 @@ void PlottingWidget::setData(const TFDynamics& data)
 	m_jMax = m_data.temperatureFields()[0].jMax();
 	m_tMax = m_data.temperatureFields().size();
 
+	colorMap->data()->setRange(QCPRange(0, m_iMax * m_data.xStep()),
+							   QCPRange(0, m_jMax * m_data.yStep()));
+
 	colorMap->data()->setSize(m_iMax, m_jMax);
 	slider->setMaximum(m_data.temperatureFields().size() - 1);
 	slider->setValue(0);
