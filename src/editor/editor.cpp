@@ -30,11 +30,11 @@ void Editor::newFile()
 void Editor::parseText()
 {
 	try {
-		QVector<Border> inputData = parsePlainText(plain->toPlainText());
+		QVector<QVector<Border> > inputData = MultiParse(plain->toPlainText());
 		emit bordersParsed(inputData);
 	}
 	catch (ParseError & p) {
-		err->showMessage(QString("%1\t%2").arg(p.where(), p.what()));
+		err->showMessage(QString("%1 \t %2").arg(p.where(), p.what()));
 	}
 }
 

@@ -21,7 +21,9 @@ QVector<Border> parsePlainText(QString src);
 
 Border parseBorder(QString st);
 
-void dataChecker(const QVector<Border> &data);
+void dataChecker(const QVector<QVector<Border> > &data);
+void onePolyCheck(const QVector<Border> &data);
+void twoPolyCheck(const QVector<Border> & a, const QVector<Border> & b);
 
 class ParseError
 {

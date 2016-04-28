@@ -6,48 +6,42 @@ using namespace Parser;
 
 QVector<QVector<Border>> MultiParse( QString src ){
 
-    QVector<QVector<Border>> data;
-    //QString tmp;
-    int i;
+	QVector<QVector<Border>> data;
+	//QString tmp;
+	int i;
 
-    if ( src.trimmed().isEmpty() ) {
-        throw ParseError("Empty input!");
-    }
+	if ( src.trimmed().isEmpty() ) {
+		throw ParseError("Empty input!");
+	}
 
-    src.remove(QChar('{'), Qt::CaseInsensitive);
+	src.remove(QChar('{'), Qt::CaseInsensitive);
 
-    if ( src.lastIndexOf("}") != -1 )
-    {
-        i = src.lastIndexOf( "}" );
-        src.remove( i, 1 );
-    }
+	if ( src.lastIndexOf("}") != -1 )
+	{
+		i = src.lastIndexOf( "}" );
+		src.remove( i, 1 );
+	}
 
-    QTextStream str( &src );
-    i = 0;
+	QTextStream str( &src );
+	i = 0;
 
-    for (QString s: str.readAll().split("}")) {
-        try {
-            if (!s.trimmed().isEmpty()){
-                i++;
-                data.push_back(parsePlainText(s));
-            }
-        }
-        catch (ParseError & p) {
-            QString what = p.what();
-            QString where = QString("On line: %1").arg(i + 1);
-            throw ParseError(what, where);
-        }
-    }
+	for (QString s: str.readAll().split("}")) {
+		try {
+			if (!s.trimmed().isEmpty()){
+				i++;
+				data.push_back(parsePlainText(s));
+			}
+		}
+		catch (ParseError & p) {
+			QString what = p.what();
+			QString where = QString("On line: %1").arg(i + 1);
+			throw ParseError(what, where);
+		}
+	}
 
-    QVector<Border> temp;
-    for (QVector<Border> b: data) {
-        for (Border bor: b) {
-            temp.push_back(bor);
-        }
-    }
-    dataChecker(temp);
+	dataChecker(data);
 
-    return data;
+	return data;
 }
 
 QVector<Border> parsePlainText(QString src)
@@ -75,9 +69,9 @@ QVector<Border> parsePlainText(QString src)
 		}
 	}
 
-    dataChecker(data);
+	onePolyCheck(data);
 
-    return data;
+	return data;
 }
 
 
@@ -118,9 +112,20 @@ const QString ParseError::where() const noexcept
 
 /******************************************************************************/
 
-void dataChecker(const QVector<Border> &data)
+void dataChecker(const QVector<QVector<Border> > & data)
 {
-	for (int i = 1; i < data.size(); i++) {
+	int N = data.size();
+	for (int i = 0; i < N - 1; i++) {
+		for (int j = i + 1; j < N; j++) {
+			twoPolyCheck(data[i], data[j]);
+		}
+	}
+}
+
+void onePolyCheck(const QVector<Border> & data)
+{
+	int N = data.size();
+	for (int i = 1; i < N; i++) {
 		if (data[i - 1].second() != data[i].first()) {
 			QString what("Region must be closed");
 			QString where = QString("On lines: %1 and %2").arg(i, i + 1);
@@ -144,6 +149,22 @@ void dataChecker(const QVector<Border> &data)
 		for (int j = i; j < data.size(); j++) {
 			if (data[i].checkIntersect(data[j])) {
 				QString what("Borders intersect");
+				QString where = QString("On lines: %1 and %2").arg(i + 1, j + 1);
+				throw ParseError(what, where);
+			}
+		}
+	}
+}
+
+void twoPolyCheck(const QVector<Border> & a, const QVector<Border> & b)
+{
+	int N = a.size();
+	int M = b.size();
+
+	for (int i = 0; i < N; i++) {
+		for (int j = 0; j < M; j++) {
+			if (a[i].checkIntersect(b[j])) {
+				QString what("Polygons intersect");
 				QString where = QString("On lines: %1 and %2").arg(i + 1, j + 1);
 				throw ParseError(what, where);
 			}

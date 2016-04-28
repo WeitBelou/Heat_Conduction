@@ -32,7 +32,7 @@ public slots:
 	}
 
 signals:
-	void bordersParsed(const QVector<Border> & borders);
+	void bordersParsed(const QVector<QVector<Border> > & borders);
 
 private:
 	void createPlain();

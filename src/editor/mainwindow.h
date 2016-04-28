@@ -19,7 +19,7 @@ public:
 
 public slots:
 	void compute();
-	void setInputData(const QVector<Border> &value);
+	void setInputData(const QVector<QVector<Border> > & value);
 
 private:
 	void createCentralWidget();

@@ -102,7 +102,13 @@ void MainWindow::createStatusBar()
 	setStatusBar(status);
 }
 
-void MainWindow::setInputData(const QVector<Border> &value)
+void MainWindow::setInputData(const QVector<QVector<Border> > &value)
 {
-	inputData = value;
+	inputData.clear();
+
+	for (QVector<Border> b: value) {
+		for (Border bor: b) {
+			inputData.push_back(bor);
+		}
+	}
 }
