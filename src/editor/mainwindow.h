@@ -19,7 +19,7 @@ public:
 
 public slots:
 	void compute();
-	void setInputData(const QVector<QVector<Border> > & value);
+	void setInputData(const QVector<QVector<Border> > & borders);
 
 private:
 	void createCentralWidget();
@@ -40,7 +40,7 @@ private:
 
 	QAction * computeAct;
 
-	QVector<Border> inputData;
+	QVector<QVector<Border> > inputData;
 };
 
 #endif // MAINWINDOW_H
