@@ -21,7 +21,6 @@ private slots:
 	void stopDrawing();
 	void drawCurrentLayer();
 	void setCurrentIndex(int currentIndex);
-	void setSpeed(double d = 1);
 
 private:
 	void createCentral();
@@ -42,7 +41,6 @@ private:
 	QPushButton * play;
 	QPushButton * pause;
 	QPushButton * stop;
-	QDoubleSpinBox * speed;
 
 	TFDynamics m_data;
 	int m_iMax;
@@ -52,7 +50,7 @@ private:
 	int m_currentIndex;
 
 	QTimer * loop;
-	double m_speed;
+	double m_tStep;
 };
 
 #endif // PLOTTINGWIDGET_H

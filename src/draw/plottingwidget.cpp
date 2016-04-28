@@ -11,6 +11,7 @@ PlottingWidget::PlottingWidget(QWidget *parent) : QWidget(parent)
 	loop = new QTimer(this);
 	connect(loop, &QTimer::timeout, this,
 			[this](){slider->setValue(this->currentIndex() + 1);});
+	m_tStep = 1;
 
 }
 
@@ -28,7 +29,8 @@ void PlottingWidget::setData(const TFDynamics& data)
 	colorMap->data()->setSize(m_iMax, m_jMax);
 	slider->setMaximum(m_data.temperatureFields().size() - 1);
 	slider->setValue(0);
-	m_speed = 1;
+
+	m_tStep = 10.0 / m_tMax;
 
 	plot->rescaleAxes();
 }
@@ -36,7 +38,12 @@ void PlottingWidget::setData(const TFDynamics& data)
 void PlottingWidget::startDrawing()
 {
 	loop->stop();
-	loop->start(int (m_data.tStep() * 1000.0 / m_speed));
+	int dt = static_cast<int>(m_tStep * 1000);
+	if (dt == 0) {
+		dt = 1;
+	}
+
+	loop->start(dt);
 	if (currentIndex() < m_tMax - 1) {
 		slider->setValue(currentIndex() + 1);
 	}
@@ -118,17 +125,10 @@ void PlottingWidget::createControls()
 	pause = new QPushButton("Pause", this);
 	stop = new QPushButton("Stop", this);
 
-	speed = new QDoubleSpinBox(this);
-	speed->setMinimum(0.1);
-	speed->setMaximum(100);
-	speed->setSingleStep(0.1);
-	speed->setValue(1);
-
 	down->addWidget(play);
 	down->addWidget(pause);
 	down->addWidget(stop);
 	down->addWidget(slider);
-	down->addWidget(speed);
 
 
 	connect(play, &QPushButton::clicked, this, &PlottingWidget::startDrawing);
@@ -136,8 +136,6 @@ void PlottingWidget::createControls()
 	connect(stop, &QPushButton::clicked, this, &PlottingWidget::stopDrawing);
 	connect(slider, &QSlider::valueChanged, this, &PlottingWidget::setCurrentIndex);
 	connect(slider, &QSlider::valueChanged, this, &PlottingWidget::drawCurrentLayer);
-	connect(speed, (void (QDoubleSpinBox:: *)(double))&QDoubleSpinBox::valueChanged,
-			this, &PlottingWidget::setSpeed);
 }
 
 int PlottingWidget::currentIndex() const
@@ -149,9 +147,3 @@ void PlottingWidget::setCurrentIndex(int currentIndex)
 {
 	m_currentIndex = currentIndex;
 }
-
-void PlottingWidget::setSpeed(double d)
-{
-	m_speed = d;
-}
-
