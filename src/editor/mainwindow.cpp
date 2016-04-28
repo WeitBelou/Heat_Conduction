@@ -31,12 +31,7 @@ void MainWindow::compute()
 
 	connect(dl, &CalculateDialog::calculated, plot, &PlottingWidget::setData);
 
-	if (dl->exec() == QDialog::Accepted) {
-		qDebug() << "MALADCA" << endl;
-	}
-	else {
-		qDebug() << "SASAI LALKA" << endl;
-	}
+	dl->exec();
 }
 
 void MainWindow::setInputData(const QVector<QVector<Border> > & borders)
