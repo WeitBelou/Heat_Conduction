@@ -5,6 +5,7 @@
 
 class GraphicalInputDialog : public QDialog
 {
+	Q_OBJECT
 public:
 	GraphicalInputDialog(QWidget * parent = 0);
 };

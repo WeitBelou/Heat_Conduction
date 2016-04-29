@@ -104,7 +104,7 @@ TemplateLayer<T> TemplateLayer<T>::operator =(const TemplateLayer & anotherLayer
 template <typename T>
 bool TemplateLayer<T>::operator ==(const TemplateLayer & anotherLayer) const
 {
-	if (this->iMax() != anotherLayer.iMax() || (this->iMax() != anotherLayer.iMax()))
+	if (this->iMax() != anotherLayer.iMax() || (this->jMax() != anotherLayer.jMax()))
 	return false;
 	for (int i = 0; i < m_iMax; i++)
 	{

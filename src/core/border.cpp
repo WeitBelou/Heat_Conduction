@@ -1,19 +1,15 @@
 #include "border.h"
 
 
-Border::Border()
+Border::Border() : m_first(), m_second(), m_u(0)
 {
-	m_first = Point();
-	m_second = Point();
 
-	m_u = 0;
 }
 
-Border::Border(Point first, Point second, double u)
+Border::Border(Point first, Point second, double u) :
+	m_first(first), m_second(second), m_u(u)
 {
-	m_first = first;
-	m_second = second;
-	m_u = u;
+
 }
 
 Border::~Border()
