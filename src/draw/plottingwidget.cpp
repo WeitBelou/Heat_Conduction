@@ -129,7 +129,6 @@ void PlottingWidget::createPlot()
 	plot->axisRect()->setupFullAxesBox(true);
 
 	colorMap = new QCPColorMap(plot->xAxis, plot->yAxis);
-	plot->setInteraction(QCP::iRangeDrag);
 	plot->addPlottable(colorMap);
 
 	colorScale = new QCPColorScale(plot);
