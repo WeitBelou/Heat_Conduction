@@ -21,7 +21,7 @@ Material::Material(const Material & other)
 	m_c = other.c();
 }
 
-const Material Material::operator =(const Material& other)
+const Material & Material::operator =(const Material& other)
 {
 	setRho(other.rho());
 	setLambda(other.lambda());

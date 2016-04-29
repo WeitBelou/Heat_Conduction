@@ -183,15 +183,13 @@ void BorderInterpreter::drawBorders(const QVector<Border>& Borders, int accuracy
 	//Выбор точки следующей точки границы осуществляется с помощью вектора
 	//от текущей точки к конечной; из-за особенности алгоритма требутеся разбиение
 	//линий границ на множество меньших линий границ
-	GridPoint p1, pEnd;
-	int numberOfSublines;
 	for(Border b: Borders) {
 
-		p1 = pToGp(b.first());
-		pEnd = pToGp(b.second());
+		GridPoint p1 = pToGp(b.first());
+		GridPoint pEnd = pToGp(b.second());
 
 		//разбиение отрезка границы на отрезки подграниц
-		numberOfSublines = accuracy * sqrt(   1.0 * (  (pEnd.x()-p1.x()) * (pEnd.x()-p1.x()) +
+		int numberOfSublines = accuracy * sqrt(   1.0 * (  (pEnd.x()-p1.x()) * (pEnd.x()-p1.x()) +
 										(pEnd.y()-p1.y()) * (pEnd.y()-p1.y())  ) /
 										(iMax*iMax + jMax*jMax)   );
 		if(numberOfSublines < 1 )

@@ -23,7 +23,7 @@ class BorderInterpreter : public QObject
 {
 	Q_OBJECT
 public:
-	BorderInterpreter(QObject * parent = 0);
+	explicit BorderInterpreter(QObject * parent = 0);
 	BorderInterpreter(const QVector<Border> & Borders,
 					   const int maxPointsPerDimension = 1000,
 					   const int minPointsPerDimension = 100,
