@@ -3,8 +3,9 @@
 
 #include "parser.h"
 #include <QtWidgets>
-#include "../core/layer.h"
-#include "../core/tfdynamics.h"
+#include "draw/plottingwidget.h"
+#include "core/layer.h"
+#include "core/tfdynamics.h"
 
 class Editor : public QWidget
 {
@@ -17,22 +18,20 @@ signals:
 	void currentFileChanged(QString currentFile);
 
 public slots:
+	void addPlot(PlottingWidget * plot);
+
+signals:
+	void bordersParsed(const QVector<QVector<Border> > & borders);
+
+private slots:
 	void newFile();
 	void parseText();
+	void compute();
 	void openFile();
 	void saveFile();
 	void closeFile();
 
-	void setCurrentFile(QString currentFile)
-	{
-		if (m_currentFile == currentFile)
-			return;
-
-		m_currentFile = currentFile;
-	}
-
-signals:
-	void bordersParsed(const QVector<QVector<Border> > & borders);
+	void setCurrentFile(QString currentFile);
 
 private:
 	void createPlain();
@@ -50,11 +49,16 @@ private:
 
 	QAction * newAct;
 	QAction * parseAct;
+	QAction * calculateAct;
 	QAction * openAct;
 	QAction * saveAct;
 	QAction * closeAct;
 
 	QErrorMessage * err;
+
+	QVector<QVector<Border> > inputData;
+
+	QList<PlottingWidget *> plots;
 };
 
 #endif // EDITOR_H

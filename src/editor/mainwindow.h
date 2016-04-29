@@ -17,18 +17,10 @@ public:
 	explicit MainWindow(QWidget *parent = 0);
 	~MainWindow();
 
-public slots:
-	void compute();
-	void setInputData(const QVector<QVector<Border> > & borders);
-
 private:
 	void createCentralWidget();
 	void createPlot();
 	void createEditor();
-
-	void createToolbar();
-	void createActions();
-	void createStatusBar();
 
 	QStatusBar * status;
 	QToolBar * tools;
@@ -37,10 +29,6 @@ private:
 
 	PlottingWidget * plot;
 	Editor * editor;
-
-	QAction * computeAct;
-
-	QVector<QVector<Border> > inputData;
 };
 
 #endif // MAINWINDOW_H

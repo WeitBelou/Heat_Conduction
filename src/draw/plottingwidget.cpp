@@ -43,10 +43,11 @@ void PlottingWidget::startDrawing()
 		dt = 1;
 	}
 
-	loop->start(dt);
 	if (currentIndex() < m_tMax - 1) {
 		slider->setValue(currentIndex() + 1);
+		loop->stop();
 	}
+	loop->start(dt);
 }
 
 void PlottingWidget::pauseDrawing()
@@ -93,6 +94,7 @@ void PlottingWidget::createPlot()
 	plot = new QCustomPlot(this);
 
 	plot->axisRect()->setupFullAxesBox(true);
+	plot->setInteraction(QCP::iRangeDrag);
 
 	colorMap = new QCPColorMap(plot->xAxis, plot->yAxis);
 	plot->addPlottable(colorMap);
@@ -100,6 +102,7 @@ void PlottingWidget::createPlot()
 	colorScale = new QCPColorScale(plot);
 	plot->plotLayout()->addElement(0, 1, colorScale);
 	colorScale->setType(QCPAxis::atRight);
+	colorScale->setRangeDrag(true);
 	colorMap->setColorScale(colorScale);
 
 	colorMap->setGradient(QCPColorGradient::gpPolar);
