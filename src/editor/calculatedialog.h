@@ -28,7 +28,17 @@ private slots:
 	void setTStep(double value);
 
 private:
+	void createCentral();
+	void createMaterials();
+	void createInput();
+	void createButtons();
+	void createProgress();
+
 	QVector<Border> inputData;
+
+	QVBoxLayout * mainLayout;
+	QFormLayout * inputLayout;
+	QHBoxLayout * buttons;
 
 	QLabel * tMaxLabel;
 	QDoubleSpinBox * tMaxEdit;
@@ -40,6 +50,8 @@ private:
 	QPushButton * cancelButton;
 
 	QProgressBar * progress;
+
+	QComboBox * materialChooser;
 
 	double tMax;
 	double tStep;

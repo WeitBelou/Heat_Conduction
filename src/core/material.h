@@ -28,4 +28,6 @@ private:
 	double m_c;
 };
 
+Q_DECLARE_METATYPE(Material)
+
 #endif // MATERIAL_H
