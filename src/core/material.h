@@ -9,7 +9,7 @@ public:
 	Material(double rho, double lambda, double c);
 	Material(Material const& other);
 
-	const Material & operator =(const Material & other);
+	Material & operator =(const Material & other);
 
 	double rho() const;
 	void setRho(double rho);

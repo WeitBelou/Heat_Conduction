@@ -48,7 +48,7 @@ TFDynamics::TFDynamics(const TFDynamics& other)
 	m_yStep = other.yStep();
 }
 
-const TFDynamics TFDynamics::operator =(const TFDynamics& other)
+TFDynamics & TFDynamics::operator =(const TFDynamics& other)
 {
 	m_temperatureFields = other.temperatureFields();
 	setTStep(other.tStep());

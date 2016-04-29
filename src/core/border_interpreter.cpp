@@ -6,9 +6,10 @@ BorderInterpreter::BorderInterpreter(QObject *parent)
 	  m_maxPointsPerDimension(0),
 	  m_minPointsPerDimension(0),
 	  m_minPointsBetweenBorders(0),
-	  logpath("./log")
+	  logpath("./log"),
+	  m_workingArea()
 {
-	this->m_workingArea = TFGeometry();
+
 }
 
 //Основной конструктор

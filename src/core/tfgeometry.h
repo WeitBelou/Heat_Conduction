@@ -11,7 +11,7 @@ public:
 				 double xStep, double yStep);
 	TFGeometry(const TFGeometry & other);
 
-	const TFGeometry operator =(const TFGeometry & other);
+	TFGeometry & operator =(const TFGeometry & other);
 
 	TemperatureField & zeroLayer();
 	const TemperatureField & zeroLayer() const;

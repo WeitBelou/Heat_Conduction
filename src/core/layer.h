@@ -13,7 +13,7 @@ public:
 	~TemplateLayer();
 	T operator()(int i, int j)const;
 	T & operator()(int i, int j);
-	TemplateLayer operator =(const TemplateLayer & anotherLayer);
+	TemplateLayer<T> & operator =(const TemplateLayer<T> & anotherLayer);
 	bool operator ==(const TemplateLayer & anotherLayer)const;
 	void print() const;
 	int iMax() const;
@@ -75,29 +75,27 @@ TemplateLayer<T>::TemplateLayer(const TemplateLayer & previousLayer)
 }
 
 template <typename T>
-TemplateLayer<T> TemplateLayer<T>::operator =(const TemplateLayer & anotherLayer)
+TemplateLayer<T> & TemplateLayer<T>::operator =(const TemplateLayer<T> & anotherLayer)
 {
 	if (*this == anotherLayer)
-		{ }
-	else
-	{
-		for (int i = 0; i < m_iMax; i++)
-			delete [] m_matrix[i];
-		delete [] m_matrix;
+		return *this;
 
-		this->m_iMax = anotherLayer.m_iMax;
-		this->m_jMax = anotherLayer.m_jMax;
-		m_matrix = new T* [m_iMax];
-			for (int i = 0; i < m_iMax; i++)
-				m_matrix[i] = new T [m_jMax];
-			for (int i = 0; i < m_iMax; i++)
+	for (int i = 0; i < m_iMax; i++)
+		delete [] m_matrix[i];
+	delete [] m_matrix;
+
+	this->m_iMax = anotherLayer.m_iMax;
+	this->m_jMax = anotherLayer.m_jMax;
+	m_matrix = new T* [m_iMax];
+		for (int i = 0; i < m_iMax; i++)
+			m_matrix[i] = new T [m_jMax];
+		for (int i = 0; i < m_iMax; i++)
+		{
+			for (int j = 0; j < m_jMax; j++)
 			{
-				for (int j = 0; j < m_jMax; j++)
-				{
-					m_matrix[i][j] = anotherLayer(i, j);
-				}
+				m_matrix[i][j] = anotherLayer(i, j);
 			}
-	}
+		}
 	return *this;
 }
 

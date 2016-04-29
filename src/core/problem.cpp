@@ -17,10 +17,9 @@ Problem::Problem(QObject *parent) : QObject(parent)
 
 
 Problem::Problem(const Material & material, const TFGeometry & geometry,
-		double tMax, double tStep, QObject *parent) : QObject(parent)
+		double tMax, double tStep, QObject *parent) : QObject(parent),
+	material(material), geometry(geometry)
 {
-	this->material = material;
-	this->geometry = geometry;
 	m_tMax = tMax;
 	m_tStep = tStep;
 	Ax = material.lambda()/(geometry.xStep() * geometry.xStep());
@@ -134,7 +133,6 @@ const TemperatureField Problem::nextTF(const TemperatureField & current) const
 TFDynamics Problem::solve() const
 {
 	int tMax = m_tMax/m_tStep;
-	double executionState;
 
 	double t1 = time(0);
 	QVector<TemperatureField> temperatureFields;
@@ -147,7 +145,7 @@ TFDynamics Problem::solve() const
 	for (int t = 0; t < tMax; t ++)
 	{
 		allLayers.push_back(nextTF(allLayers[t]));
-		executionState = double(t)/double(tMax);
+		double executionState = double(t)/double(tMax);
 		emit oneLayerCalcSignal(executionState);
 	}
 	double t2 = time(0);

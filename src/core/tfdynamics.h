@@ -8,14 +8,14 @@ class TFDynamics
 {
 public:
 	TFDynamics();
-	TFDynamics(const QVector<TemperatureField>& temperatureFields);
+	explicit TFDynamics(const QVector<TemperatureField>& temperatureFields);
 	TFDynamics(const QVector<TemperatureField>& temperatureFields, double tStep);
 
 	TFDynamics(const QVector<TemperatureField>& temperatureFields,
 			  double tStep, double xStep, double yStep);
 	TFDynamics(const TFDynamics& other);
 
-	const TFDynamics operator =(const TFDynamics& other);
+	TFDynamics & operator =(const TFDynamics& other);
 
 	const TemperatureField operator [](int i) const;
 	TemperatureField & operator [] (int i);

@@ -10,7 +10,7 @@ class CalculateDialog : public QDialog
 {
 	Q_OBJECT
 public:
-	CalculateDialog(QWidget * parent = 0);
+	explicit CalculateDialog(QWidget * parent = 0);
 	CalculateDialog(const QVector<QVector<Border> > & value,QWidget * parent = 0);
 
 
@@ -18,7 +18,7 @@ public slots:
 	void setInputData(const QVector<QVector<Border> > & value);
 
 signals:
-	void calculated(const TFDynamics dynamics);
+	void calculated(const TFDynamics & dynamics);
 
 private slots:
 	void calculate();

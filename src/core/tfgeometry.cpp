@@ -1,43 +1,31 @@
 #include "tfgeometry.h"
 
-TFGeometry::TFGeometry()
+TFGeometry::TFGeometry() : m_zeroLayer(), m_idNet(), m_xStep(1), m_yStep(1)
 {
-	m_zeroLayer = TemperatureField();
-	m_idNet = BoolGrid();
 
-	m_xStep = 1;
-	m_yStep = 1;
 }
 
-TFGeometry::TFGeometry(const TemperatureField& zeroLayer, const BoolGrid& idNet)
+TFGeometry::TFGeometry(const TemperatureField& zeroLayer, const BoolGrid& idNet) :
+	m_zeroLayer(zeroLayer), m_idNet(idNet), m_xStep(1), m_yStep(1)
 {
-	m_zeroLayer = zeroLayer;
-	m_idNet = idNet;
 
-	m_xStep = 1;
-	m_yStep = 1;
 }
 
 TFGeometry::TFGeometry(const TemperatureField& zeroLayer, const BoolGrid& idNet,
-						   double xStep, double yStep)
+						   double xStep, double yStep) :
+	m_zeroLayer(zeroLayer), m_idNet(idNet), m_xStep(xStep), m_yStep(yStep)
 {
-	m_zeroLayer = zeroLayer;
-	m_idNet = idNet;
 
-	m_xStep = xStep;
-	m_yStep = yStep;
 }
 
-TFGeometry::TFGeometry(const TFGeometry& other)
+TFGeometry::TFGeometry(const TFGeometry& other) :
+	m_zeroLayer(other.zeroLayer()), m_idNet(other.idNet())
 {
-	m_zeroLayer = other.zeroLayer();
-	m_idNet = other.idNet();
-
 	m_xStep = other.xStep();
 	m_yStep = other.yStep();
 }
 
-const TFGeometry TFGeometry::operator =(const TFGeometry& other)
+TFGeometry & TFGeometry::operator =(const TFGeometry& other)
 {
 	setZeroLayer(other.zeroLayer());
 	setIdNet(other.idNet());
