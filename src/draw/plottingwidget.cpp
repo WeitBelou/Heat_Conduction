@@ -11,6 +11,7 @@ PlottingWidget::PlottingWidget(QWidget *parent) : QWidget(parent)
 	loop = new QTimer(this);
 	connect(loop, &QTimer::timeout, this,
 			[this](){slider->setValue(this->currentIndex() + 1);});
+	setCurrentIndex(0);
 	m_tStep = 1;
 
 }
@@ -23,10 +24,25 @@ void PlottingWidget::setData(const TFDynamics& data)
 	m_jMax = m_data.temperatureFields()[0].jMax();
 	m_tMax = m_data.temperatureFields().size();
 
-	colorMap->data()->setRange(QCPRange(0, m_iMax * m_data.xStep()),
-							   QCPRange(0, m_jMax * m_data.yStep()));
+	double xSize = m_iMax * m_data.xStep();
+	double ySize = m_jMax * m_data.yStep();
+	double iMax = m_iMax;
+	double jMax = m_jMax;
 
-	colorMap->data()->setSize(m_iMax, m_jMax);
+	if (xSize > ySize) {
+		jMax = static_cast<int>(iMax * (xSize / ySize));
+		ySize = xSize;
+	}
+	else {
+		iMax = static_cast<int>(jMax * (ySize / xSize));
+		xSize = ySize;
+	}
+
+	colorMap->data()->setRange(QCPRange(0, xSize),
+							   QCPRange(0, ySize));
+
+	colorMap->data()->setSize(iMax, jMax);
+
 	slider->setMaximum(m_data.temperatureFields().size() - 1);
 	slider->setValue(0);
 
@@ -66,12 +82,29 @@ void PlottingWidget::drawCurrentLayer()
 {
 	double x, y, z;
 
-	for (int i = 0; i < m_iMax; ++i)
+	double xSize = m_iMax * m_data.xStep();
+	double ySize = m_jMax * m_data.yStep();
+	double iMax = m_iMax;
+	double jMax = m_jMax;
+
+	if (xSize > ySize) {
+		jMax = static_cast<int>(iMax * (xSize / ySize));
+	}
+	else {
+		iMax = static_cast<int>(jMax * (ySize / xSize));
+	}
+
+	for (int i = 0; i < iMax; ++i)
 	{
-	  for (int j = 0; j < m_jMax; ++j)
+	  for (int j = 0; j < jMax; ++j)
 	  {
 		colorMap->data()->cellToCoord(i, j, &x, &y);
-		z = m_data.temperatureFields()[currentIndex()](i, j);
+		if (i > m_iMax - 1 || j > m_jMax - 1 ) {
+			z = 0;
+		}
+		else{
+			z = m_data.temperatureFields()[currentIndex()](i, j);
+		}
 		colorMap->data()->setCell(i, j, z);
 	  }
 	}
@@ -94,15 +127,14 @@ void PlottingWidget::createPlot()
 	plot = new QCustomPlot(this);
 
 	plot->axisRect()->setupFullAxesBox(true);
-	plot->setInteraction(QCP::iRangeDrag);
 
 	colorMap = new QCPColorMap(plot->xAxis, plot->yAxis);
+	plot->setInteraction(QCP::iRangeDrag);
 	plot->addPlottable(colorMap);
 
 	colorScale = new QCPColorScale(plot);
 	plot->plotLayout()->addElement(0, 1, colorScale);
 	colorScale->setType(QCPAxis::atRight);
-	colorScale->setRangeDrag(true);
 	colorMap->setColorScale(colorScale);
 
 	colorMap->setGradient(QCPColorGradient::gpPolar);
@@ -112,7 +144,7 @@ void PlottingWidget::createPlot()
 	plot->axisRect()->setMarginGroup(QCP::msBottom|QCP::msTop, marginGroup);
 	colorScale->setMarginGroup(QCP::msBottom|QCP::msTop, marginGroup);
 
-	plot->rescaleAxes();
+//	plot->rescaleAxes();
 
 	layout()->addWidget(plot);
 }
