@@ -1,5 +1,5 @@
-#ifndef CALCULATEDIALOG_H
-#define CALCULATEDIALOG_H
+#ifndef CALCULATE_DIALOG_H
+#define CALCULATE_DIALOG_H
 
 #include <QtWidgets>
 #include "core/border_interpreter.h"
@@ -57,4 +57,4 @@ private:
 	double tStep;
 };
 
-#endif // CALCULATEDIALOG_H
+#endif // CALCULATE_DIALOG_H

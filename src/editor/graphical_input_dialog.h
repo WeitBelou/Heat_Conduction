@@ -1,11 +1,12 @@
-#ifndef GRAPHICALINPUTDIALOG_H
-#define GRAPHICALINPUTDIALOG_H
+#ifndef GRAPHICAL_INPUT_DIALOG_H
+#define GRAPHICAL_INPUT_DIALOG_H
 
+#include <QtWidgets>
 
 class GraphicalInputDialog : public QDialog
 {
 public:
-	GraphicalInputDialog();
+	GraphicalInputDialog(QWidget * parent = 0);
 };
 
-#endif // GRAPHICALINPUTDIALOG_H
+#endif // GRAPHICAL_INPUT_DIALOG_H

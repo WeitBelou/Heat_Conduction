@@ -1,6 +1,7 @@
 #include "graphical_input_dialog.h"
 
-GraphicalInputDialog::GraphicalInputDialog()
+GraphicalInputDialog::GraphicalInputDialog(QWidget * parent) :
+	QWidget(parent)
 {
 
 }
