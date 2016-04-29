@@ -49,9 +49,7 @@ const TemperatureField Problem::nextTF(const TemperatureField & current) const
 	TemperatureField alpha(iMax, jMax);
 	TemperatureField beta(iMax, jMax);
 
-//	omp_set_nested(0);
-//	double newAlpha;
-//	double newBeta;
+
 #pragma omp parallel for
 	for (int j = 0; j < jMax; j++ )
 	{
@@ -77,7 +75,7 @@ const TemperatureField Problem::nextTF(const TemperatureField & current) const
 	}
 	// на этом шаге мы высчитали альфа и бета для t = t + 1/2 * tau;
 	// расчитаем ряд температур. Потом размажем и повторим
-//	omp_set_nested(0);
+
 #pragma omp parallel for
 	for (int j = 0; j < jMax; j++)
 	{
@@ -92,7 +90,7 @@ const TemperatureField Problem::nextTF(const TemperatureField & current) const
 
 		// на этом шаге мы высчитали T для t = t + 1/2 * tau;
 		// теперь повторим то же самое горизонтально
-//	omp_set_nested(0);
+
 #pragma omp parallel for
 	for (int i = 0; i < iMax; i++ ) //выбираем строку (движемся между строк)
 	{
@@ -113,12 +111,12 @@ const TemperatureField Problem::nextTF(const TemperatureField & current) const
 				newBeta = (Cx*beta(i,j-1)-F)/(Bx-Cx*alpha(i,j-1));
 				beta(i,j) = newBeta;
 			}
-			// возможно, стоит отдельно обрабатывать и случай правой границы
+
 		}
 	}
 	// на этом шаге мы высчитали альфа и бета для t = t + tau;
 	// расчитаем ряд температур. Потом размажем и повторим
-	//omp_set_nested(0);
+
 #pragma omp parallel for
 	for (int i = 0; i < iMax; i++) //выбираем строку (движемся между строк)
 	{
@@ -136,8 +134,6 @@ const TemperatureField Problem::nextTF(const TemperatureField & current) const
 TFDynamics Problem::solve() const
 {
 	int tMax = m_tMax/m_tStep;
-	//int iMax = geometry.iMax();
-	//int jMax = geometry.jMax();
 	double executionState;
 
 	double t1 = time(0);
