@@ -12,10 +12,9 @@ class Editor : public QWidget
 	Q_OBJECT
 public:
 	explicit Editor(QWidget *parent = 0);
-	~Editor();
 
-signals:
-	void currentFileChanged(QString currentFile);
+protected:
+	void closeEvent(QCloseEvent * event) override;
 
 public slots:
 	void addPlot(PlottingWidget * plot);
@@ -25,20 +24,28 @@ signals:
 
 private slots:
 	void newFile();
-	void parseText();
+	void parse();
 	void compute();
-	void openFile();
-	void saveFile();
-	void closeFile();
+	void open();
+	bool save();
+	bool saveAs();
+	void about();
+	void documentWasModified();
 
-	void setCurrentFile(QString currentFile);
 
 private:
 	void createPlain();
-	void createMenu();
+	void createMenus();
 	void createActions();
+	bool maybeSave();
 
-	QString m_currentFile;
+	void loadFile(const QString & fileName);
+	bool saveFile(const QString & fileName);
+	void setCurrentFile(const QString & fileName);
+
+	QString strippedName(const QString & fullFileName);
+
+	QString curFile;
 
 	QVBoxLayout * main;
 	QPlainTextEdit * plain;
@@ -46,13 +53,17 @@ private:
 	QMenuBar * menuBar;
 	QMenu * fileMenu;
 	QMenu * parseMenu;
+	QMenu * helpMenu;
 
 	QAction * newAct;
-	QAction * parseAct;
-	QAction * calculateAct;
 	QAction * openAct;
 	QAction * saveAct;
-	QAction * closeAct;
+	QAction * saveAsAct;
+	QAction * aboutAct;
+	QAction * exitAct;
+
+	QAction * parseAct;
+	QAction * calculateAct;
 
 	QErrorMessage * err;
 

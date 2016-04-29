@@ -11,6 +11,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 
 	createEditor();
 	createPlot();
+
+	setUnifiedTitleAndToolBarOnMac(true);
 }
 
 MainWindow::~MainWindow()

@@ -10,14 +10,75 @@ Editor::Editor(QWidget *parent) : QWidget(parent)
 
 	err = new QErrorMessage(this);
 
-	createActions();
-	createMenu();
 	createPlain();
+	createActions();
+	createMenus();
+
+	setCurrentFile("");
 }
 
-Editor::~Editor()
+void Editor::closeEvent(QCloseEvent *event)
 {
+	if (maybeSave()) {
+		event->accept();
+	} else {
+		event->ignore();
+	}
+}
 
+void Editor::newFile()
+{
+	if (maybeSave()) {
+		plain->clear();
+		setCurrentFile("");
+	}
+}
+
+void Editor::open()
+{
+	if (maybeSave()) {
+		QString fileName = QFileDialog::getOpenFileName(this);
+		if (!fileName.isEmpty()) {
+			loadFile(fileName);
+		}
+	}
+}
+
+bool Editor::save()
+{
+	if (curFile.isEmpty()) {
+		return saveAs();
+	}
+	else {
+		return saveFile(curFile);
+	}
+}
+
+bool Editor::saveAs()
+{
+	QFileDialog dialog(this);
+	dialog.setWindowModality(Qt::WindowModal);
+	dialog.setAcceptMode(QFileDialog::AcceptSave);
+	QStringList files;
+
+	if (dialog.exec()) {
+		files = dialog.selectedFiles();
+	}
+	else {
+		return false;
+	}
+
+	return saveFile(files.at(0));
+}
+
+void Editor::about()
+{
+	QMessageBox::about(this, tr("About"), tr("Heat Conduction"));
+}
+
+void Editor::documentWasModified()
+{
+	setWindowModified(plain->document()->isModified());
 }
 
 void Editor::addPlot(PlottingWidget * plot)
@@ -25,23 +86,25 @@ void Editor::addPlot(PlottingWidget * plot)
 	plots.push_back(plot);
 }
 
-void Editor::setCurrentFile(QString currentFile)
+void Editor::setCurrentFile(const QString & fileName)
 {
-	if (m_currentFile == currentFile)
-		return;
+	curFile = fileName;
+	plain->document()->setModified(false);
+	setWindowModified(false);
 
-	m_currentFile = currentFile;
+	QString shownName = curFile;
+	if (curFile.isEmpty())
+		shownName = "untitled.txt";
+	setWindowFilePath(shownName);
 }
 
-void Editor::newFile()
+QString Editor::strippedName(const QString & fullFileName)
 {
-	QString filename = QFileDialog::getSaveFileName(this, tr("New file"),
-													"./untitled.txt",
-													tr("Text files (*.txt)"));
-	setCurrentFile(filename);
+	return QFileInfo(fullFileName).fileName();
 }
 
-void Editor::parseText()
+
+void Editor::parse()
 {
 	try {
 		inputData = MultiParse(plain->toPlainText());
@@ -66,50 +129,6 @@ void Editor::compute()
 	dl->exec();
 }
 
-void Editor::openFile()
-{
-	QString filename = QFileDialog::getOpenFileName(this, tr("Open File"),
-												  "./", tr("Text files (*.txt)"));
-
-	QFile file(filename);
-
-	if (!file.open(QIODevice::ReadOnly)) {
-		return;
-	}
-	QTextStream tstream(&file);
-
-	plain->setPlainText(tstream.readAll());
-
-	file.close();
-
-	setCurrentFile(filename);
-}
-
-void Editor::saveFile()
-{
-	if (m_currentFile.isNull()) {
-		setCurrentFile(QFileDialog::getSaveFileName(this, tr("New file"),
-													"./untitled.txt",
-													tr("Text files (*.txt)")));
-	}
-
-	QFile file(m_currentFile);
-
-	if (!file.open(QIODevice::WriteOnly)) {
-		return;
-	}
-	QTextStream tstream(&file);
-
-	tstream << plain->toPlainText();
-
-	file.close();
-}
-
-void Editor::closeFile()
-{
-	close();
-}
-
 void Editor::createPlain()
 {
 	plain = new QPlainTextEdit(this);
@@ -117,15 +136,20 @@ void Editor::createPlain()
 	font.setStretch(QFont::SemiExpanded);
 	font.setWordSpacing(4);
 	plain->setFont(font);
+
+	connect(plain, &QPlainTextEdit::textChanged,
+			this, &Editor::documentWasModified);
+
 	main->addWidget(plain);
 }
 
-void Editor::createMenu()
+void Editor::createMenus()
 {
 	menuBar = new QMenuBar(this);
 
 	fileMenu = new QMenu("File", menuBar);
-	fileMenu->addActions({newAct, openAct,saveAct, closeAct});
+	fileMenu->addActions({newAct, openAct, saveAct,
+						  saveAsAct, exitAct});
 	menuBar->addMenu(fileMenu);
 
 	menuBar->addSeparator();
@@ -133,6 +157,12 @@ void Editor::createMenu()
 	parseMenu = new QMenu("Parse", menuBar);
 	parseMenu->addActions({parseAct, calculateAct});
 	menuBar->addMenu(parseMenu);
+
+	menuBar->addSeparator();
+
+	helpMenu = new QMenu("Help", menuBar);
+	helpMenu->addAction(aboutAct);
+	menuBar->addMenu(helpMenu);
 
 	main->addWidget(menuBar, 0, Qt::AlignTop);
 }
@@ -144,28 +174,102 @@ void Editor::createActions()
 	newAct->setShortcut(QKeySequence::New);
 	connect(newAct, &QAction::triggered, this, &Editor::newFile);
 
+	openAct = new QAction(tr("&Open"), this);
+	openAct->setStatusTip(tr("Open existing file"));
+	openAct->setShortcut(QKeySequence::Open);
+	connect(openAct, &QAction::triggered, this, &Editor::open);
+
+	saveAct = new QAction(tr("&Save"), this);
+	saveAct->setStatusTip(tr("Save file"));
+	saveAct->setShortcut(QKeySequence::Save);
+	connect(saveAct, &QAction::triggered, this, &Editor::save);
+
+	saveAsAct = new QAction(tr("&Save As..."), this);
+	saveAsAct->setStatusTip(tr("Save file"));
+	saveAct->setShortcut(QKeySequence::SaveAs);
+	connect(saveAsAct, &QAction::triggered, this, &Editor::saveAs);
+
 	parseAct = new QAction(tr("&Parse"), this);
 	parseAct->setStatusTip(tr("Parse file to vector"));
 	parseAct->setShortcut(QString("F5"));
-	connect(parseAct, &QAction::triggered, this, &Editor::parseText);
+	connect(parseAct, &QAction::triggered, this, &Editor::parse);
 
 	calculateAct = new QAction(tr("&Calculate"), this);
 	calculateAct->setStatusTip(tr("Compute layers"));
 	calculateAct->setShortcut(QString("F2"));
 	connect(calculateAct, &QAction::triggered, this, &Editor::compute);
 
-	openAct = new QAction(tr("&Open"), this);
-	openAct->setStatusTip(tr("Open existing file"));
-	openAct->setShortcut(QKeySequence::Open);
-	connect(openAct, &QAction::triggered, this, &Editor::openFile);
+	aboutAct = new QAction(tr("&About"), this);
+	aboutAct->setStatusTip(tr("About"));
+	aboutAct->setShortcut(QKeySequence::HelpContents);
+	connect(aboutAct, &QAction::triggered, this, &Editor::about);
 
-	saveAct = new QAction(tr("&Save"), this);
-	saveAct->setStatusTip(tr("Save file"));
-	saveAct->setShortcut(QKeySequence::Save);
-	connect(saveAct, &QAction::triggered, this, &Editor::saveFile);
+	exitAct = new QAction(tr("&Close"), this);
+	exitAct->setStatusTip(tr("Close file"));
+	exitAct->setShortcut(QKeySequence::Quit);
+	connect(exitAct, &QAction::triggered, this, &Editor::close);
+}
 
-	closeAct = new QAction(tr("&Close"), this);
-	closeAct->setStatusTip(tr("Close file"));
-	closeAct->setShortcut(QKeySequence::Close);
-	connect(closeAct, &QAction::triggered, this, &Editor::closeFile);
+bool Editor::maybeSave()
+{
+	if (plain->document()->isModified()) {
+		QMessageBox::StandardButton ret;
+		ret = QMessageBox::warning(this, tr("Application"),
+					 tr("The document has been modified.\n"
+						"Do you want to save your changes?"),
+					 QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
+		if (ret == QMessageBox::Save)
+			return save();
+		else if (ret == QMessageBox::Cancel)
+			return false;
+	}
+	return true;
+}
+
+void Editor::loadFile(const QString & fileName)
+{
+	QFile file(fileName);
+	if (!file.open(QFile::ReadOnly | QFile::Text)) {
+		QMessageBox::warning(this, tr("Application"),
+							 tr("Cannot read file %1:\n%2.")
+							 .arg(fileName)
+							 .arg(file.errorString()));
+		return;
+	}
+
+	QTextStream in(&file);
+#ifndef QT_NO_CURSOR
+	QApplication::setOverrideCursor(Qt::WaitCursor);
+#endif
+	plain->setPlainText(in.readAll());
+#ifndef QT_NO_CURSOR
+	QApplication::restoreOverrideCursor();
+#endif
+
+	setCurrentFile(fileName);
+	return;
+}
+
+bool Editor::saveFile(const QString & fileName)
+{
+	QFile file(fileName);
+	if (!file.open(QFile::WriteOnly | QFile::Text)) {
+		QMessageBox::warning(this, tr("Application"),
+							 tr("Cannot write file %1:\n%2.")
+							 .arg(fileName)
+							 .arg(file.errorString()));
+		return false;
+	}
+
+	QTextStream out(&file);
+#ifndef QT_NO_CURSOR
+	QApplication::setOverrideCursor(Qt::WaitCursor);
+#endif
+	out << plain->toPlainText();
+#ifndef QT_NO_CURSOR
+	QApplication::restoreOverrideCursor();
+#endif
+
+	setCurrentFile(fileName);
+	return true;
 }
