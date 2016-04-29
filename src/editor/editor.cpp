@@ -10,9 +10,9 @@ Editor::Editor(QWidget *parent) : QWidget(parent)
 
 	err = new QErrorMessage(this);
 
-	createPlain();
 	createActions();
 	createMenus();
+	createPlain();
 
 	setCurrentFile("");
 }
@@ -186,7 +186,7 @@ void Editor::createActions()
 
 	saveAsAct = new QAction(tr("&Save As..."), this);
 	saveAsAct->setStatusTip(tr("Save file"));
-	saveAct->setShortcut(QKeySequence::SaveAs);
+	saveAsAct->setShortcut(QKeySequence::SaveAs);
 	connect(saveAsAct, &QAction::triggered, this, &Editor::saveAs);
 
 	parseAct = new QAction(tr("&Parse"), this);
@@ -214,7 +214,7 @@ bool Editor::maybeSave()
 {
 	if (plain->document()->isModified()) {
 		QMessageBox::StandardButton ret;
-		ret = QMessageBox::warning(this, tr("Application"),
+		ret = QMessageBox::warning(this, tr("Heat Conduction"),
 					 tr("The document has been modified.\n"
 						"Do you want to save your changes?"),
 					 QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
@@ -230,7 +230,7 @@ void Editor::loadFile(const QString & fileName)
 {
 	QFile file(fileName);
 	if (!file.open(QFile::ReadOnly | QFile::Text)) {
-		QMessageBox::warning(this, tr("Application"),
+		QMessageBox::warning(this, tr("Heat Conduction"),
 							 tr("Cannot read file %1:\n%2.")
 							 .arg(fileName)
 							 .arg(file.errorString()));
@@ -254,7 +254,7 @@ bool Editor::saveFile(const QString & fileName)
 {
 	QFile file(fileName);
 	if (!file.open(QFile::WriteOnly | QFile::Text)) {
-		QMessageBox::warning(this, tr("Application"),
+		QMessageBox::warning(this, tr("Heat Conduction"),
 							 tr("Cannot write file %1:\n%2.")
 							 .arg(fileName)
 							 .arg(file.errorString()));

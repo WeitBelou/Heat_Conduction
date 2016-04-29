@@ -15,7 +15,6 @@ class MainWindow : public QMainWindow
 	Q_OBJECT
 public:
 	explicit MainWindow(QWidget *parent = 0);
-	~MainWindow();
 
 private:
 	void createCentralWidget();
@@ -25,7 +24,7 @@ private:
 	QStatusBar * status;
 	QToolBar * tools;
 
-	QWidget * central;
+	QMdiArea * central;
 
 	PlottingWidget * plot;
 	Editor * editor;

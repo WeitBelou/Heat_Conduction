@@ -15,27 +15,22 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 	setUnifiedTitleAndToolBarOnMac(true);
 }
 
-MainWindow::~MainWindow()
-{
-
-}
-
 void MainWindow::createPlot()
 {
 	plot = new PlottingWidget(this);
 	editor->addPlot(plot);
-	centralWidget()->layout()->addWidget(plot);
+	central->addSubWindow(plot);
 }
 
 void MainWindow::createEditor()
 {
 	editor = new Editor(this);
-	centralWidget()->layout()->addWidget(editor);
+	central->addSubWindow(editor);
 }
 
 void MainWindow::createCentralWidget()
 {
-	central = new QWidget(this);
+	central = new QMdiArea(this);
 	central->setLayout(new QHBoxLayout(central));
 	setCentralWidget(central);
 }
