@@ -1,4 +1,3 @@
-#include "stdexcept"
 #include "problem.h"
 #include "material.h"
 #include "tfdynamics.h"
@@ -7,9 +6,10 @@
 #include "./tfdynamics.h"
 #include "./layer.h"
 #include <QVector>
-#include <exception>
-#include <iostream>
 
+#include <iostream>
+#include <omp.h>
+#include <time.h>
 Problem::Problem(QObject *parent) : QObject(parent)
 {
 
@@ -45,15 +45,22 @@ const TemperatureField Problem::nextTF(const TemperatureField & current) const
 	const double c = material.c();
 
 
-	double F;
+
 	TemperatureField alpha(iMax, jMax);
 	TemperatureField beta(iMax, jMax);
-	double newAlpha;
-	double newBeta;
+
+//	omp_set_nested(0);
+//	double newAlpha;
+//	double newBeta;
+#pragma omp parallel for
 	for (int j = 0; j < jMax; j++ )
 	{
+		double F;
+		double newAlpha;
+		double newBeta;
 		for (int i = 0; i <iMax; i++)
 		{
+
 			if ((!geometry.idNet()(i, j)))
 				alpha(i,j) = 0; beta(i,j) = current(i,j);
 
@@ -70,7 +77,8 @@ const TemperatureField Problem::nextTF(const TemperatureField & current) const
 	}
 	// на этом шаге мы высчитали альфа и бета для t = t + 1/2 * tau;
 	// расчитаем ряд температур. Потом размажем и повторим
-
+//	omp_set_nested(0);
+#pragma omp parallel for
 	for (int j = 0; j < jMax; j++)
 	{
 		for (int i = iMax-1; i > -1; i--)
@@ -84,11 +92,16 @@ const TemperatureField Problem::nextTF(const TemperatureField & current) const
 
 		// на этом шаге мы высчитали T для t = t + 1/2 * tau;
 		// теперь повторим то же самое горизонтально
-
+//	omp_set_nested(0);
+#pragma omp parallel for
 	for (int i = 0; i < iMax; i++ ) //выбираем строку (движемся между строк)
 	{
+		double F;
+		double newAlpha;
+		double newBeta;
 		for (int j = 0; j <jMax; j++) // выбираем элемент в строке (движемся по строке)
 		{
+
 			if ((!geometry.idNet()(i, j)))
 				alpha(i,j) = 0; beta(i,j) = current(i,j);
 
@@ -105,7 +118,8 @@ const TemperatureField Problem::nextTF(const TemperatureField & current) const
 	}
 	// на этом шаге мы высчитали альфа и бета для t = t + tau;
 	// расчитаем ряд температур. Потом размажем и повторим
-
+	//omp_set_nested(0);
+#pragma omp parallel for
 	for (int i = 0; i < iMax; i++) //выбираем строку (движемся между строк)
 	{
 		for (int j = jMax-1; j > -1; j--) // выбираем элемент в строке (движемся по строке)
@@ -126,7 +140,7 @@ TFDynamics Problem::solve() const
 	//int jMax = geometry.jMax();
 	double executionState;
 
-
+	double t1 = time(0);
 	QVector<TemperatureField> temperatureFields;
 	temperatureFields.reserve(tMax + 1);
 	temperatureFields.push_back(geometry.zeroLayer());
@@ -140,7 +154,8 @@ TFDynamics Problem::solve() const
 		executionState = double(t)/double(tMax);
 		emit oneLayerCalcSignal(executionState);
 	}
-
+	double t2 = time(0);
+	std::cout << t2-t1 << std::endl;
 
 return allLayers;
 }
