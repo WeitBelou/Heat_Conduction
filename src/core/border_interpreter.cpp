@@ -258,9 +258,7 @@ void BorderInterpreter::paintBlankArea(QVector<GridPoint>& set1, QVector<GridPoi
 	if(set1.isEmpty())
 		return;
 
-	QVector<GridPoint>::const_iterator it;
-
-	for(it = set1.cbegin(); it != set1.cend(); ++it) {
+	for(auto it = set1.cbegin(); it != set1.cend(); ++it) {
 		if( it->x() < 0 || it->x() > iMax-1 || it->y() < 0 || it->y() > jMax-1)
 			continue;
 		if(m_workingArea.idNet()(it->x(), it->y()) == false)
