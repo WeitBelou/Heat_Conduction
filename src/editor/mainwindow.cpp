@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 #include "../core/border_interpreter.h"
-#include "calculatedialog.h"
+#include "calculate_dialog.h"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {

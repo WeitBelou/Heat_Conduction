@@ -1,4 +1,4 @@
-#include "calculatedialog.h"
+#include "calculate_dialog.h"
 
 CalculateDialog::CalculateDialog(QWidget * parent):
 	QDialog(parent)
