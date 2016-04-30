@@ -114,6 +114,13 @@ void Editor::parse()
 	}
 }
 
+void Editor::graphicalInput()
+{
+	GraphicalInputDialog * dialog = new GraphicalInputDialog(this);
+	dialog->exec();
+	delete dialog;
+}
+
 void Editor::compute()
 {
 	if (inputData.isEmpty()) {
@@ -155,7 +162,7 @@ void Editor::createMenus()
 	menuBar->addSeparator();
 
 	parseMenu = new QMenu("Parse", menuBar);
-	parseMenu->addActions({parseAct, calculateAct});
+	parseMenu->addActions({parseAct, graphicalInputAct, calculateAct});
 	menuBar->addMenu(parseMenu);
 
 	menuBar->addSeparator();
@@ -198,6 +205,10 @@ void Editor::createActions()
 	calculateAct->setStatusTip(tr("Compute layers"));
 	calculateAct->setShortcut(QString("F2"));
 	connect(calculateAct, &QAction::triggered, this, &Editor::compute);
+
+	graphicalInputAct = new QAction(tr("&Grapical Input"), this);
+	graphicalInputAct->setStatusTip(tr("Graphical Input"));
+	connect(graphicalInputAct, &QAction::triggered, this, &Editor::graphicalInput);
 
 	aboutAct = new QAction(tr("&About"), this);
 	aboutAct->setStatusTip(tr("About"));

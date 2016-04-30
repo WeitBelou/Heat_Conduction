@@ -3,6 +3,7 @@
 
 #include "parser.h"
 #include <QtWidgets>
+#include "graphical_input_dialog.h"
 #include "draw/plottingwidget.h"
 #include "core/layer.h"
 #include "core/tfdynamics.h"
@@ -25,6 +26,7 @@ signals:
 private slots:
 	void newFile();
 	void parse();
+	void graphicalInput();
 	void compute();
 	void open();
 	bool save();
@@ -63,6 +65,7 @@ private:
 	QAction * exitAct;
 
 	QAction * parseAct;
+	QAction * graphicalInputAct;
 	QAction * calculateAct;
 
 	QErrorMessage * err;
