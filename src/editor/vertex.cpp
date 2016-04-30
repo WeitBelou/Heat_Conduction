@@ -11,6 +11,7 @@ Vertex::Vertex(GraphWidget *graphWidget)
 	: graph(graphWidget)
 {
 	setFlag(ItemSendsGeometryChanges);
+	setFlag(ItemIgnoresTransformations);
 	setCacheMode(DeviceCoordinateCache);
 	setZValue(-1);
 }

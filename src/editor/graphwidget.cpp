@@ -28,15 +28,18 @@ void GraphWidget::drawBackground(QPainter *painter, const QRectF &rect)
 
 void GraphWidget::createScene()
 {
+	double a = QInputDialog::getDouble(this, "Input width", "Width", 10, 1, 1000);
+	double h = QInputDialog::getDouble(this, "Input height", "Height", 10, 1, 1000);
 	scene = new QGraphicsScene(this);
-	scene->setSceneRect(-200, -200, 400, 400);
+	scene->setSceneRect(0, 0, a, h);
 	setScene(scene);
+
+	scale(400 / a, 400 / h);
 	scale(1, -1);
 	setCacheMode(CacheBackground);
 	setViewportUpdateMode(BoundingRectViewportUpdate);
 	setRenderHint(QPainter::Antialiasing);
 	setTransformationAnchor(AnchorUnderMouse);
-	setMinimumSize(400, 400);
 }
 
 void GraphWidget::drawGrid(QPainter * painter, const QRectF & rect)
@@ -64,6 +67,7 @@ void GraphWidget::drawGrid(QPainter * painter, const QRectF & rect)
 	for (double y = yMin; y < yMax; y += yStep) {
 		painter->drawLine(xMin, y, xMax, y);
 	}
+
 }
 
 
@@ -80,7 +84,8 @@ void GraphWidget::mousePressEvent(QMouseEvent * mouse)
 	}
 	else {
 		QGraphicsItem * onScene = scene->itemAt(currPos, transform());
-		if (onScene && onScene->type() == Vertex::Type && onScene == firstVertex) {
+		if (onScene){
+			if (onScene->type() == Vertex::Type && onScene == firstVertex) {
 			Edge * edge = new Edge(currVertex, firstVertex);
 			scene->addItem(edge);
 
@@ -94,12 +99,13 @@ void GraphWidget::mousePressEvent(QMouseEvent * mouse)
 
 			emit figureCreated(currFigure);
 			firstVertex = currVertex = nullptr;
+			}
 			return;
 		}
+
 		Vertex * vertex = new Vertex(this);
 		vertex->setPos(currPos);
 		Edge * edge = new Edge(currVertex, vertex);
-
 
 		scene->addItem(vertex);
 		scene->addItem(edge);

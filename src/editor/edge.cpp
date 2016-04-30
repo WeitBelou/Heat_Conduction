@@ -33,10 +33,9 @@ void Edge::adjust()
 
 	prepareGeometryChange();
 
-	if (length > qreal(20.)) {
-		QPointF edgeOffset((line.dx() * 10) / length, (line.dy() * 10) / length);
-		sourcePoint = line.p1() + edgeOffset;
-		destPoint = line.p2() - edgeOffset;
+	if (length > 0) {
+		sourcePoint = line.p1();
+		destPoint = line.p2();
 	} else {
 		sourcePoint = destPoint = line.p1();
 	}
@@ -47,7 +46,7 @@ QRectF Edge::boundingRect() const
 	if (!source || !dest)
 		return QRectF();
 
-	qreal extra = 1;
+	qreal extra = 0.01;
 
 	return QRectF(sourcePoint, QSizeF(destPoint.x() - sourcePoint.x(),
 									  destPoint.y() - sourcePoint.y()))
@@ -64,7 +63,7 @@ void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 	if (qFuzzyCompare(line.length(), qreal(0.)))
 		return;
 
-	painter->setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+	painter->setPen(QPen(Qt::black, 0, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
 	painter->drawLine(line);
 }
 
