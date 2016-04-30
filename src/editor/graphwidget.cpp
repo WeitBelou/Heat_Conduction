@@ -1,6 +1,7 @@
 #include "graphwidget.h"
 #include "edge.h"
 #include "vertex.h"
+#include <QDebug>
 
 #include <math.h>
 
@@ -10,7 +11,7 @@ GraphWidget::GraphWidget(QWidget *parent)
 	: QGraphicsView(parent)
 {
 	createScene();
-	currVertex = nullptr;
+	firstVertex = currVertex = nullptr;
 }
 
 void GraphWidget::drawBackground(QPainter *painter, const QRectF &rect)
@@ -70,8 +71,44 @@ void GraphWidget::mousePressEvent(QMouseEvent * mouse)
 	QPointF currPos = this->mapToScene(mouse->pos());
 
 	if (!currVertex) {
+		currFigure.clear();
 		Vertex * vertex = new Vertex(this);
 		vertex->setPos(currPos);
 		scene->addItem(vertex);
+		firstVertex = currVertex = vertex;
+	}
+	else {
+		QGraphicsItem * onScene = scene->itemAt(currPos, transform());
+		if (onScene && onScene->type() == Vertex::Type && onScene == firstVertex) {
+			Edge * edge = new Edge(currVertex, firstVertex);
+			scene->addItem(edge);
+
+			double u = QInputDialog::getDouble(this, tr("Input temperature"),
+											   tr("Input temperature"),
+											   100, 0);
+
+			Border b(Point(currPos.x(), currPos.y()),
+					 Point(firstVertex->x(), firstVertex->y()), u);
+			currFigure << b;
+
+			emit figureCreated(currFigure);
+			firstVertex = currVertex = nullptr;
+			return;
+		}
+		Vertex * vertex = new Vertex(this);
+		vertex->setPos(currPos);
+		Edge * edge = new Edge(currVertex, vertex);
+
+		scene->addItem(vertex);
+		scene->addItem(edge);
+
+		double u = QInputDialog::getDouble(this, tr("Input temperature"),
+										   tr("Input temperature"),
+										   100, 0);
+		Border b(Point(currPos.x(), currPos.y()),
+				 Point(vertex->x(), vertex->y()), u);
+		currFigure.push_back(b);
+
+		currVertex = vertex;
 	}
 }

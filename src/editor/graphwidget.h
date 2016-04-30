@@ -2,6 +2,7 @@
 #define GRAPHWIDGET_H
 
 #include <QGraphicsView>
+#include <QtWidgets>
 #include <core/border.h>
 
 class Vertex;
@@ -27,6 +28,7 @@ private:
 	QGraphicsScene * scene;
 
 	Vertex * currVertex;
+	Vertex * firstVertex;
 	QVector<Border> currFigure;
 };
 

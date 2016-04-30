@@ -33,6 +33,7 @@ private slots:
 	bool saveAs();
 	void about();
 	void documentWasModified();
+	void getGraphical(const QVector<QVector<Border> > & figures);
 
 
 private:
