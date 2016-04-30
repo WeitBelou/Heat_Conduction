@@ -87,7 +87,7 @@ void GraphWidget::mousePressEvent(QMouseEvent * mouse)
 											   tr("Input temperature"),
 											   100, 0);
 
-			Border b(Point(currPos.x(), currPos.y()),
+			Border b(Point(currVertex->x(), currVertex->y()),
 					 Point(firstVertex->x(), firstVertex->y()), u);
 			currFigure << b;
 
@@ -99,14 +99,16 @@ void GraphWidget::mousePressEvent(QMouseEvent * mouse)
 		vertex->setPos(currPos);
 		Edge * edge = new Edge(currVertex, vertex);
 
+
 		scene->addItem(vertex);
 		scene->addItem(edge);
 
 		double u = QInputDialog::getDouble(this, tr("Input temperature"),
 										   tr("Input temperature"),
 										   100, 0);
-		Border b(Point(currPos.x(), currPos.y()),
+		Border b(Point(currVertex->x(), currVertex->y()),
 				 Point(vertex->x(), vertex->y()), u);
+
 		currFigure.push_back(b);
 
 		currVertex = vertex;
