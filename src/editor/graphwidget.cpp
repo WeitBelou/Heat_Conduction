@@ -31,6 +31,7 @@ void GraphWidget::createScene()
 	scene = new QGraphicsScene(this);
 	scene->setSceneRect(-200, -200, 400, 400);
 	setScene(scene);
+	scale(1, -1);
 	setCacheMode(CacheBackground);
 	setViewportUpdateMode(BoundingRectViewportUpdate);
 	setRenderHint(QPainter::Antialiasing);

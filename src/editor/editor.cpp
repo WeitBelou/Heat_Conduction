@@ -81,16 +81,8 @@ void Editor::documentWasModified()
 	setWindowModified(plain->document()->isModified());
 }
 
-void Editor::getGraphical(const QVector<QVector<Border> > & figures)
+void Editor::getGraphicalInput(const QVector<QVector<Border> > & figures)
 {
-	QString s;
-	QTextStream str(&s);
-	for (QVector<Border> figure: figures) {
-		for (Border b: figure) {
-			str << b;
-		}
-	}
-	qDebug() << s;
 	inputData = figures;
 }
 
@@ -130,7 +122,7 @@ void Editor::parse()
 void Editor::graphicalInput()
 {
 	GraphicalInputDialog * dialog = new GraphicalInputDialog(this);
-	connect(dialog, &GraphicalInputDialog::parsed, this, &Editor::getGraphical);
+	connect(dialog, &GraphicalInputDialog::parsed, this, &Editor::getGraphicalInput);
 	dialog->exec();
 	delete dialog;
 }
