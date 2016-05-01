@@ -17,7 +17,8 @@ public:
 	void adjust();
 
 	enum { Type = UserType + 2 };
-	int type() const Q_DECL_OVERRIDE { return Type; };;
+
+	int type() const override;
 
 	double u() const;
 

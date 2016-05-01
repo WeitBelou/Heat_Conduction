@@ -18,6 +18,11 @@ Vertex::Vertex(GraphWidget *graphWidget)
 	setZValue(-1);
 }
 
+int Vertex::type() const
+{
+	return Type;
+}
+
 QRectF Vertex::boundingRect() const
 {
 	qreal adjust = 2;

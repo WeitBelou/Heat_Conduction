@@ -43,6 +43,11 @@ void Edge::adjust()
 	}
 }
 
+int Edge::type() const
+{
+	return Type;
+}
+
 QRectF Edge::boundingRect() const
 {
 	if (!source || !dest)

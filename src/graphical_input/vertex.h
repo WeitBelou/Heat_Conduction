@@ -16,7 +16,7 @@ public:
 	explicit Vertex(GraphWidget *graphWidget);
 
 	enum { Type = UserType + 1 };
-	int type() const override { return Type; }
+	int type() const override;
 
 	QRectF boundingRect() const override;
 	QPainterPath shape() const override;
