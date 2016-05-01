@@ -12,7 +12,6 @@ GraphWidget::GraphWidget(QWidget *parent)
 {
 	createScene();
 	createGrid();
-	firstVertex = currVertex = nullptr;
 }
 
 void GraphWidget::drawBackground(QPainter *painter, const QRectF &rect)
@@ -80,49 +79,54 @@ void GraphWidget::mousePressEvent(QMouseEvent * mouse)
 {
 	QPointF currPos = this->mapToScene(mouse->pos());
 
-	if (!currVertex) {
-		currFigure.clear();
-		Vertex * vertex = new Vertex(this);
-		vertex->setPos(currPos);
-		scene->addItem(vertex);
-		firstVertex = currVertex = vertex;
+	if (currFigure.isEmpty()) {
+		beginFigure(currPos);
 	}
 	else {
 		QGraphicsItem * onScene = scene->itemAt(currPos, transform());
 		if (onScene){
-			if (onScene->type() == Vertex::Type && onScene == firstVertex) {
-			Edge * edge = new Edge(currVertex, firstVertex);
-			scene->addItem(edge);
-
-			double u = QInputDialog::getDouble(this, tr("Input temperature"),
-											   tr("Input temperature"),
-											   100, 0);
-
-			Border b(Point(currVertex->x(), currVertex->y()),
-					 Point(firstVertex->x(), firstVertex->y()), u);
-			currFigure << b;
-
-			emit figureCreated(currFigure);
-			firstVertex = currVertex = nullptr;
+			if (onScene->type() == Vertex::Type && onScene == currFigure.first()) {
+				endFigure();
 			}
 			return;
 		}
-
-		Vertex * vertex = new Vertex(this);
-		vertex->setPos(currPos);
-		Edge * edge = new Edge(currVertex, vertex);
-
-		scene->addItem(vertex);
-		scene->addItem(edge);
-
-		double u = QInputDialog::getDouble(this, tr("Input temperature"),
-										   tr("Input temperature"),
-										   100, 0);
-		Border b(Point(currVertex->x(), currVertex->y()),
-				 Point(vertex->x(), vertex->y()), u);
-
-		currFigure.push_back(b);
-
-		currVertex = vertex;
+		else {
+			addNextEdge(currPos);
+		}
 	}
+}
+
+void GraphWidget::beginFigure(const QPointF & currPos)
+{
+	currFigure.clear();
+	Vertex * vertex = new Vertex(this);
+	vertex->setPos(currPos);
+	scene->addItem(vertex);
+	currFigure << vertex;
+}
+
+void GraphWidget::addNextEdge(const QPointF & currPos)
+{
+	Vertex * vertex = new Vertex(this);
+	vertex->setPos(currPos);
+	double u = QInputDialog::getDouble(this, tr("Input tempertature"),
+									   tr("Temperature"), 100, 0);
+
+	Edge * edge = new Edge(currFigure.last(), vertex, u);
+
+	scene->addItem(vertex);
+	scene->addItem(edge);
+
+	currFigure << vertex;
+}
+
+void GraphWidget::endFigure()
+{
+	double u = QInputDialog::getDouble(this, tr("Input tempertature"),
+									   tr("Temperature"), 100, 0);
+	Edge * edge = new Edge(currFigure.last(), currFigure.first(), u);
+	scene->addItem(edge);
+
+	allFigures << currFigure;
+	currFigure.clear();
 }

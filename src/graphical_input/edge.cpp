@@ -2,8 +2,10 @@
 #include "vertex.h"
 
 #include <QPainter>
+#include <QInputDialog>
 
-Edge::Edge(Vertex *sourceNode, Vertex *destNode)
+Edge::Edge(Vertex *sourceNode, Vertex *destNode, double u)
+	:u(u)
 {
 	setAcceptedMouseButtons(0);
 	source = sourceNode;

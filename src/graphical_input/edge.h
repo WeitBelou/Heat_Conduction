@@ -8,7 +8,7 @@ class Vertex;
 class Edge : public QGraphicsItem
 {
 public:
-	Edge(Vertex *sourceNode, Vertex *destNode);
+	Edge(Vertex *sourceNode, Vertex *destNode, double u);
 
 	Vertex *sourceNode() const;
 	Vertex *destNode() const;
@@ -27,7 +27,9 @@ private:
 	Vertex *source, *dest;
 
 	QPointF sourcePoint;
-	QPointF destPoint;   
+	QPointF destPoint;
+
+	double u;
 };
 
 #endif // EDGE_H

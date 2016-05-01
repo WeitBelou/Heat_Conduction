@@ -22,15 +22,18 @@ signals:
 	void figureCreated(const QVector<Border> & figure);
 
 private:
+	void beginFigure(const QPointF & currPos);
+	void addNextEdge(const QPointF & currPos);
+	void endFigure();
+
 	void createScene();
 	void createGrid();
 	void drawGrid(QPainter *painter, const QRectF &rect);
 
 	QGraphicsScene * scene;
 
-	Vertex * currVertex;
-	Vertex * firstVertex;
-	QVector<Border> currFigure;
+	QVector<Vertex *> currFigure;
+	QVector<QVector<Vertex *> > allFigures;
 };
 
 #endif // GRAPHWIDGET_H

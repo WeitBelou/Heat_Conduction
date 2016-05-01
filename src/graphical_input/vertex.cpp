@@ -8,10 +8,11 @@
 #include <QStyleOption>
 
 Vertex::Vertex(GraphWidget *graphWidget)
-	: graph(graphWidget)
+	: graph(graphWidget), radius(5)
 {
 	setFlag(ItemSendsGeometryChanges);
 	setFlag(ItemIgnoresTransformations);
+	setAcceptHoverEvents(true);
 	setCacheMode(DeviceCoordinateCache);
 	setZValue(-1);
 }
@@ -30,13 +31,13 @@ QList<Edge *> Vertex::edges() const
 QRectF Vertex::boundingRect() const
 {
 	qreal adjust = 2;
-	return QRectF( -10 - adjust, -10 - adjust, 23 + adjust, 23 + adjust);
+	return QRectF( -radius - adjust, -radius - adjust, 2 * radius + adjust, 2 * radius + adjust);
 }
 
 QPainterPath Vertex::shape() const
 {
 	QPainterPath path;
-	path.addEllipse(-10, -10, 20, 20);
+	path.addEllipse(-radius, -radius, 2 * radius, 2 * radius);
 	return path;
 }
 
@@ -44,7 +45,7 @@ void Vertex::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget 
 {
 	painter->setPen(Qt::black);
 	painter->setBrush(Qt::darkGray);
-	painter->drawEllipse(-10, -10, 20, 20);
+	painter->drawEllipse(-radius, -radius, 2 * radius, 2 * radius);
 }
 
 QVariant Vertex::itemChange(GraphicsItemChange change, const QVariant &value)
@@ -69,4 +70,17 @@ void Vertex::mousePressEvent(QGraphicsSceneMouseEvent *event)
 void Vertex::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
 	QGraphicsItem::mouseReleaseEvent(event);
+}
+
+
+void Vertex::hoverEnterEvent(QGraphicsSceneHoverEvent *)
+{
+	prepareGeometryChange();
+	radius = 10;
+}
+
+void Vertex::hoverLeaveEvent(QGraphicsSceneHoverEvent *)
+{
+	prepareGeometryChange();
+	radius = 5;
 }
