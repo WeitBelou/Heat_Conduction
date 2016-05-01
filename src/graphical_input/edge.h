@@ -16,7 +16,8 @@ public:
 	void adjust();
 
 	enum { Type = UserType + 2 };
-	int type() const Q_DECL_OVERRIDE { return Type; }
+    int type() const Q_DECL_OVERRIDE { return Type; };
+    QPainterPath shape() const override;
 
 protected:
 	QRectF boundingRect() const Q_DECL_OVERRIDE;
@@ -26,7 +27,7 @@ private:
 	Vertex *source, *dest;
 
 	QPointF sourcePoint;
-	QPointF destPoint;
+	QPointF destPoint;   
 };
 
 #endif // EDGE_H
