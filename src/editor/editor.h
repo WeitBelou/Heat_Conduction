@@ -25,7 +25,7 @@ signals:
 
 private slots:
 	void newFile();
-	void parse();
+	bool parse();
 	void graphicalInput();
 	void compute();
 	void open();
@@ -65,7 +65,6 @@ private:
 	QAction * aboutAct;
 	QAction * exitAct;
 
-	QAction * parseAct;
 	QAction * graphicalInputAct;
 	QAction * calculateAct;
 

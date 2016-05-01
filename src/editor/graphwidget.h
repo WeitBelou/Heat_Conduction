@@ -23,6 +23,7 @@ signals:
 
 private:
 	void createScene();
+	void createGrid();
 	void drawGrid(QPainter *painter, const QRectF &rect);
 
 	QGraphicsScene * scene;

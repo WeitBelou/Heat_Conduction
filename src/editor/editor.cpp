@@ -84,6 +84,17 @@ void Editor::documentWasModified()
 void Editor::getGraphicalInput(const QVector<QVector<Border> > & figures)
 {
 	inputData = figures;
+	plain->clear();
+	for (QVector<Border> figure: inputData) {
+		plain->appendPlainText("{");
+		QString str;
+		QTextStream s(&str);
+		for (Border b: figure) {
+			s << b << endl;
+		}
+		plain->appendPlainText(str.trimmed());
+		plain->appendPlainText("}");
+	}
 }
 
 void Editor::addPlot(PlottingWidget * plot)
@@ -109,18 +120,21 @@ QString Editor::strippedName(const QString & fullFileName)
 }
 
 
-void Editor::parse()
+bool Editor::parse()
 {
 	try {
 		inputData = MultiParse(plain->toPlainText());
+		return true;
 	}
 	catch (ParseError & p) {
 		err->showMessage(QString("%1 \t %2").arg(p.where(), p.what()));
+		return false;
 	}
 }
 
 void Editor::graphicalInput()
 {
+	newFile();
 	GraphicalInputDialog * dialog = new GraphicalInputDialog(this);
 	connect(dialog, &GraphicalInputDialog::parsed, this, &Editor::getGraphicalInput);
 	dialog->exec();
@@ -129,6 +143,10 @@ void Editor::graphicalInput()
 
 void Editor::compute()
 {
+	if (!parse()) {
+		return;
+	}
+
 	if (inputData.isEmpty()) {
 		return;
 	}
@@ -167,8 +185,8 @@ void Editor::createMenus()
 
 	menuBar->addSeparator();
 
-	parseMenu = new QMenu("Parse", menuBar);
-	parseMenu->addActions({parseAct, graphicalInputAct, calculateAct});
+	parseMenu = new QMenu("Compute", menuBar);
+	parseMenu->addActions({graphicalInputAct, calculateAct});
 	menuBar->addMenu(parseMenu);
 
 	menuBar->addSeparator();
@@ -201,11 +219,6 @@ void Editor::createActions()
 	saveAsAct->setStatusTip(tr("Save file"));
 	saveAsAct->setShortcut(QKeySequence::SaveAs);
 	connect(saveAsAct, &QAction::triggered, this, &Editor::saveAs);
-
-	parseAct = new QAction(tr("&Parse"), this);
-	parseAct->setStatusTip(tr("Parse file to vector"));
-	parseAct->setShortcut(QString("F5"));
-	connect(parseAct, &QAction::triggered, this, &Editor::parse);
 
 	calculateAct = new QAction(tr("&Calculate"), this);
 	calculateAct->setStatusTip(tr("Compute layers"));

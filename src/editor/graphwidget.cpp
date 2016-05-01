@@ -11,6 +11,7 @@ GraphWidget::GraphWidget(QWidget *parent)
 	: QGraphicsView(parent)
 {
 	createScene();
+	createGrid();
 	firstVertex = currVertex = nullptr;
 }
 
@@ -40,6 +41,10 @@ void GraphWidget::createScene()
 	setViewportUpdateMode(BoundingRectViewportUpdate);
 	setRenderHint(QPainter::Antialiasing);
 	setTransformationAnchor(AnchorUnderMouse);
+}
+
+void GraphWidget::createGrid()
+{
 }
 
 void GraphWidget::drawGrid(QPainter * painter, const QRectF & rect)
