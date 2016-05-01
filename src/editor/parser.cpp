@@ -115,6 +115,10 @@ const QString ParseError::where() const noexcept
 void dataChecker(const QVector<QVector<Border> > & data)
 {
 	int N = data.size();
+	if (N < 3) {
+		throw(ParseError("Number of borders must be greater than 2"));
+	}
+
 	for (int i = 0; i < N - 1; i++) {
 		for (int j = i + 1; j < N; j++) {
 			twoPolyCheck(data[i], data[j]);
@@ -133,7 +137,7 @@ void onePolyCheck(const QVector<Border> & data)
 			throw ParseError(what, where);
 		}
 
-		if (data[i].first() == data[i].second()) {
+		if (data[i - 1].first() == data[i - 1].second()) {
 			QString what("Border can\'t be one point");
 			QString where = QString("On line: %1").arg(i + 1);
 
