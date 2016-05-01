@@ -2,6 +2,7 @@
 #define EDGE_H
 
 #include <QGraphicsItem>
+#include "core/border.h"
 
 class Vertex;
 
@@ -21,12 +22,15 @@ public:
 
 	double u() const;
 
+	Border toBorder();
+
 	QPointF sourcePoint() const;
 
 	QPointF destPoint() const;
 
 protected:
 	QRectF boundingRect() const Q_DECL_OVERRIDE;
+	QPainterPath shape() const override;
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) Q_DECL_OVERRIDE;
 
 private:

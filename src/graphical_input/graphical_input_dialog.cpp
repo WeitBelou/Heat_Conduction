@@ -33,10 +33,7 @@ void GraphicalInputDialog::parse()
 		QVector<Border> borders;
 		for (Vertex * vertex: figure) {
 			Edge * edge = vertex->firstEdge();
-			Border b(Point(edge->sourcePoint().x(), edge->sourcePoint().y()),
-					 Point(edge->destPoint().x(), edge->destPoint().y()),
-					 edge->u());
-			borders << b;
+			borders << edge->toBorder();
 		}
 		figures << borders;
 	}

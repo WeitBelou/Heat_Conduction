@@ -96,3 +96,21 @@ double Edge::u() const
 	return m_u;
 }
 
+Border Edge::toBorder()
+{
+	Point first(sourcePoint().x(), sourcePoint().y());
+	Point second(destPoint().x(), destPoint().y());
+
+	return Border(first, second, m_u);
+}
+
+
+
+QPainterPath Edge::shape() const
+{
+	QPainterPath path;
+	QVector<QPointF> points;
+	points << m_sourcePoint <<  m_destPoint;
+	path.addPolygon(points);
+	return path;
+}
