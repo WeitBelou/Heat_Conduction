@@ -29,7 +29,7 @@ class ParseError
 {
 public:
 	ParseError();
-	ParseError(const QString &what, const QString & where = QString("Nowhere"));
+	ParseError(const QString &what, const QString & where = QString(""));
 
 	const QString what() const noexcept;
 	const QString where() const noexcept;

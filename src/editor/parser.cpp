@@ -89,7 +89,7 @@ Border parseBorder(QString st)
 
 /******************************************************************************/
 ParseError::ParseError():
-	m_what("Unknow ParseError"), m_where(QString("Nowhere"))
+	m_what("Unknow ParseError"), m_where(QString(""))
 {
 
 }
@@ -142,7 +142,7 @@ void onePolyCheck(const QVector<Border> & data)
 	}
 
 	if (data.front().first() != data.back().second()) {
-		throw ParseError("First point must be equal to last", "On first and last");
+		throw ParseError("First point must be equal to last");
 	}
 
 	for (int i = 0; i < data.size(); i++) {
@@ -165,7 +165,7 @@ void twoPolyCheck(const QVector<Border> & a, const QVector<Border> & b)
 		for (int j = 0; j < M; j++) {
 			if (a[i].checkIntersect(b[j])) {
 				QString what("Polygons intersect");
-				QString where = QString("On lines: %1 and %2").arg(i + 1, j + 1);
+				QString where = QString("On lines: %1 and %2").arg(i + 1).arg(j + 1);
 				throw ParseError(what, where);
 			}
 		}

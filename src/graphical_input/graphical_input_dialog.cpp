@@ -22,7 +22,7 @@ GraphicalInputDialog::GraphicalInputDialog(QWidget * parent) :
 
 void GraphicalInputDialog::addFigure(const QVector<Border> & figure)
 {
-	figures.push_back(figure);
+	figures << figure;
 }
 
 void GraphicalInputDialog::parse()

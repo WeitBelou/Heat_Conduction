@@ -83,9 +83,8 @@ void Editor::documentWasModified()
 
 void Editor::getGraphicalInput(const QVector<QVector<Border> > & figures)
 {
-	inputData = figures;
 	plain->clear();
-	for (QVector<Border> figure: inputData) {
+	for (QVector<Border> figure: figures) {
 		plain->appendPlainText("{");
 		QString str;
 		QTextStream s(&str);
