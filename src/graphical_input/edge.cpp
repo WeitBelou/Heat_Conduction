@@ -69,18 +69,6 @@ void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 	painter->drawLine(line);
 }
 
-QPainterPath Edge::shape() const
-{
-    if (!source || !dest)
-        return QPainterPath();
-
-    QPainterPath path;
-    QVector<QPointF> polygon;
-    polygon << sourcePoint << destPoint;
-    path.addPolygon(polygon);
-    return path;
-}
-
 QPointF Edge::destPoint() const
 {
 	return m_destPoint;
@@ -108,6 +96,9 @@ Border Edge::toBorder()
 
 QPainterPath Edge::shape() const
 {
+	if (!source || !dest)
+		return QPainterPath();
+
 	QPainterPath path;
 	QVector<QPointF> points;
 	points << m_sourcePoint <<  m_destPoint;

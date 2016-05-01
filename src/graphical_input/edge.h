@@ -17,8 +17,7 @@ public:
 	void adjust();
 
 	enum { Type = UserType + 2 };
-    int type() const Q_DECL_OVERRIDE { return Type; };
-    QPainterPath shape() const override;
+	int type() const Q_DECL_OVERRIDE { return Type; };;
 
 	double u() const;
 
