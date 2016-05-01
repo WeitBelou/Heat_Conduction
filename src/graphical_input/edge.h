@@ -8,7 +8,7 @@ class Vertex;
 class Edge : public QGraphicsItem
 {
 public:
-	Edge(Vertex *sourceNode, Vertex *destNode, double u);
+	Edge(Vertex *sourceNode, Vertex *destNode, double m_u);
 
 	Vertex *sourceNode() const;
 	Vertex *destNode() const;
@@ -19,6 +19,12 @@ public:
     int type() const Q_DECL_OVERRIDE { return Type; };
     QPainterPath shape() const override;
 
+	double u() const;
+
+	QPointF sourcePoint() const;
+
+	QPointF destPoint() const;
+
 protected:
 	QRectF boundingRect() const Q_DECL_OVERRIDE;
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) Q_DECL_OVERRIDE;
@@ -26,10 +32,10 @@ protected:
 private:
 	Vertex *source, *dest;
 
-	QPointF sourcePoint;
-	QPointF destPoint;
+	QPointF m_sourcePoint;
+	QPointF m_destPoint;
 
-	double u;
+	double m_u;
 };
 
 #endif // EDGE_H

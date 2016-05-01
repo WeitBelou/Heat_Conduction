@@ -8,24 +8,14 @@
 #include <QStyleOption>
 
 Vertex::Vertex(GraphWidget *graphWidget)
-	: graph(graphWidget), radius(5)
+	: graph(graphWidget), radius(5),
+	  m_firstEdge(nullptr), m_secondEdge(nullptr)
 {
 	setFlag(ItemSendsGeometryChanges);
 	setFlag(ItemIgnoresTransformations);
 	setAcceptHoverEvents(true);
 	setCacheMode(DeviceCoordinateCache);
 	setZValue(-1);
-}
-
-void Vertex::addEdge(Edge *edge)
-{
-	edgeList << edge;
-	edge->adjust();
-}
-
-QList<Edge *> Vertex::edges() const
-{
-	return edgeList;
 }
 
 QRectF Vertex::boundingRect() const
@@ -52,8 +42,12 @@ QVariant Vertex::itemChange(GraphicsItemChange change, const QVariant &value)
 {
 	switch (change) {
 	case ItemPositionHasChanged:
-		foreach (Edge *edge, edgeList)
-			edge->adjust();
+		if (firstEdge()) {
+			firstEdge()->adjust();
+		}
+		if (secondEdge()){
+			secondEdge()->adjust();
+		}
 		break;
 	default:
 		break;
@@ -83,4 +77,24 @@ void Vertex::hoverLeaveEvent(QGraphicsSceneHoverEvent *)
 {
 	prepareGeometryChange();
 	radius = 5;
+}
+
+Edge * Vertex::secondEdge() const
+{
+	return m_secondEdge;
+}
+
+void Vertex::setSecondEdge(Edge * secondEdge)
+{
+	m_secondEdge = secondEdge;
+}
+
+Edge * Vertex::firstEdge() const
+{
+	return m_firstEdge;
+}
+
+void Vertex::setFirstEdge(Edge * firstEdge)
+{
+	m_firstEdge = firstEdge;
 }

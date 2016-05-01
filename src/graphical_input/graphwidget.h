@@ -14,12 +14,12 @@ class GraphWidget : public QGraphicsView
 public:
 	explicit GraphWidget(QWidget *parent = 0);
 
+public:
+	QVector<QVector<Vertex *> > getAllFigures() const;
+
 protected:
 	void drawBackground(QPainter *painter, const QRectF &rect) override;
 	void mousePressEvent(QMouseEvent *mouse) override;
-
-signals:
-	void figureCreated(const QVector<Border> & figure);
 
 private:
 	void beginFigure(const QPointF & currPos);

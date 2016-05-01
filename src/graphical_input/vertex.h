@@ -15,15 +15,18 @@ class Vertex : public QGraphicsItem
 public:
 	explicit Vertex(GraphWidget *graphWidget);
 
-	void addEdge(Edge *edge);
-	QList<Edge *> edges() const;
-
 	enum { Type = UserType + 1 };
 	int type() const override { return Type; }
 
 	QRectF boundingRect() const override;
 	QPainterPath shape() const override;
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *) override;
+
+	Edge * firstEdge() const;
+	void setFirstEdge(Edge * firstEdge);
+
+	Edge * secondEdge() const;
+	void setSecondEdge(Edge * secondEdge);
 
 protected:
 	QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
@@ -37,7 +40,9 @@ private:
 	GraphWidget *graph;
 	double radius;
 
-	QList<Edge *> edgeList;
+	Edge * m_firstEdge;
+	Edge * m_secondEdge;
+
 	QPointF newPos;
 };
 

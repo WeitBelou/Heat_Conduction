@@ -1,4 +1,6 @@
 #include "graphical_input_dialog.h"
+#include "vertex.h"
+#include "edge.h"
 
 GraphicalInputDialog::GraphicalInputDialog(QWidget * parent) :
 	QDialog(parent)
@@ -16,8 +18,6 @@ GraphicalInputDialog::GraphicalInputDialog(QWidget * parent) :
 	main->addWidget(graph);
 	main->addWidget(acceptButton);
 	main->addWidget(rejectButton);
-
-	connect(graph, &GraphWidget::figureCreated, this, &GraphicalInputDialog::addFigure);
 }
 
 void GraphicalInputDialog::addFigure(const QVector<Border> & figure)
@@ -27,6 +27,20 @@ void GraphicalInputDialog::addFigure(const QVector<Border> & figure)
 
 void GraphicalInputDialog::parse()
 {
+	QVector<QVector<Vertex *> > allFigures = graph->getAllFigures();
+
+	for (QVector<Vertex *> figure: allFigures) {
+		QVector<Border> borders;
+		for (Vertex * vertex: figure) {
+			Edge * edge = vertex->firstEdge();
+			Border b(Point(edge->sourcePoint().x(), edge->sourcePoint().y()),
+					 Point(edge->destPoint().x(), edge->destPoint().y()),
+					 edge->u());
+			borders << b;
+		}
+		figures << borders;
+	}
+
 	emit parsed(figures);
 	accept();
 }

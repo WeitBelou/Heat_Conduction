@@ -5,13 +5,13 @@
 #include <QInputDialog>
 
 Edge::Edge(Vertex *sourceNode, Vertex *destNode, double u)
-	:u(u)
+	:m_u(u)
 {
 	setAcceptedMouseButtons(0);
 	source = sourceNode;
 	dest = destNode;
-	source->addEdge(this);
-	dest->addEdge(this);
+	source->setSecondEdge(this);
+	dest->setFirstEdge(this);
 	adjust();
 }
 
@@ -36,10 +36,10 @@ void Edge::adjust()
 	prepareGeometryChange();
 
 	if (length > 0) {
-		sourcePoint = line.p1();
-		destPoint = line.p2();
+		m_sourcePoint = line.p1();
+		m_destPoint = line.p2();
 	} else {
-		sourcePoint = destPoint = line.p1();
+		m_sourcePoint = m_destPoint = line.p1();
 	}
 }
 
@@ -50,8 +50,8 @@ QRectF Edge::boundingRect() const
 
 	qreal extra = 0.01;
 
-	return QRectF(sourcePoint, QSizeF(destPoint.x() - sourcePoint.x(),
-									  destPoint.y() - sourcePoint.y()))
+	return QRectF(m_sourcePoint, QSizeF(m_destPoint.x() - m_sourcePoint.x(),
+									  m_destPoint.y() - m_sourcePoint.y()))
 		.normalized()
 		.adjusted(-extra, -extra, extra, extra);
 }
@@ -61,15 +61,13 @@ void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 	if (!source || !dest)
 		return;
 
-	QLineF line(sourcePoint, destPoint);
+	QLineF line(m_sourcePoint, m_destPoint);
 	if (qFuzzyCompare(line.length(), qreal(0.)))
 		return;
 
 	painter->setPen(QPen(Qt::black, 0, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
 	painter->drawLine(line);
 }
-
-
 
 QPainterPath Edge::shape() const
 {
@@ -82,3 +80,19 @@ QPainterPath Edge::shape() const
     path.addPolygon(polygon);
     return path;
 }
+
+QPointF Edge::destPoint() const
+{
+	return m_destPoint;
+}
+
+QPointF Edge::sourcePoint() const
+{
+	return m_sourcePoint;
+}
+
+double Edge::u() const
+{
+	return m_u;
+}
+

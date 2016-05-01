@@ -74,6 +74,11 @@ void GraphWidget::drawGrid(QPainter * painter, const QRectF & rect)
 
 }
 
+QVector<QVector<Vertex *> > GraphWidget::getAllFigures() const
+{
+	return allFigures;
+}
+
 
 void GraphWidget::mousePressEvent(QMouseEvent * mouse)
 {
