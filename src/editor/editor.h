@@ -3,7 +3,7 @@
 
 #include "parser.h"
 #include <QtWidgets>
-#include "graphical_input_dialog.h"
+#include "graphical_input/graphical_input_dialog.h"
 #include "draw/plottingwidget.h"
 #include "core/layer.h"
 #include "core/tfdynamics.h"
