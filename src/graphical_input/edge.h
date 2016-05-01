@@ -28,6 +28,8 @@ public:
 
 	QPointF destPoint() const;
 
+	void setColor(const QColor & value);
+
 protected:
 	QRectF boundingRect() const Q_DECL_OVERRIDE;
 	QPainterPath shape() const override;
@@ -40,6 +42,7 @@ private:
 	QPointF m_destPoint;
 
 	double m_u;
+	QColor color;
 };
 
 #endif // EDGE_H

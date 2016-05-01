@@ -136,7 +136,7 @@ void PlottingWidget::createPlot()
 	colorScale->setType(QCPAxis::atRight);
 	colorMap->setColorScale(colorScale);
 
-	colorMap->setGradient(QCPColorGradient::gpPolar);
+	colorMap->setGradient(QCPColorGradient::gpThermal);
 	colorMap->rescaleDataRange();
 
 	marginGroup = new QCPMarginGroup(plot);

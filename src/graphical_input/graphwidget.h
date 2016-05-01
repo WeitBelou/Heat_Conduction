@@ -27,10 +27,11 @@ private:
 	void endFigure();
 
 	void createScene();
-	void createGrid();
+	QColor colorFromTemperature(double u);
 	void drawGrid(QPainter *painter, const QRectF &rect);
 
 	QGraphicsScene * scene;
+	double maxTemperature;
 
 	QVector<Vertex *> currFigure;
 	QVector<QVector<Vertex *> > allFigures;

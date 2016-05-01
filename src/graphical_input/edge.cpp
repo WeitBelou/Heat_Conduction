@@ -5,7 +5,7 @@
 #include <QInputDialog>
 
 Edge::Edge(Vertex *sourceNode, Vertex *destNode, double u)
-	:m_u(u)
+	:m_u(u), color(Qt::white)
 {
 	setAcceptedMouseButtons(0);
 	source = sourceNode;
@@ -70,8 +70,13 @@ void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 	if (qFuzzyCompare(line.length(), qreal(0.)))
 		return;
 
-	painter->setPen(QPen(Qt::black, 0, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+	painter->setPen(QPen(color, 0, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
 	painter->drawLine(line);
+}
+
+void Edge::setColor(const QColor & value)
+{
+	color = value;
 }
 
 QPointF Edge::destPoint() const
