@@ -157,5 +157,7 @@ Problem::~Problem()
 
 }
 
+void Problem::stopCalc()
+{
 
-
+}

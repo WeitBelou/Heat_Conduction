@@ -18,6 +18,9 @@ public:
 	TFDynamics solve() const;
 	~Problem();
 
+public slots:
+	void stopCalc();
+
 private:
 	const TemperatureField nextTF(const TemperatureField & currentTF) const;
 
