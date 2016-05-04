@@ -33,13 +33,13 @@ void BorderInterpreter::solve()
 
 
 	//рассчёт параметров области построения
-	findAreaParameters(borders);
+	findAreaParameters();
 
 	//создание сетки
 	makeGrid();
 
 	//нанесение границ
-	drawBorders(borders, 600);
+	drawBorders(std::min(iMax, jMax) / 2);
 
 	//заполнение области вне тела
 	QVector<QPoint> vector1;
@@ -47,7 +47,7 @@ void BorderInterpreter::solve()
 	emit logSent(QString("Painting blank area"));
 	vector1 << QPoint(0, 0);
 	paintBlankArea(vector1, vector2);
-	emit logSent(QString("Painting blank area"));
+	emit logSent(QString("Blank area is painted"));
 
 	emit logSent(QString("Border interpretation is done"));
 }
@@ -64,49 +64,19 @@ TFGeometry BorderInterpreter::workingArea() const
 }
 
 //Вычисление основных параметров будущей сетки: абсолютных размеров и мелкости
-void BorderInterpreter::findAreaParameters(const QVector<Border>& Borders)
+void BorderInterpreter::findAreaParameters()
 {
 	emit logSent(QString("Data Analysis start"));
 
-	xMax = xMin = Borders[0].first().x();
-	yMax = yMin = Borders[0].first().y();
-	xMinDist = yMinDist = std::numeric_limits<double>::max();
+	findLengthHeight();
+	emit logSent(QString("Length - %1, height - %2").arg(length).arg(height));
 
+	findMinimalDistances();
+	emit logSent(QString("x minimal distance - %1, y minimal distance - %2").arg(xMinDist).arg(yMinDist));
 
-	for(int i = 0, max = Borders.size(); i < max; i++) {
-		if(xMax < Borders[i].first().x())
-			xMax = Borders[i].first().x();
-		if(xMax < Borders[i].second().x())
-			xMax = Borders[i].first().x();
+	findStep();
+	emit logSent(QString("x step - %1, y step - %2").arg(m_workingArea.xStep()).arg(m_workingArea.yStep()));
 
-		if(yMax < Borders[i].first().y())
-			yMax = Borders[i].first().y();
-		if(yMax < Borders[i].second().y())
-			yMax = Borders[i].first().y();
-
-		if(xMin > Borders[i].first().x())
-			xMin = Borders[i].first().x();
-		if(xMin > Borders[i].second().x())
-			xMin = Borders[i].first().x();
-
-		if(yMin > Borders[i].first().y())
-			yMin = Borders[i].first().y();
-		if(yMin > Borders[i].second().y())
-			yMin = Borders[i].first().y();
-
-	}
-
-	length = xMax - xMin;
-	height = yMax - yMin;
-
-	emit logSent(QString("Length - %1, height - %2").arg(length, height));
-
-	//здесь должен быть рассчёт минимальных расстояний
-	//временная замена(или не очень временная)
-	m_workingArea.setXStep(length / m_maxPointsPerDimension);
-	m_workingArea.setYStep(height / m_maxPointsPerDimension);
-
-	emit logSent(QString("x step - %1, y step - %2").arg(m_workingArea.xStep(), m_workingArea.yStep()));
 
 	//небольшое отступление от границ
 	xMax += 10*m_workingArea.xStep();
@@ -121,11 +91,96 @@ void BorderInterpreter::findAreaParameters(const QVector<Border>& Borders)
 	jMax = height / m_workingArea.yStep();
 
 
-	emit logSent(QString("Final length - %1, final height - %2").arg(length, height));
-	emit logSent(QString("x min dist - %1, y min dist - %2").arg(xMinDist, yMinDist));
-	emit logSent(QString("iMax - %1, jMax - %2").arg(iMax, jMax));
+	emit logSent(QString("Final length - %1, final height - %2").arg(length).arg(height));
+	emit logSent(QString("x min dist - %1, y min dist - %2").arg(xMinDist).arg(yMinDist));
+	emit logSent(QString("x step - %1, y step - %2").arg(m_workingArea.xStep()).arg(m_workingArea.yStep()));
+	emit logSent(QString("iMax - %1, jMax - %2").arg(iMax).arg(jMax));
 	emit logSent(QString("Area analysis done"));
 
+}
+
+void BorderInterpreter::findLengthHeight()
+{
+	xMax = xMin = borders[0].first().x();
+	yMax = yMin = borders[0].first().y();
+
+	for(int i = 0, max = borders.size(); i < max; i++) {
+		if(xMax < borders[i].first().x())
+			xMax = borders[i].first().x();
+		if(xMax < borders[i].second().x())
+			xMax = borders[i].first().x();
+
+		if(yMax < borders[i].first().y())
+			yMax = borders[i].first().y();
+		if(yMax < borders[i].second().y())
+			yMax = borders[i].first().y();
+
+		if(xMin > borders[i].first().x())
+			xMin = borders[i].first().x();
+		if(xMin > borders[i].second().x())
+			xMin = borders[i].first().x();
+
+		if(yMin > borders[i].first().y())
+			yMin = borders[i].first().y();
+		if(yMin > borders[i].second().y())
+			yMin = borders[i].first().y();
+	}
+
+	length = xMax - xMin;
+	height = yMax - yMin;
+
+}
+
+void BorderInterpreter::findMinimalDistances()
+{
+	xMinDist = yMinDist = std::numeric_limits<double>::max();
+
+	for(int i = 0, max = borders.size(); i < max; i++) {
+		for(int j = i+1, max = borders.size(); j < max; j++) {
+			if(fabs(borders[j].first().x() - borders[i].first().x()) < xMinDist &&
+					fabs(borders[j].first().x() - borders[i].first().x()) > length / m_maxPointsPerDimension)
+				xMinDist = fabs(borders[j].first().x() - borders[i].first().x());
+			if(fabs(borders[j].first().y() - borders[i].first().y()) < yMinDist &&
+					fabs(borders[j].first().y() - borders[i].first().y()) > height / m_maxPointsPerDimension)
+				yMinDist = fabs(borders[j].first().y() - borders[i].first().y());
+		}
+	}
+
+	xMinDist /= m_minPointsBetweenBorders;
+	yMinDist /= m_minPointsBetweenBorders;
+
+}
+
+void BorderInterpreter::findStep()
+{
+	if((length / xMinDist) < m_minPointsPerDimension)
+		xMinDist = length / m_minPointsPerDimension;
+	else if((length / xMinDist) > m_maxPointsPerDimension)
+		xMinDist = length / m_maxPointsPerDimension;
+
+	if((height / yMinDist) < m_minPointsPerDimension)
+		yMinDist = height / m_minPointsPerDimension;
+	else if((height / yMinDist) > m_maxPointsPerDimension)
+		yMinDist = height / m_maxPointsPerDimension;
+
+	xMinDist = std::min(xMinDist, yMinDist);
+	yMinDist = std::min(xMinDist, yMinDist);
+
+	if(xMinDist > yMinDist) {
+		xMinDist = yMinDist;
+		if((length / xMinDist) > m_maxPointsPerDimension) {
+			xMinDist = yMinDist = length / m_maxPointsPerDimension;
+		}
+	}
+	else {
+		yMinDist = xMinDist;
+		if((height / yMinDist) > m_maxPointsPerDimension) {
+			yMinDist = xMinDist = height / m_maxPointsPerDimension;
+		}
+	}
+
+	m_workingArea.setXStep(xMinDist);
+	m_workingArea.setYStep(yMinDist);
 }
 
 //Построение сетки
@@ -150,14 +205,14 @@ void BorderInterpreter::makeGrid()
 
 
 //Нанесение границ
-void BorderInterpreter::drawBorders(const QVector<Border>& Borders, int accuracy)
+void BorderInterpreter::drawBorders(int accuracy)
 {
 	emit logSent(QString("Border drawing start"));
 
 	//Выбор точки следующей точки границы осуществляется с помощью вектора
 	//от текущей точки к конечной; из-за особенности алгоритма требутеся разбиение
 	//линий границ на множество меньших линий границ
-	for(Border b: Borders) {
+	for(Border b: borders) {
 
 		QPoint p1 = pToGp(b.first());
 		QPoint pEnd = pToGp(b.second());

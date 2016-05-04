@@ -37,9 +37,12 @@ public:
 	void logSent(const QString& s);
 
 private:
-	void findAreaParameters(const QVector<Border>& Borders);
+	void findAreaParameters();
+	void findLengthHeight();
+	void findMinimalDistances();
+	void findStep();
 	void makeGrid();
-	void drawBorders(const QVector<Border>& Borders, int accuracy = 200);
+	void drawBorders(int accuracy = 200);
 	void paintBlankArea(QVector<QPoint>& vector1, QVector<QPoint>& vector2);
 
 	QPoint pToGp(const Point& p);
