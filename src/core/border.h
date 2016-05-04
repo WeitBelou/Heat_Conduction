@@ -2,27 +2,24 @@
 #define BORDER_H
 
 #include <QTextStream>
-#include "point.h"
+#include <QPointF>
+#include <QLineF>
 
-class Border
+class Border : QLineF
 {
 public:
 	Border();
-	Border(Point first, Point second, double u);
-	~Border();
+	Border(QLineF line, double u);
+	Border(QPointF p1, QPointF p2, double u);
 
-	const Point first() const;
-	const Point second() const;
 	double u() const;
-
-	bool checkIntersect(const Border &b) const;
+	void setU(double u);
 
 	friend QTextStream &operator<<(QTextStream &os, const Border &b);
 	friend QTextStream &operator>>(QTextStream &is, Border &b);
+
 private:
-	Point m_first, m_second;
 	double m_u;
 };
-
 
 #endif // BORDER_H

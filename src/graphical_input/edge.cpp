@@ -96,10 +96,7 @@ double Edge::u() const
 
 Border Edge::toBorder()
 {
-	Point first(sourcePoint().x(), sourcePoint().y());
-	Point second(destPoint().x(), destPoint().y());
-
-	return Border(first, second, m_u);
+	return Border(m_sourcePoint, m_destPoint, m_u);
 }
 
 

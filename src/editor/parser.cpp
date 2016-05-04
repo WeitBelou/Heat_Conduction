@@ -146,9 +146,10 @@ void onePolyCheck(const QVector<Border> & data)
 		throw ParseError("First point must be equal to last");
 	}
 
+	QPointF tmp;
 	for (int i = 0; i < data.size(); i++) {
 		for (int j = i; j < data.size(); j++) {
-			if (data[i].checkIntersect(data[j])) {
+			if (data[i].intersect(data[j], &tmp)) {
 				QString what("Borders intersect");
 				QString where = QString("On lines: %1 and %2").arg(i + 1, j + 1);
 				throw ParseError(what, where);
@@ -162,9 +163,10 @@ void twoPolyCheck(const QVector<Border> & a, const QVector<Border> & b)
 	int N = a.size();
 	int M = b.size();
 
+	QPointF tmp;
 	for (int i = 0; i < N; i++) {
 		for (int j = 0; j < M; j++) {
-			if (a[i].checkIntersect(b[j])) {
+			if (a[i].intersect(b[j], &tmp)) {
 				QString what("Polygons intersect");
 				QString where = QString("On lines: %1 and %2").arg(i + 1).arg(j + 1);
 				throw ParseError(what, where);
