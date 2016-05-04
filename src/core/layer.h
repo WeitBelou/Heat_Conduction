@@ -186,13 +186,9 @@ inline QTextStream & operator <<(QTextStream & os, const TemperatureField & tF)
 	int jMax = tF.jMax();
 	for (int i = 0; i < iMax; ++i){
 		for (int j = 0; j < jMax; ++j) {
-			if (tF(i, j)) {
-				os << QChar(0x25A0);
-			}
-			else {
-				os << QChar(0x25A1);
-			}
+			os << tF(i, j) << " ";
 		}
+		os << "\b";
 		os << endl;
 	}
 
