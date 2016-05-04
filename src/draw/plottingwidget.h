@@ -14,6 +14,7 @@ public:
 
 public slots:
 	void setData(const TFDynamics &data);
+	void setDataFromFile(const QFile & file);
 
 private slots:
 	void startDrawing();

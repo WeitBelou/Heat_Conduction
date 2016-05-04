@@ -3,7 +3,7 @@
 PlottingWidget::PlottingWidget(QWidget *parent) : QWidget(parent),
 	m_data()
 {
-	setMinimumSize(400, 400);
+	setMinimumSize(500, 500);
 	createCentral();
 	createPlot();
 	createControls();
@@ -34,6 +34,11 @@ void PlottingWidget::setData(const TFDynamics& data)
 	m_tStep = m_data.tStep();
 
 	plot->rescaleAxes();
+}
+
+void PlottingWidget::setDataFromFile(const QFile & file)
+{
+
 }
 
 void PlottingWidget::startDrawing()
@@ -125,12 +130,13 @@ void PlottingWidget::createPlot()
 void PlottingWidget::createControls()
 {
 	slider = new QSlider(Qt::Horizontal, this);
+	slider->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Ignored);
 	slider->setMinimum(0);
 	slider->setMaximum(1);
 	slider->setValue(0);
 
 	lcdTime = new QLCDNumber(this);
-	lcdTime->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Maximum);
+	lcdTime->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 
 	connect(slider, &QSlider::valueChanged, this, &PlottingWidget::setCurrentIndex);
 	connect(slider, &QSlider::valueChanged, this, &PlottingWidget::drawCurrentLayer);
