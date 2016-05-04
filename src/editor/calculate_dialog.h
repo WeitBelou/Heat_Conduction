@@ -48,17 +48,19 @@ private:
 	QLabel * tStepLabel;
 	QDoubleSpinBox * tStepEdit;
 
-	QPushButton * calculateButton;
+	QPushButton * okButton;
 	QPushButton * cancelButton;
 
 	QProgressBar * progress;
 
-	QTextBrowser * log;
+	QPlainTextEdit * log;
 
 	QComboBox * materialChooser;
 
 	double tMax;
 	double tStep;
+
+	bool isDone;
 };
 
 #endif // CALCULATE_DIALOG_H

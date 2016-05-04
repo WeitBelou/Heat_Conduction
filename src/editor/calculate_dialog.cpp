@@ -18,9 +18,10 @@ CalculateDialog::CalculateDialog(const QVector<QVector<Border> > & value, QWidge
 
 void CalculateDialog::calculate()
 {
-	BorderInterpreter *  borderInterpreter = new BorderInterpreter(inputData, 10000);
+	BorderInterpreter *  borderInterpreter = new BorderInterpreter(inputData, 100);
 	connect(borderInterpreter, &BorderInterpreter::logSent,
 			this, &CalculateDialog::addLogMessage);
+	borderInterpreter->solve();
 
 	TFGeometry geom = borderInterpreter->workingArea();
 	delete borderInterpreter;
@@ -37,7 +38,7 @@ void CalculateDialog::calculate()
 	TFDynamics tmp = p->solve();
 	emit calculated(tmp);
 
-	accept();
+	isDone = true;
 }
 
 void CalculateDialog::cancel()
@@ -47,7 +48,7 @@ void CalculateDialog::cancel()
 
 void CalculateDialog::addLogMessage(const QString & s)
 {
-
+	log->appendPlainText(QString("%1\n").arg(s));
 }
 
 void CalculateDialog::setTStep(double value)
@@ -93,6 +94,8 @@ void CalculateDialog::createInput()
 
 	inputLayout->addRow(tMaxLabel, tMaxEdit);
 	inputLayout->addRow(tStepLabel, tStepEdit);
+
+	isDone = false;
 }
 
 void CalculateDialog::createButtons()
@@ -100,22 +103,32 @@ void CalculateDialog::createButtons()
 	buttons = new QHBoxLayout;
 	mainLayout->addItem(buttons);
 
-	calculateButton = new QPushButton(tr("Calculate"), this);
+	okButton = new QPushButton(tr("Calculate"), this);
 	cancelButton = new QPushButton(tr("Cancel"), this);
 
 	buttons->addStretch(1);
-	buttons->addWidget(calculateButton);
+	buttons->addWidget(okButton);
 	buttons->addWidget(cancelButton);
 
-	connect(calculateButton, &QPushButton::clicked, this, &CalculateDialog::calculate);
+	connect(okButton, &QPushButton::clicked, this, [=](){
+		if (isDone)
+			accept();
+		else
+			okButton->setText("Ok");
+			calculate();
+	});
+
 	connect(cancelButton, &QPushButton::clicked, this, &CalculateDialog::cancel);
 }
 
 void CalculateDialog::createProgress()
 {
+	isDone = false;
+
 	progress = new QProgressBar(this);
 
-	log = new QTextBrowser(this);
+	log = new QPlainTextEdit(this);
+	log->setReadOnly(true);
 
 	mainLayout->addWidget(progress);
 	mainLayout->addWidget(log);
