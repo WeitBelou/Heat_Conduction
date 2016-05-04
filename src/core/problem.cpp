@@ -139,19 +139,31 @@ TFDynamics Problem::solve() const
 
 	TFDynamics allLayers(temperatureFields, m_tStep, geometry.xStep(),
 						 geometry.yStep());
-
+	std::ofstream fout;
+	fout.open("Layers.txt");
 	for (int t = 0; t < tMax; ++t)
 	{
 		if (isBreak) {
 			return TFDynamics();
 		}
 
+		for (int i = 0; i<geometry.iMax(); i++)
+		{
+			for (int j = 0; j< geometry.jMax()-1; j++)
+			{
+				fout << m_matrix[i][j] << " ";
+			}
+			fout << m_matrix[i][(geometry.jMax())-1];
+			fout << std::endl;
+		}
+		if ( t != (tMax-1))
+			fout << "*" << std::endl;
 		allLayers.push_back(nextTF(allLayers[t]));
 		double executionState = double(t)/double(tMax);
 		emit layerCalcDone(executionState);
 	}
 	emit layerCalcDone(1);
-
+	fout.close();
 return allLayers;
 }
 
