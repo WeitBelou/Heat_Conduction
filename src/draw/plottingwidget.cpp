@@ -3,6 +3,7 @@
 PlottingWidget::PlottingWidget(QWidget *parent) : QWidget(parent),
 	m_data()
 {
+	setMinimumSize(400, 400);
 	createCentral();
 	createPlot();
 	createControls();
