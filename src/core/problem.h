@@ -1,14 +1,12 @@
 #ifndef PROBLEM_H
 #define PROBLEM_H
+#include <QObject>
+#include <QVector>
+
 #include "material.h"
 #include "tfdynamics.h"
 #include "tfgeometry.h"
-#include <QObject>
-#include "./tfdynamics.h"
-#include "./layer.h"
-#include <QVector>
-#include <exception>
-#include <iostream>
+#include "layer.h"
 
 class Problem: public QObject
 {
@@ -37,7 +35,7 @@ private:
 	double By;
 
 signals:
-	void oneLayerCalcSignal(double executionState) const;
+	void layerCalcDone(double executionState) const;
 public slots:
 };
 

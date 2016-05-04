@@ -3,8 +3,8 @@
 
 #include <QtWidgets>
 #include "qcustomplot.h"
-#include "../core/layer.h"
-#include "../core/tfdynamics.h"
+#include "core/layer.h"
+#include "core/tfdynamics.h"
 
 class PlottingWidget : public QWidget
 {
@@ -37,6 +37,7 @@ private:
 	QVBoxLayout * main;
 	QHBoxLayout * down;
 
+	QLCDNumber * lcdTime;
 	QSlider * slider;
 	QPushButton * play;
 	QPushButton * pause;

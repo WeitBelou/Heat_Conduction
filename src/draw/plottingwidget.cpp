@@ -11,7 +11,6 @@ PlottingWidget::PlottingWidget(QWidget *parent) : QWidget(parent)
 	loop = new QTimer(this);
 	connect(loop, &QTimer::timeout, this,
 			[this](){slider->setValue(this->currentIndex() + 1);});
-	setCurrentIndex(0);
 	m_tStep = 1;
 
 }
@@ -22,7 +21,7 @@ void PlottingWidget::setData(const TFDynamics& data)
 
 	m_iMax = m_data.temperatureFields()[0].iMax();
 	m_jMax = m_data.temperatureFields()[0].jMax();
-	m_tMax = m_data.temperatureFields().size();
+	m_tMax = m_data.temperatureFields().size() - 1;
 
 	double xSize = m_iMax * m_data.xStep();
 	double ySize = m_jMax * m_data.yStep();
@@ -43,10 +42,10 @@ void PlottingWidget::setData(const TFDynamics& data)
 
 	colorMap->data()->setSize(iMax, jMax);
 
-	slider->setMaximum(m_data.temperatureFields().size() - 1);
+	slider->setMaximum(m_tMax);
 	slider->setValue(0);
 
-	m_tStep = 10.0 / m_tMax;
+	m_tStep = m_data.tStep();
 
 	plot->rescaleAxes();
 }
@@ -54,12 +53,12 @@ void PlottingWidget::setData(const TFDynamics& data)
 void PlottingWidget::startDrawing()
 {
 	loop->stop();
-	int dt = static_cast<int>(m_tStep * 1000);
+	int dt = static_cast<int>(10000.0 / m_tMax);
 	if (dt == 0) {
 		dt = 1;
 	}
 
-	if (currentIndex() < m_tMax - 1) {
+	if (currentIndex() < m_tMax) {
 		slider->setValue(currentIndex() + 1);
 		loop->stop();
 	}
@@ -80,6 +79,10 @@ void PlottingWidget::stopDrawing()
 
 void PlottingWidget::drawCurrentLayer()
 {
+	if (m_data.temperatureFields().isEmpty()) {
+		return;
+	}
+
 	double x, y, z;
 
 	double xSize = m_iMax * m_data.xStep();
@@ -143,8 +146,6 @@ void PlottingWidget::createPlot()
 	plot->axisRect()->setMarginGroup(QCP::msBottom|QCP::msTop, marginGroup);
 	colorScale->setMarginGroup(QCP::msBottom|QCP::msTop, marginGroup);
 
-//	plot->rescaleAxes();
-
 	layout()->addWidget(plot);
 }
 
@@ -155,6 +156,15 @@ void PlottingWidget::createControls()
 	slider->setMaximum(1);
 	slider->setValue(0);
 
+	lcdTime = new QLCDNumber(this);
+	lcdTime->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Maximum);
+
+	connect(slider, &QSlider::valueChanged, this, &PlottingWidget::setCurrentIndex);
+	connect(slider, &QSlider::valueChanged, this, &PlottingWidget::drawCurrentLayer);
+	connect(slider, &QSlider::valueChanged, lcdTime, [=](int i) {
+		lcdTime->display(m_tStep * i);
+	});
+
 	play = new QPushButton("Play", this);
 	pause = new QPushButton("Pause", this);
 	stop = new QPushButton("Stop", this);
@@ -163,13 +173,12 @@ void PlottingWidget::createControls()
 	down->addWidget(pause);
 	down->addWidget(stop);
 	down->addWidget(slider);
+	down->addWidget(lcdTime, Qt::AlignRight);
 
 
 	connect(play, &QPushButton::clicked, this, &PlottingWidget::startDrawing);
 	connect(pause, &QPushButton::clicked, this, &PlottingWidget::pauseDrawing);
 	connect(stop, &QPushButton::clicked, this, &PlottingWidget::stopDrawing);
-	connect(slider, &QSlider::valueChanged, this, &PlottingWidget::setCurrentIndex);
-	connect(slider, &QSlider::valueChanged, this, &PlottingWidget::drawCurrentLayer);
 }
 
 int PlottingWidget::currentIndex() const

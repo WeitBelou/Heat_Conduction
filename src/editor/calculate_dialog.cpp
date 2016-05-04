@@ -30,7 +30,7 @@ void CalculateDialog::calculate()
 
 	Problem * p =  new Problem(m, geom, tMax, tStep, this);
 
-	connect(p, &Problem::oneLayerCalcSignal, [=](double percent){
+	connect(p, &Problem::layerCalcDone, [=](double percent){
 		qApp->processEvents();
 		progress->setValue(100 * percent);
 	});

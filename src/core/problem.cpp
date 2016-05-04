@@ -7,7 +7,6 @@
 #include "./layer.h"
 #include <QVector>
 
-#include <iostream>
 #include <omp.h>
 #include <time.h>
 Problem::Problem(QObject *parent) : QObject(parent)
@@ -132,9 +131,8 @@ const TemperatureField Problem::nextTF(const TemperatureField & current) const
 
 TFDynamics Problem::solve() const
 {
-	int tMax = m_tMax/m_tStep;
+	int tMax = m_tMax / m_tStep;
 
-	double t1 = time(0);
 	QVector<TemperatureField> temperatureFields;
 	temperatureFields.reserve(tMax + 1);
 	temperatureFields.push_back(geometry.zeroLayer());
@@ -146,10 +144,9 @@ TFDynamics Problem::solve() const
 	{
 		allLayers.push_back(nextTF(allLayers[t]));
 		double executionState = double(t)/double(tMax);
-		emit oneLayerCalcSignal(executionState);
+		emit layerCalcDone(executionState);
 	}
-	double t2 = time(0);
-	std::cout << t2-t1 << std::endl;
+	emit layerCalcDone(1);
 
 return allLayers;
 }
