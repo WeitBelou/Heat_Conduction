@@ -6,7 +6,7 @@
 #include "./tfdynamics.h"
 #include "./layer.h"
 #include <QVector>
-
+#include <fstream>
 #include <omp.h>
 #include <time.h>
 Problem::Problem(QObject *parent) : QObject(parent)
@@ -139,6 +139,8 @@ TFDynamics Problem::solve() const
 
 	TFDynamics allLayers(temperatureFields, m_tStep, geometry.xStep(),
 						 geometry.yStep());
+	TemperatureField temp;
+
 	std::ofstream fout;
 	fout.open("Layers.txt");
 	for (int t = 0; t < tMax; ++t)
@@ -146,19 +148,19 @@ TFDynamics Problem::solve() const
 		if (isBreak) {
 			return TFDynamics();
 		}
-
+		temp = nextTF(allLayers[t]);
 		for (int i = 0; i<geometry.iMax(); i++)
 		{
 			for (int j = 0; j< geometry.jMax()-1; j++)
 			{
-				fout << m_matrix[i][j] << " ";
+				fout << temp(i,j) << " ";
 			}
-			fout << m_matrix[i][(geometry.jMax())-1];
+			fout << temp(i,((geometry.jMax())-1));
 			fout << std::endl;
 		}
 		if ( t != (tMax-1))
 			fout << "*" << std::endl;
-		allLayers.push_back(nextTF(allLayers[t]));
+		allLayers.push_back(temp);
 		double executionState = double(t)/double(tMax);
 		emit layerCalcDone(executionState);
 	}
