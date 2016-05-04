@@ -15,8 +15,9 @@
 #include "border.h"
 #include <limits>
 #include <cmath>
-#include <QPoint>
+#include <QPointF>
 #include <QVector>
+
 
 
 class BorderInterpreter : public QObject
@@ -25,7 +26,7 @@ class BorderInterpreter : public QObject
 public:
 	explicit BorderInterpreter(QObject * parent = 0);
 	BorderInterpreter(const QVector<Border> & borders,
-					   const int maxPointsPerDimension = 10000,
+					   const int maxPointsPerDimension = 700,
 					   const int minPointsPerDimension = 100,
 					   const int minPointsBetweenBorders = 10,
 					   QObject* parent = 0);
