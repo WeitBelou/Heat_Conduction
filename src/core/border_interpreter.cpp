@@ -158,26 +158,31 @@ void BorderInterpreter::findStep()
 	else if((length / xMinDist) > m_maxPointsPerDimension)
 		xMinDist = length / m_maxPointsPerDimension;
 
+	emit logSent(QString("1: x minimal distance - %1, y minimal distance - %2").arg(xMinDist).arg(yMinDist));
+
 	if((height / yMinDist) < m_minPointsPerDimension)
 		yMinDist = height / m_minPointsPerDimension;
 	else if((height / yMinDist) > m_maxPointsPerDimension)
 		yMinDist = height / m_maxPointsPerDimension;
 
+	emit logSent(QString("2: x minimal distance - %1, y minimal distance - %2").arg(xMinDist).arg(yMinDist));
+
 	xMinDist = std::min(xMinDist, yMinDist);
 	yMinDist = std::min(xMinDist, yMinDist);
 
-	if(xMinDist > yMinDist) {
-		xMinDist = yMinDist;
-		if((length / xMinDist) > m_maxPointsPerDimension) {
-			xMinDist = yMinDist = length / m_maxPointsPerDimension;
-		}
+	emit logSent(QString("3: x minimal distance - %1, y minimal distance - %2").arg(xMinDist).arg(yMinDist));
+
+	if((length / xMinDist) > m_maxPointsPerDimension) {
+		xMinDist = length / m_maxPointsPerDimension;
+		yMinDist = length / m_maxPointsPerDimension;
 	}
-	else {
-		yMinDist = xMinDist;
-		if((height / yMinDist) > m_maxPointsPerDimension) {
-			yMinDist = xMinDist = height / m_maxPointsPerDimension;
-		}
+
+	if((height / yMinDist) > m_maxPointsPerDimension) {
+		xMinDist = height / m_maxPointsPerDimension;
+		yMinDist = height / m_maxPointsPerDimension;
 	}
+
+	emit logSent(QString("4: x minimal distance - %1, y minimal distance - %2").arg(xMinDist).arg(yMinDist));
 
 	m_workingArea.setXStep(xMinDist);
 	m_workingArea.setYStep(yMinDist);
