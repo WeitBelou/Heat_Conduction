@@ -3,8 +3,6 @@
 PlottingWidget::PlottingWidget(QWidget *parent) : QWidget(parent),
 	m_data()
 {
-	setMinimumSize(500, 500);
-
 	createCentral();
 	createPlot();
 	createControls();
@@ -24,24 +22,10 @@ void PlottingWidget::setData(const TFDynamics& data)
 	m_jMax = m_data.temperatureFields()[0].jMax();
 	m_tMax = m_data.temperatureFields().size() - 1;
 
-	double xSize = m_iMax * m_data.xStep();
-	double ySize = m_jMax * m_data.yStep();
-	double iMax = m_iMax;
-	double jMax = m_jMax;
+	colorMap->data()->setRange(QCPRange(0, m_data.xStep() * m_iMax),
+							   QCPRange(0, m_data.yStep() * m_jMax));
 
-	if (xSize > ySize) {
-		jMax = static_cast<int>(iMax * (xSize / ySize));
-		ySize = xSize;
-	}
-	else {
-		iMax = static_cast<int>(jMax * (ySize / xSize));
-		xSize = ySize;
-	}
-
-	colorMap->data()->setRange(QCPRange(0, xSize),
-							   QCPRange(0, ySize));
-
-	colorMap->data()->setSize(iMax, jMax);
+	colorMap->data()->setSize(m_iMax, m_jMax);
 
 	slider->setMaximum(m_tMax);
 	slider->setValue(0);
@@ -90,29 +74,12 @@ void PlottingWidget::drawCurrentLayer()
 
 	double x, y, z;
 
-	double xSize = m_iMax * m_data.xStep();
-	double ySize = m_jMax * m_data.yStep();
-	double iMax = m_iMax;
-	double jMax = m_jMax;
-
-	if (xSize > ySize) {
-		jMax = static_cast<int>(iMax * (xSize / ySize));
-	}
-	else {
-		iMax = static_cast<int>(jMax * (ySize / xSize));
-	}
-
-	for (int i = 0; i < iMax; ++i)
+	for (int i = 0; i < m_iMax; ++i)
 	{
-	  for (int j = 0; j < jMax; ++j)
+	  for (int j = 0; j < m_jMax; ++j)
 	  {
 		colorMap->data()->cellToCoord(i, j, &x, &y);
-		if (i > m_iMax - 1 || j > m_jMax - 1 ) {
-			z = 0;
-		}
-		else{
-			z = m_data.temperatureFields()[currentIndex()](i, j);
-		}
+		z = m_data.temperatureFields()[currentIndex()](i, j);
 		colorMap->data()->setCell(i, j, z);
 	  }
 	}
