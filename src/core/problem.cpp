@@ -17,7 +17,7 @@ Problem::Problem(QObject *parent) : QObject(parent)
 
 Problem::Problem(const Material & material, const TFGeometry & geometry,
 		double tMax, double tStep, QObject *parent) : QObject(parent),
-	material(material), geometry(geometry)
+	material(material), geometry(geometry), isBreak(false)
 {
 	m_tMax = tMax;
 	m_tStep = tStep;
@@ -140,8 +140,12 @@ TFDynamics Problem::solve() const
 	TFDynamics allLayers(temperatureFields, m_tStep, geometry.xStep(),
 						 geometry.yStep());
 
-	for (int t = 0; t < tMax; t ++)
+	for (int t = 0; t < tMax; ++t)
 	{
+		if (isBreak) {
+			return TFDynamics();
+		}
+
 		allLayers.push_back(nextTF(allLayers[t]));
 		double executionState = double(t)/double(tMax);
 		emit layerCalcDone(executionState);
@@ -159,5 +163,5 @@ Problem::~Problem()
 
 void Problem::stopCalc()
 {
-
+	isBreak = true;
 }

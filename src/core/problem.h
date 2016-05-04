@@ -37,6 +37,8 @@ private:
 	double Cy;
 	double By;
 
+	bool isBreak;
+
 signals:
 	void layerCalcDone(double executionState) const;
 public slots:
