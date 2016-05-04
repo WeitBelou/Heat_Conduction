@@ -46,7 +46,7 @@ private:
 	void drawBorders(int accuracy = 200);
 	void paintBlankArea(QVector<QPoint>& vector1, QVector<QPoint>& vector2);
 
-	QPoint pToGp(const Point& p);
+	QPoint pToGp(const QPointF& p);
 	QPoint movePoint(const QPoint& p1, const QPoint& p2);
 
 	void putPoint(const QPoint& p, const double& u);

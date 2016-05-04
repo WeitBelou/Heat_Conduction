@@ -30,9 +30,9 @@ void Border::setU(double u)
 
 QTextStream &operator<<(QTextStream &os, const Border &b)
 {
-	os << "(" << b.x1() << ", " << b.y1() << ")" <<
-		  "(" << b.x2() << ", " << b.y2() << ")" <<
-		  " " << b.u();
+	os << "(" << b.x1() << ", " << b.y1() << ")" << " " <<
+		  "(" << b.x2() << ", " << b.y2() << ")" << " " <<
+		  b.u();
 
 	return os;
 }
@@ -45,15 +45,20 @@ QTextStream &operator>>(QTextStream &is, Border &b)
 	is >> ch;
 	is >> x1;
 	is >> ch;
+	is.skipWhiteSpace();
 	is >> y1;
 	is >> ch;
+
+	is.skipWhiteSpace();
 
 	is >> ch;
 	is >> x2;
 	is >> ch;
+	is.skipWhiteSpace();
 	is >> y2;
 	is >> ch;
 
+	is.skipWhiteSpace();
 	is >> u;
 
 	b.setLine(x1, y1, x2, y2);
