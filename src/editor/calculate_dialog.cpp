@@ -21,7 +21,7 @@ void CalculateDialog::calculate()
 	okButton->setDisabled(true);
 
 	isCalculating = true;
-	BorderInterpreter *  borderInterpreter = new BorderInterpreter(inputData, 100);
+	BorderInterpreter *  borderInterpreter = new BorderInterpreter(inputData);
 	connect(borderInterpreter, &BorderInterpreter::logSent,
 			this, &CalculateDialog::addLogMessage);
 	borderInterpreter->solve();
