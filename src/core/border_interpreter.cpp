@@ -101,29 +101,21 @@ void BorderInterpreter::findAreaParameters()
 
 void BorderInterpreter::findLengthHeight()
 {
-	xMax = xMin = borders[0].first().x();
-	yMax = yMin = borders[0].first().y();
+	xMax = xMin = borders[0].x1();
+	yMax = yMin = borders[0].y1();
 
 	for(int i = 0, max = borders.size(); i < max; i++) {
-		if(xMax < borders[i].first().x())
-			xMax = borders[i].first().x();
-		if(xMax < borders[i].second().x())
-			xMax = borders[i].first().x();
+		if(xMax < borders[i].x1())
+			xMax = borders[i].x1();
 
-		if(yMax < borders[i].first().y())
-			yMax = borders[i].first().y();
-		if(yMax < borders[i].second().y())
-			yMax = borders[i].first().y();
+		if(yMax < borders[i].y1())
+			yMax = borders[i].y1();
 
-		if(xMin > borders[i].first().x())
-			xMin = borders[i].first().x();
-		if(xMin > borders[i].second().x())
-			xMin = borders[i].first().x();
+		if(xMin > borders[i].x1())
+			xMin = borders[i].x1();
 
-		if(yMin > borders[i].first().y())
-			yMin = borders[i].first().y();
-		if(yMin > borders[i].second().y())
-			yMin = borders[i].first().y();
+		if(yMin > borders[i].y1())
+			yMin = borders[i].y1();
 	}
 
 	length = xMax - xMin;
@@ -137,12 +129,12 @@ void BorderInterpreter::findMinimalDistances()
 
 	for(int i = 0, max = borders.size(); i < max; i++) {
 		for(int j = i+1, max = borders.size(); j < max; j++) {
-			if(fabs(borders[j].first().x() - borders[i].first().x()) < xMinDist &&
-					fabs(borders[j].first().x() - borders[i].first().x()) > length / m_maxPointsPerDimension)
-				xMinDist = fabs(borders[j].first().x() - borders[i].first().x());
-			if(fabs(borders[j].first().y() - borders[i].first().y()) < yMinDist &&
-					fabs(borders[j].first().y() - borders[i].first().y()) > height / m_maxPointsPerDimension)
-				yMinDist = fabs(borders[j].first().y() - borders[i].first().y());
+			if(fabs(borders[j].x1() - borders[i].x1()) < xMinDist &&
+					fabs(borders[j].x1() - borders[i].x1()) > length / m_maxPointsPerDimension)
+				xMinDist = fabs(borders[j].x1() - borders[i].x1());
+			if(fabs(borders[j].y1() - borders[i].y1()) < yMinDist &&
+					fabs(borders[j].y1() - borders[i].y1()) > height / m_maxPointsPerDimension)
+				yMinDist = fabs(borders[j].y1() - borders[i].y1());
 		}
 	}
 
@@ -219,8 +211,8 @@ void BorderInterpreter::drawBorders(int accuracy)
 	//линий границ на множество меньших линий границ
 	for(Border b: borders) {
 
-		QPoint p1 = pToGp(b.first());
-		QPoint pEnd = pToGp(b.second());
+		QPoint p1 = pToGp(b.p1());
+		QPoint pEnd = pToGp(b.p2());
 
 		//разбиение отрезка границы на отрезки подграниц
 		int numberOfSublines = accuracy * sqrt(
@@ -252,7 +244,7 @@ void BorderInterpreter::drawBorders(int accuracy)
 }
 
 //Перевод точки из абсолютной системы в сетку
-QPoint BorderInterpreter::pToGp(const Point& p)
+QPoint BorderInterpreter::pToGp(const QPointF& p)
 {
 	return QPoint(	(p.x() - xMin) / m_workingArea.xStep(),
 						(p.y() - yMin) / m_workingArea.yStep());

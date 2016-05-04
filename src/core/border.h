@@ -5,7 +5,7 @@
 #include <QPointF>
 #include <QLineF>
 
-class Border : QLineF
+class Border : public QLineF
 {
 public:
 	Border();

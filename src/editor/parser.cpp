@@ -2,6 +2,7 @@
  */
 
 #include "parser.h"
+#include <QtMath>
 using namespace Parser;
 
 QVector<QVector<Border>> MultiParse( QString src ){
@@ -127,14 +128,14 @@ void onePolyCheck(const QVector<Border> & data)
 {
 	int N = data.size();
 	for (int i = 1; i < N; i++) {
-		if (data[i - 1].second() != data[i].first()) {
+		if (data[i - 1].p2() != data[i].p1()) {
 			QString what("Region must be closed");
 			QString where = QString("On lines: %1 and %2").arg(i, i + 1);
 
 			throw ParseError(what, where);
 		}
 
-		if (data[i - 1].first() == data[i - 1].second()) {
+		if (data[i - 1].p1() == data[i - 1].p2()) {
 			QString what("Border can\'t be one point");
 			QString where = QString("On line: %1").arg(i + 1);
 
@@ -142,14 +143,17 @@ void onePolyCheck(const QVector<Border> & data)
 		}
 	}
 
-	if (data.front().first() != data.back().second()) {
+	if (data.front().p1() != data.back().p2()) {
 		throw ParseError("First point must be equal to last");
 	}
 
 	QPointF tmp;
 	for (int i = 0; i < data.size(); i++) {
 		for (int j = i; j < data.size(); j++) {
-			if (data[i].intersect(data[j], &tmp)) {
+			if (data[i].intersect(data[j], &tmp) == QLineF::BoundedIntersection) {
+				if (tmp == data[i].p2() || tmp == data[j].p2()) {
+					continue;
+				}
 				QString what("Borders intersect");
 				QString where = QString("On lines: %1 and %2").arg(i + 1, j + 1);
 				throw ParseError(what, where);
@@ -166,7 +170,7 @@ void twoPolyCheck(const QVector<Border> & a, const QVector<Border> & b)
 	QPointF tmp;
 	for (int i = 0; i < N; i++) {
 		for (int j = 0; j < M; j++) {
-			if (a[i].intersect(b[j], &tmp)) {
+			if (a[i].intersect(b[j], &tmp) == QLineF::BoundedIntersection) {
 				QString what("Polygons intersect");
 				QString where = QString("On lines: %1 and %2").arg(i + 1).arg(j + 1);
 				throw ParseError(what, where);
