@@ -1,6 +1,7 @@
 #include "plottingwidget.h"
 
-PlottingWidget::PlottingWidget(QWidget *parent) : QWidget(parent)
+PlottingWidget::PlottingWidget(QWidget *parent) : QWidget(parent),
+	m_data()
 {
 	setMinimumSize(500, 500);
 
@@ -52,6 +53,10 @@ void PlottingWidget::setData(const TFDynamics& data)
 
 void PlottingWidget::startDrawing()
 {
+	if (m_data.temperatureFields().isEmpty()) {
+		return;
+	}
+
 	loop->stop();
 	int dt = static_cast<int>(10000.0 / m_tMax);
 	if (dt == 0) {

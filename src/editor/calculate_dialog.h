@@ -37,6 +37,7 @@ private:
 	void createProgress();
 
 	QVector<Border> inputData;
+	TFDynamics outputData;
 
 	QVBoxLayout * mainLayout;
 	QFormLayout * inputLayout;
@@ -61,6 +62,7 @@ private:
 	double tStep;
 
 	bool isDone;
+	bool isCalculating;
 };
 
 #endif // CALCULATE_DIALOG_H

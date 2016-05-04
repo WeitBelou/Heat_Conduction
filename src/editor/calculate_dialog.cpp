@@ -18,6 +18,9 @@ CalculateDialog::CalculateDialog(const QVector<QVector<Border> > & value, QWidge
 
 void CalculateDialog::calculate()
 {
+	okButton->setDisabled(true);
+
+	isCalculating = true;
 	BorderInterpreter *  borderInterpreter = new BorderInterpreter(inputData, 100);
 	connect(borderInterpreter, &BorderInterpreter::logSent,
 			this, &CalculateDialog::addLogMessage);
@@ -35,15 +38,20 @@ void CalculateDialog::calculate()
 		progress->setValue(100 * percent);
 	});
 
-	TFDynamics tmp = p->solve();
-	emit calculated(tmp);
+	connect(cancelButton, &QPushButton::clicked, p, &Problem::stopCalc);
+
+	outputData = p->solve();
 
 	isDone = true;
+	isCalculating = false;
+	okButton->setDisabled(false);
 }
 
 void CalculateDialog::cancel()
 {
-	reject();
+	if (!isCalculating) {
+		reject();
+	}
 }
 
 void CalculateDialog::addLogMessage(const QString & s)
@@ -96,6 +104,7 @@ void CalculateDialog::createInput()
 	inputLayout->addRow(tStepLabel, tStepEdit);
 
 	isDone = false;
+	isCalculating = false;
 }
 
 void CalculateDialog::createButtons()
@@ -111,8 +120,10 @@ void CalculateDialog::createButtons()
 	buttons->addWidget(cancelButton);
 
 	connect(okButton, &QPushButton::clicked, this, [=](){
-		if (isDone)
+		if (isDone) {
+			emit calculated(outputData);
 			accept();
+		}
 		else
 			okButton->setText("Ok");
 			calculate();
