@@ -13,27 +13,33 @@ BorderInterpreter::BorderInterpreter(QObject *parent)
 }
 
 //Основной конструктор
-BorderInterpreter::BorderInterpreter(const QVector<Border>& Borders,
+BorderInterpreter::BorderInterpreter(const QVector<Border>& borders,
 					const int maxPointsPerDimension,
 					const int minPointsPerDimension,
 					const int minPointsBetweenBorders, QObject *parent)
 	: QObject(parent),
 	m_maxPointsPerDimension(maxPointsPerDimension),
 	m_minPointsPerDimension(minPointsPerDimension),
-	m_minPointsBetweenBorders(minPointsBetweenBorders)
+	m_minPointsBetweenBorders(minPointsBetweenBorders),
+	borders(borders)
+{
+
+}
+
+void BorderInterpreter::solve()
 {
 
 	emit logSent(QString("Start border interpretation"));
 
 
 	//рассчёт параметров области построения
-	findAreaParameters(Borders);
+	findAreaParameters(borders);
 
 	//создание сетки
 	makeGrid();
 
 	//нанесение границ
-	drawBorders(Borders, 600);
+	drawBorders(borders, 600);
 
 	//заполнение области вне тела
 	QVector<QPoint> vector1;
@@ -165,7 +171,7 @@ void BorderInterpreter::drawBorders(const QVector<Border>& Borders, int accuracy
 			numberOfSublines = 1;
 
 
-		QPoint * p2 = new QPoint[numberOfSublines];
+		QPoint* p2 = new QPoint[numberOfSublines];
 		for(int i = 0; i < numberOfSublines - 1; i++) {
 			p2[i] = p1 + (pEnd - p1)*( 1.0 * (i+1) / numberOfSublines);
 		}

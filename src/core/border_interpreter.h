@@ -24,16 +24,17 @@ class BorderInterpreter : public QObject
 	Q_OBJECT
 public:
 	explicit BorderInterpreter(QObject * parent = 0);
-	BorderInterpreter(const QVector<Border> & Borders,
+	BorderInterpreter(const QVector<Border> & borders,
 					   const int maxPointsPerDimension = 10000,
 					   const int minPointsPerDimension = 100,
 					   const int minPointsBetweenBorders = 10,
-					   QObject * parent = 0);
+					   QObject* parent = 0);
+	void solve();
 	~BorderInterpreter();
 	TFGeometry workingArea() const;
 
 	signals:
-	void logSent(const QString & s);
+	void logSent(const QString& s);
 
 private:
 	void findAreaParameters(const QVector<Border>& Borders);
@@ -51,6 +52,7 @@ private:
 	const int m_minPointsBetweenBorders;
 
 
+	QVector<Border> borders;
 	TFGeometry m_workingArea;
 	double xMax, xMin, yMax, yMin;
 	int iMax, jMax;
