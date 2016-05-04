@@ -18,8 +18,12 @@ CalculateDialog::CalculateDialog(const QVector<QVector<Border> > & value, QWidge
 
 void CalculateDialog::calculate()
 {
-	BorderInterpreter borderInterpreter(inputData, 100);
-	TFGeometry geom = borderInterpreter.workingArea();
+	BorderInterpreter *  borderInterpreter = new BorderInterpreter(inputData, 10000);
+	connect(borderInterpreter, &BorderInterpreter::logSent,
+			this, &CalculateDialog::addLogMessage);
+
+	TFGeometry geom = borderInterpreter->workingArea();
+	delete borderInterpreter;
 
 	Material m = materialChooser->itemData(materialChooser->currentIndex()).value<Material>();
 
@@ -39,6 +43,11 @@ void CalculateDialog::calculate()
 void CalculateDialog::cancel()
 {
 	reject();
+}
+
+void CalculateDialog::addLogMessage(const QString & s)
+{
+
 }
 
 void CalculateDialog::setTStep(double value)
@@ -106,7 +115,10 @@ void CalculateDialog::createProgress()
 {
 	progress = new QProgressBar(this);
 
+	log = new QTextBrowser(this);
+
 	mainLayout->addWidget(progress);
+	mainLayout->addWidget(log);
 }
 
 void CalculateDialog::setTMax(double value)

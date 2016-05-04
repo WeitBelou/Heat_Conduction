@@ -24,6 +24,8 @@ private slots:
 	void calculate();
 	void cancel();
 
+	void addLogMessage(const QString & s);
+
 	void setTMax(double value);
 	void setTStep(double value);
 
@@ -50,6 +52,8 @@ private:
 	QPushButton * cancelButton;
 
 	QProgressBar * progress;
+
+	QTextBrowser * log;
 
 	QComboBox * materialChooser;
 
