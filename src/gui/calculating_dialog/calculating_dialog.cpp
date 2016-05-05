@@ -20,6 +20,8 @@ CalculatingDialog::CalculatingDialog(const QVector<QVector<Border> > & value, QW
 void CalculatingDialog::calculate()
 {
 	okButton->setDisabled(true);
+	tMaxEdit->setDisabled(true);
+	tStepEdit->setDisabled(true);
 
 	isCalculating = true;
 	BorderInterpreter *  borderInterpreter = new BorderInterpreter(inputData);
