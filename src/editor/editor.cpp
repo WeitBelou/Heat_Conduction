@@ -1,6 +1,6 @@
 #include "editor.h"
 
-#include "gui/calculate_dialog.h"
+#include "calculate_dialog.h"
 
 #include "graphical_input/graphical_input_dialog.h"
 
