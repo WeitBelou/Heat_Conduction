@@ -141,7 +141,7 @@ TFDynamics Problem::solve() const
 	file.open(QIODevice::WriteOnly);
 
 	QDataStream sout(&file);
-	sout.setFloatingPointPrecision(QDataStream::DoublePrecision);
+	sout.setFloatingPointPrecision(QDataStream::SinglePrecision);
 	for (int t = 0; t < tMax; ++t)
 	{
 		if (isBreak) {

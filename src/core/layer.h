@@ -26,7 +26,7 @@ private:
 };
 
 typedef TemplateLayer<bool> BoolGrid;
-typedef TemplateLayer<double> TemperatureField;
+typedef TemplateLayer<float> TemperatureField;
 
 template <typename T>
 TemplateLayer<T>::TemplateLayer()
@@ -122,7 +122,7 @@ template <typename T >
 T TemplateLayer<T>::operator()(int i, int j) const
 {
 	if ((i > m_iMax-1) || (j > m_jMax-1) || (i < 0) || (j < 0))
-		throw std::range_error("Попытка получить температуру несуществующей точки ");
+		throw std::range_error("Try to get an access to point that doesn't exist");
 
 	return m_matrix[i][j];
 }
@@ -131,7 +131,7 @@ template <typename T>
 T & TemplateLayer<T>::operator()(int i, int j)
 {
 	if ((i > m_iMax-1) || (j > m_jMax-1) || (i < 0) || (j < 0))
-		throw std::range_error("Попытка получить температуру несуществующей точки");
+		throw std::range_error("Try to get an access to point that doesn't exist");
 
 	return m_matrix[i][j];
 }
@@ -200,7 +200,7 @@ inline QDataStream & operator >>(QDataStream & is, TemperatureField & tF)
 	int iMax = tF.iMax();
 	int jMax = tF.jMax();
 
-	double tmp;
+	float tmp;
 
 	for (int i = 0; i < iMax; ++i) {
 		for (int j = 0; j < jMax; ++j) {

@@ -54,7 +54,7 @@ void PlottingWidget::startDrawing()
 	file.open(QIODevice::ReadOnly);
 
 	str.setDevice(&file);
-	str.setFloatingPointPrecision(QDataStream::DoublePrecision);
+	str.setFloatingPointPrecision(QDataStream::SinglePrecision);
 
 	loop->stop();
 	int dt = static_cast<int>(10000.0 / m_tMax);
