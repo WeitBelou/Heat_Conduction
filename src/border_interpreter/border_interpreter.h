@@ -26,9 +26,9 @@ class BorderInterpreter : public QObject
 public:
 	explicit BorderInterpreter(QObject * parent = 0);
 	BorderInterpreter(const QVector<Border> & borders,
-					   const int maxPointsPerDimension = 300,
+					   const int maxPointsPerDimension = 500,
 					   const int minPointsPerDimension = 100,
-					   const int minPointsBetweenBorders = 5,
+					   const int minPointsBetweenBorders = 35,
 					   QObject* parent = 0);
 	void solve();
 	~BorderInterpreter();
