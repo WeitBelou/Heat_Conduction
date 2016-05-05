@@ -62,6 +62,7 @@ void PlottingWidget::setData(const TFDynamics& data)
 	plot->resize(xSize, ySize);
 	plot->rescaleAxes();
 	resize(plot->width(), plot->height() + play->height() + 10);
+	update();
 	plot->replot();
 }
 
