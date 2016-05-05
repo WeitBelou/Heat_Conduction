@@ -9,6 +9,7 @@
 #include <QFile>
 #include <omp.h>
 #include <time.h>
+#include <iostream>
 Problem::Problem(QObject *parent) : QObject(parent)
 {
 
@@ -50,9 +51,9 @@ const TemperatureField Problem::nextTF(const TemperatureField & current) const
 #pragma omp parallel for
 	for (int j = 0; j < jMax; j++ )
 	{
-		double F;
-		double newAlpha;
-		double newBeta;
+//		double F;
+//		double newAlpha;
+//		double newBeta;
 		for (int i = 0; i <iMax; i++)
 		{
 
@@ -61,11 +62,13 @@ const TemperatureField Problem::nextTF(const TemperatureField & current) const
 
 			if (geometry.idNet()(i, j))
 			{
-				newAlpha = Ay/(By-Cy*alpha(i-1,j));
-				alpha(i,j) = newAlpha;
-				F = -((rho*c)/m_tStep)*current(i,j);
-				newBeta = (Cy*beta(i-1,j)-F)/(By-Cy*alpha(i-1,j));
-				beta(i,j) = newBeta;
+//				newAlpha = Ay/(By-Cy*alpha(i-1,j));
+//				alpha(i,j) = newAlpha;
+//				F = -((rho*c)/m_tStep)*current(i,j);
+//				newBeta = (Cy*beta(i-1,j)-F)/(By-Cy*alpha(i-1,j));
+//				beta(i,j) = newBeta;
+				alpha(i,j) =  Ay/(By-Cy*alpha(i-1,j));
+				beta(i,j) = (Cy*beta(i-1,j)+((rho*c)/m_tStep)*current(i,j))/(By-Cy*alpha(i-1,j));
 			}
 
 		}
@@ -91,9 +94,9 @@ const TemperatureField Problem::nextTF(const TemperatureField & current) const
 #pragma omp parallel for
 	for (int i = 0; i < iMax; i++ ) //выбираем строку (движемся между строк)
 	{
-		double F;
-		double newAlpha;
-		double newBeta;
+//		double F;
+//		double newAlpha;
+//		double newBeta;
 		for (int j = 0; j <jMax; j++) // выбираем элемент в строке (движемся по строке)
 		{
 
@@ -102,11 +105,13 @@ const TemperatureField Problem::nextTF(const TemperatureField & current) const
 
 			if (geometry.idNet()(i, j))
 			{
-				newAlpha = Ax/(Bx-Cx*alpha(i,j-1));
-				alpha(i,j) = newAlpha;
-				F = -((rho*c)/m_tStep)*next(i,j);
-				newBeta = (Cx*beta(i,j-1)-F)/(Bx-Cx*alpha(i,j-1));
-				beta(i,j) = newBeta;
+//				newAlpha = Ax/(Bx-Cx*alpha(i,j-1));
+//				alpha(i,j) = newAlpha;
+//				F = -((rho*c)/m_tStep)*next(i,j);
+//				newBeta = (Cx*beta(i,j-1)-F)/(Bx-Cx*alpha(i,j-1));
+//				beta(i,j) = newBeta;
+				alpha(i,j) =  Ax/(Bx-Cx*alpha(i,j-1));
+				beta(i,j) = (Cx*beta(i,j-1)+((rho*c)/m_tStep)*current(i,j))/(Bx-Cx*alpha(i,j-1));
 			}
 
 		}
@@ -141,6 +146,7 @@ TFDynamics Problem::solve() const
 
 	QDataStream sout(&file);
 	sout.setFloatingPointPrecision(QDataStream::SinglePrecision);
+	int tS = time(NULL);
 	for (int t = 0; t < tMax; ++t)
 	{
 		if (isBreak) {
@@ -154,6 +160,8 @@ TFDynamics Problem::solve() const
 		double executionState = double(t)/double(tMax);
 		emit layerCalcDone(executionState);
 	}
+	int tE = time(NULL);
+	std::cout << tE-tS << std::endl;
 	emit layerCalcDone(1);
 	file.close();
 	return allLayers;
