@@ -14,8 +14,8 @@
 
 #include "border.h"
 
-QVector<QVector<Border>> MultiParse( QString src );
-QVector<Border> parsePlainText(QString src);
+QVector<QVector<Border>> multiParse( QString src );
+QVector<Border> parsePolygon(QString src);
 
 Border parseBorder(QString st);
 
