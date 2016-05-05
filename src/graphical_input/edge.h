@@ -2,7 +2,7 @@
 #define EDGE_H
 
 #include <QGraphicsItem>
-#include "core/border.h"
+#include "border.h"
 
 class Vertex;
 

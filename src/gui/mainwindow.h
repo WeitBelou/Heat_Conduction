@@ -1,14 +1,10 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "parser.h"
 #include <QtWidgets>
-#include "../core/layer.h"
-#include "../editor/editor.h"
-#include "../draw/plottingwidget.h"
-#include "../core/tfgeometry.h"
-#include "../core/tfdynamics.h"
-#include "../core/problem.h"
+#include "editor/editor.h"
+#include "plot/plottingwidget.h"
+
 
 class MainWindow : public QMainWindow
 {

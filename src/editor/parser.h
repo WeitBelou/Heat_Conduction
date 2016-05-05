@@ -14,7 +14,7 @@
 #include <QFile>
 #include <QRegExp>
 
-#include "../core/border.h"
+#include "border.h"
 
 QVector<QVector<Border>> MultiParse( QString src );
 QVector<Border> parsePlainText(QString src);

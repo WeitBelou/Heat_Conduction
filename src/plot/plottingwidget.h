@@ -3,8 +3,8 @@
 
 #include <QtWidgets>
 #include "qcustomplot.h"
-#include "core/layer.h"
-#include "core/tfdynamics.h"
+#include "layer.h"
+#include "tfdynamics.h"
 
 class PlottingWidget : public QMdiSubWindow
 {

@@ -1,5 +1,7 @@
 HEADERS += \
-	$$PWD/*.h
+    $$PWD/editor.h \
+    $$PWD/parser.h
 
 SOURCES += \
-	$$PWD/*.cpp
+    $$PWD/editor.cpp \
+    $$PWD/parser.cpp

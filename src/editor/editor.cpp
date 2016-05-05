@@ -1,5 +1,5 @@
 #include "editor.h"
-#include "calculate_dialog.h"
+#include "gui/calculate_dialog.h"
 
 Editor::Editor(QWidget *parent) : QWidget(parent)
 {

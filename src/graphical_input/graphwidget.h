@@ -3,7 +3,7 @@
 
 #include <QGraphicsView>
 #include <QtWidgets>
-#include <core/border.h>
+#include "border.h"
 
 class Vertex;
 
