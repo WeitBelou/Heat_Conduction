@@ -128,7 +128,7 @@ QString Editor::strippedName(const QString & fullFileName)
 bool Editor::parse()
 {
 	try {
-		inputData = MultiParse(plain->toPlainText());
+		inputData = multiParse(plain->toPlainText());
 		return true;
 	}
 	catch (ParseError & p) {
