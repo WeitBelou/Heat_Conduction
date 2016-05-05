@@ -90,7 +90,7 @@ void PlottingWidget::stopDrawing()
 
 void PlottingWidget::readNextLayer()
 {
-	if (currentIndex() < m_tMax - 1) {
+	if (!str.atEnd()) {
 		setCurrentIndex(currentIndex() + 1);
 		str >> currentField;
 	}
