@@ -138,10 +138,7 @@ void PlottingWidget::drawCurrentLayer()
 
 void PlottingWidget::createCentral()
 {
-	main = new QVBoxLayout();
-	setLayout(main);
 	down = new QHBoxLayout();
-
 	layout()->addItem(down);
 }
 
