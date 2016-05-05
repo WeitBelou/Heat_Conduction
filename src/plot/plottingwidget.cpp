@@ -61,7 +61,7 @@ void PlottingWidget::setData(const TFDynamics& data)
 
 	plot->resize(xSize, ySize);
 	plot->rescaleAxes();
-//	resize(plot->width(), plot->height() + play->height() + 10);
+	resize(plot->width(), plot->height() + play->height() + 10);
 	plot->replot();
 }
 
@@ -113,7 +113,6 @@ void PlottingWidget::readNextLayer()
 	}
 	else {
 		loop->stop();
-		setCurrentIndex(0);
 	}
 }
 
@@ -138,7 +137,8 @@ void PlottingWidget::drawCurrentLayer()
 
 void PlottingWidget::createCentral()
 {
-	main = new QVBoxLayout(this);
+	main = new QVBoxLayout();
+	setLayout(main);
 	down = new QHBoxLayout();
 
 	layout()->addItem(down);
@@ -172,6 +172,7 @@ void PlottingWidget::createPlot()
 void PlottingWidget::createControls()
 {
 	lcdTime = new QLCDNumber(this);
+	lcdTime->setSegmentStyle(QLCDNumber::Flat);
 	lcdTime->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 
 	play = new QPushButton("Play", this);
@@ -185,7 +186,7 @@ void PlottingWidget::createControls()
 
 
 	connect(play, &QPushButton::clicked, this, [=](){
-		if (currentIndex() == 0) {
+		if (currentIndex() == 0 || currentIndex() == m_tMax) {
 			startDrawing();
 		}
 		else {
