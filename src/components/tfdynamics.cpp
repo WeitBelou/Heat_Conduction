@@ -118,7 +118,7 @@ void TFDynamics::setYStep(double yStep)
 
 void TFDynamics::createFileStream()
 {
-	m_fileName = QString("data/%1").arg(QDateTime::currentDateTime().toString("dd_MM_yyyy_hh_mm"));
+	m_fileName = QString("BUFFER");
 }
 
 int TFDynamics::tMax() const
