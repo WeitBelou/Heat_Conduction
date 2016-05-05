@@ -125,9 +125,10 @@ void CalculatingDialog::createButtons()
 			emit calculated(outputData);
 			accept();
 		}
-		else
+		else {
 			okButton->setText("Ok");
 			calculate();
+		}
 	});
 
 	connect(cancelButton, &QPushButton::clicked, this, &CalculatingDialog::cancel);

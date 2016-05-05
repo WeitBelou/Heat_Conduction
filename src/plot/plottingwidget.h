@@ -44,7 +44,6 @@ private:
 	QCPColorScale * colorScale;
 	QCPMarginGroup * marginGroup;
 
-	QVBoxLayout * main;
 	QHBoxLayout * down;
 
 	QLCDNumber * lcdTime;
