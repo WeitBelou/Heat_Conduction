@@ -1,8 +1,8 @@
 #include "editor.h"
 
-#include "calculate_dialog.h"
+#include "../calculating_dialog/calculating_dialog.h"
 
-#include "graphical_input/graphical_input_dialog.h"
+#include "../graphical_input/graphical_input_dialog.h"
 
 #include "layer.h"
 #include "tfdynamics.h"
@@ -156,10 +156,10 @@ void Editor::compute()
 		return;
 	}
 
-	CalculateDialog * dl = new CalculateDialog(inputData, this);
+	CalculatingDialog * dl = new CalculatingDialog(inputData, this);
 
 	for (PlottingWidget * plot: plots) {
-		connect(dl, &CalculateDialog::calculated, plot, &PlottingWidget::setData);
+		connect(dl, &CalculatingDialog::calculated, plot, &PlottingWidget::setData);
 	}
 
 	dl->exec();
