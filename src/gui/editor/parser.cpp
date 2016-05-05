@@ -4,7 +4,7 @@
 #include "parser.h"
 using namespace Parser;
 
-QVector<QVector<Border>> MultiParse( QString src ){
+QVector<QVector<Border>> multiParse( QString src ){
 
 	QVector<QVector<Border>> data;
 	//QString tmp;
@@ -29,7 +29,7 @@ QVector<QVector<Border>> MultiParse( QString src ){
 		try {
 			if (!s.trimmed().isEmpty()){
 				i++;
-				data.push_back(parsePlainText(s));
+				data.push_back(parsePolygon(s));
 			}
 		}
 		catch (ParseError & p) {
@@ -44,7 +44,7 @@ QVector<QVector<Border>> MultiParse( QString src ){
 	return data;
 }
 
-QVector<Border> parsePlainText(QString src)
+QVector<Border> parsePolygon(QString src)
 {
 	QVector<Border> data;
 	size_t i = 0;
