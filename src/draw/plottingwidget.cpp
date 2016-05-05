@@ -1,8 +1,8 @@
 #include "plottingwidget.h"
 
-PlottingWidget::PlottingWidget(QWidget *parent) : QWidget(parent)
+PlottingWidget::PlottingWidget(QMdiArea * parent) : QMdiSubWindow(parent)
 {
-	setMinimumSize(500, 500);
+	resize(500, 500);
 	createCentral();
 	createPlot();
 	createControls();
@@ -45,7 +45,22 @@ void PlottingWidget::setData(const TFDynamics& data)
 
 	m_tStep = m_data.tStep();
 
+	int xSize = static_cast<int>(m_iMax * m_data.xStep());
+	int ySize = static_cast<int>(m_jMax * m_data.yStep());
+	double aspect = 1.0 * xSize / ySize;
+	if (aspect > 1) {
+		ySize = 500 / aspect;
+		xSize = 500;
+	}
+	else {
+		ySize = 500;
+		xSize = 500 * aspect;
+	}
+
+	plot->resize(xSize, ySize);
 	plot->rescaleAxes();
+	resize(plot->width(), plot->height() + play->height() + 10);
+	plot->replot();
 }
 
 void PlottingWidget::startDrawing()
@@ -124,7 +139,6 @@ void PlottingWidget::createCentral()
 	main = new QVBoxLayout(this);
 	down = new QHBoxLayout();
 
-	setLayout(main);
 	layout()->addItem(down);
 }
 

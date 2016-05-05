@@ -6,11 +6,11 @@
 #include "core/layer.h"
 #include "core/tfdynamics.h"
 
-class PlottingWidget : public QWidget
+class PlottingWidget : public QMdiSubWindow
 {
 	Q_OBJECT
 public:
-	explicit PlottingWidget(QWidget *parent = 0);
+	explicit PlottingWidget(QMdiArea *parent = 0);
 	~PlottingWidget();
 
 public slots:

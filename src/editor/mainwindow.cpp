@@ -17,7 +17,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 
 void MainWindow::createPlot()
 {
-	plot = new PlottingWidget(this);
+	plot = new PlottingWidget(central);
 	editor->addPlot(plot);
 	central->addSubWindow(plot);
 }
