@@ -14,7 +14,6 @@ Problem::Problem(QObject *parent) : QObject(parent)
 
 }
 
-
 Problem::Problem(const Material & material, const TFGeometry & geometry,
 		double tMax, double tStep, QObject *parent) : QObject(parent),
 	material(material), geometry(geometry), isBreak(false)

@@ -19,6 +19,7 @@ PlottingWidget::~PlottingWidget()
 {
 	if (file.isOpen()) {
 		file.close();
+		file.remove();
 	}
 }
 
@@ -32,6 +33,7 @@ void PlottingWidget::setData(const TFDynamics& data)
 
 	if (file.isOpen()) {
 		file.close();
+		file.remove();
 	}
 
 	currentField = TemperatureField(m_iMax, m_jMax);
@@ -59,7 +61,7 @@ void PlottingWidget::setData(const TFDynamics& data)
 
 	plot->resize(xSize, ySize);
 	plot->rescaleAxes();
-	resize(plot->width(), plot->height() + play->height() + 10);
+//	resize(plot->width(), plot->height() + play->height() + 10);
 	plot->replot();
 }
 
@@ -161,6 +163,7 @@ void PlottingWidget::createPlot()
 
 	marginGroup = new QCPMarginGroup(plot);
 	plot->axisRect()->setMarginGroup(QCP::msBottom|QCP::msTop, marginGroup);
+	plot->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
 	colorScale->setMarginGroup(QCP::msBottom|QCP::msTop, marginGroup);
 
 	layout()->addWidget(plot);

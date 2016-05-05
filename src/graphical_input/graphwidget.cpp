@@ -61,14 +61,6 @@ void GraphWidget::createScene()
 
 QColor GraphWidget::colorFromTemperature(double u)
 {
-//	setColorInterpolation(ciRGB);
-//    setColorStopAt(0, QColor(0, 0, 50));
-//    setColorStopAt(0.15, QColor(20, 0, 120));
-//    setColorStopAt(0.33, QColor(200, 30, 140));
-//    setColorStopAt(0.6, QColor(255, 100, 0));
-//    setColorStopAt(0.85, QColor(255, 255, 40));
-//    setColorStopAt(1, QColor(255, 255, 255));
-
 	double a = 1 - (maxTemperature - u) / maxTemperature;
 	if (a > 0.85) {
 		a -= 0.85;
@@ -166,7 +158,7 @@ void GraphWidget::addNextEdge(const QPointF & currPos)
 	Vertex * vertex = new Vertex(this);
 	vertex->setPos(currPos);
 	double u = QInputDialog::getDouble(this, tr("Input tempertature"),
-									   tr("Temperature"), 100, 0, maxTemperature);
+									   tr("Temperature"), maxTemperature / 2, 0, maxTemperature);
 
 	Edge * edge = new Edge(currFigure.last(), vertex, u);
 	edge->setColor(colorFromTemperature(u));
@@ -180,7 +172,7 @@ void GraphWidget::addNextEdge(const QPointF & currPos)
 void GraphWidget::endFigure()
 {
 	double u = QInputDialog::getDouble(this, tr("Input tempertature"),
-									   tr("Temperature"), 100, 0, maxTemperature);
+									   tr("Temperature"), maxTemperature / 2, 0, maxTemperature);
 	Edge * edge = new Edge(currFigure.last(), currFigure.first(), u);
 	edge->setColor(colorFromTemperature(u));
 	scene->addItem(edge);

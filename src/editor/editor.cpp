@@ -242,7 +242,7 @@ void Editor::createActions()
 	exitAct = new QAction(tr("&Close"), this);
 	exitAct->setStatusTip(tr("Close file"));
 	exitAct->setShortcut(QKeySequence::Quit);
-	connect(exitAct, &QAction::triggered, this, &Editor::close);
+	connect(exitAct, &QAction::triggered, parentWidget(), &QWidget::close);
 }
 
 bool Editor::maybeSave()
