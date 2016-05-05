@@ -7,6 +7,7 @@
 #include "tfdynamics.h"
 #include "tfgeometry.h"
 #include "layer.h"
+#include <QTime>
 
 class Problem: public QObject
 {
@@ -41,6 +42,7 @@ private:
 
 signals:
 	void layerCalcDone(double executionState) const;
+	void calcFinished (double seconds) const;
 public slots:
 };
 

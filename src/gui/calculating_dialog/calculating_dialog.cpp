@@ -39,6 +39,10 @@ void CalculatingDialog::calculate()
 		progress->setValue(100 * percent);
 	});
 
+	connect(p, &Problem::calcFinished, [=](double seconds){
+		addLogMessage(QString("It takes: %1s").arg(seconds));
+	});
+
 	connect(cancelButton, &QPushButton::clicked, p, &Problem::stopCalc);
 
 	outputData = p->solve();

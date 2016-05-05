@@ -27,10 +27,10 @@ Problem::Problem(const Material & material, const TFGeometry & geometry,
 						+ material.rho()*material.c()/m_tStep;
 
 
-	Ay = material.lambda()/(geometry.yStep() * geometry.yStep());
-	Cy = material.lambda()/(geometry.yStep() * geometry.yStep());
-	By = 2*material.lambda()/(geometry.yStep() * geometry.yStep())
-						+ material.rho()*material.c()/m_tStep;
+//	Ay = material.lambda()/(geometry.yStep() * geometry.yStep());
+//	Cy = material.lambda()/(geometry.yStep() * geometry.yStep());
+//	By = 2*material.lambda()/(geometry.yStep() * geometry.yStep())
+//						+ material.rho()*material.c()/m_tStep;
 }
 
 const TemperatureField Problem::nextTF(const TemperatureField & current) const
@@ -62,10 +62,10 @@ const TemperatureField Problem::nextTF(const TemperatureField & current) const
 
 			if (geometry.idNet()(i, j))
 			{
-				newAlpha = Ay/(By-Cy*alpha(i-1,j));
+				newAlpha = Ax/(Bx-Cx*alpha(i-1,j));
 				alpha(i,j) = newAlpha;
 				F = -((rho*c)/m_tStep)*current(i,j);
-				newBeta = (Cy*beta(i-1,j)-F)/(By-Cy*alpha(i-1,j));
+				newBeta = (Cx*beta(i-1,j)-F)/(Bx-Cx*alpha(i-1,j));
 				beta(i,j) = newBeta;
 //				alpha(i,j) =  Ay/(By-Cy*alpha(i-1,j));
 //				beta(i,j) = (Cy*beta(i-1,j)+(((rho*c)/m_tStep)*current(i,j)))/(By-Cy*alpha(i-1,j));
@@ -146,7 +146,8 @@ TFDynamics Problem::solve() const
 
 	QDataStream sout(&file);
 	sout.setFloatingPointPrecision(QDataStream::SinglePrecision);
-	int tS = time(NULL);
+	QTime timer;
+	timer.start();
 	for (int t = 0; t < tMax; ++t)
 	{
 		if (isBreak) {
@@ -160,8 +161,7 @@ TFDynamics Problem::solve() const
 		double executionState = double(t)/double(tMax);
 		emit layerCalcDone(executionState);
 	}
-	int tE = time(NULL);
-	std::cout << tE-tS << std::endl;
+	emit calcFinished(static_cast<double>(timer.elapsed()) / 1000);
 	emit layerCalcDone(1);
 	file.close();
 	return allLayers;
