@@ -11,13 +11,15 @@ GraphicalInputDialog::GraphicalInputDialog(QWidget * parent) :
 	acceptButton = new QPushButton("OK", this);
 	rejectButton = new QPushButton("Cancel", this);
 
+	connect(graph, &GraphWidget::canceled, this, &GraphicalInputDialog::cancel);
 	connect(acceptButton, &QPushButton::clicked, this, &GraphicalInputDialog::parse);
 	connect(rejectButton, &QPushButton::clicked, this, &GraphicalInputDialog::cancel);
-
 
 	main->addWidget(graph);
 	main->addWidget(acceptButton);
 	main->addWidget(rejectButton);
+
+	graph->createScene();
 }
 
 void GraphicalInputDialog::addFigure(const QVector<Border> & figure)

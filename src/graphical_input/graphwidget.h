@@ -13,20 +13,22 @@ class GraphWidget : public QGraphicsView
 
 public:
 	explicit GraphWidget(QWidget *parent = 0);
-
 public:
 	QVector<QVector<Vertex *> > getAllFigures() const;
 
+	void createScene();
 protected:
 	void drawBackground(QPainter *painter, const QRectF &rect) override;
 	void mousePressEvent(QMouseEvent *mouse) override;
+
+signals:
+	void canceled();
 
 private:
 	void beginFigure(const QPointF & currPos);
 	void addNextEdge(const QPointF & currPos);
 	void endFigure();
 
-	void createScene();
 	QColor colorFromTemperature(double u);
 	void drawGrid(QPainter *painter, const QRectF &rect);
 

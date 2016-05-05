@@ -10,7 +10,7 @@
 GraphWidget::GraphWidget(QWidget *parent)
 	: QGraphicsView(parent), maxTemperature(1000)
 {
-	createScene();
+
 }
 
 void GraphWidget::drawBackground(QPainter *painter, const QRectF &rect)
@@ -27,10 +27,26 @@ void GraphWidget::drawBackground(QPainter *painter, const QRectF &rect)
 
 void GraphWidget::createScene()
 {
-	double a = QInputDialog::getDouble(this, "Input width", "Width", 10, 1, 1000);
-	double h = QInputDialog::getDouble(this, "Input height", "Height", 10, 1, 1000);
+	bool ok;
+	double a = QInputDialog::getDouble(this, "Input width", "Width", 10, 1, 1000, 1, &ok);
+	if (!ok) {
+		emit canceled();
+		return;
+	}
+
+	double h = QInputDialog::getDouble(this, "Input height", "Height", 10, 1, 1000, 1, &ok);
+	if (!ok) {
+		emit canceled();
+		return;
+	}
+
 	maxTemperature = QInputDialog::getDouble(this, "Input max temperatur",
-											 "Max Temperature", 1000, 10);
+											 "Max Temperature", 1000, 10, 10000, 1, &ok);
+	if (!ok) {
+		emit canceled();
+		return;
+	}
+
 	scene = new QGraphicsScene(this);
 	scene->setSceneRect(0, 0, a, h);
 	setScene(scene);
