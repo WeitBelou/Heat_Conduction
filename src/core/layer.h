@@ -2,7 +2,9 @@
 #define LAYER_H
 #include <iostream>
 #include <stdexcept>
-#include <QTextStream>
+#include <QDataStream>
+#include <QDebug>
+
 template <typename T>
 class TemplateLayer
 {
@@ -180,19 +182,33 @@ inline QTextStream & operator <<(QTextStream & os, const BoolGrid & b)
 	return os;
 }
 
-inline QTextStream & operator <<(QTextStream & os, const TemperatureField & tF)
+inline QDataStream & operator <<(QDataStream & os, const TemperatureField & tF)
 {
 	int iMax = tF.iMax();
 	int jMax = tF.jMax();
 	for (int i = 0; i < iMax; ++i){
 		for (int j = 0; j < jMax; ++j) {
-			os << tF(i, j) << " ";
+			os << tF(i, j);
 		}
-		os << "\b";
-		os << endl;
 	}
 
 	return os;
 }
 
+inline QDataStream & operator >>(QDataStream & is, TemperatureField & tF)
+{
+	int iMax = tF.iMax();
+	int jMax = tF.jMax();
+
+	double tmp;
+
+	for (int i = 0; i < iMax; ++i) {
+		for (int j = 0; j < jMax; ++j) {
+			is >> tmp;
+			tF(i, j) = tmp;
+		}
+	}
+
+	return is;
+}
 #endif // LAYER_H

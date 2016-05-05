@@ -1,81 +1,87 @@
 #include "tfdynamics.h"
-
+#include <QTime>
 
 TFDynamics::TFDynamics()
 {
-	m_temperatureFields = QVector<TemperatureField>(1, TemperatureField());
-
 	m_xStep = 1;
 	m_yStep = 1;
 	m_tStep = 1;
+
+	m_tMax = 1;
+	m_iMax = 1;
+	m_jMax = 1;
+
+	createFileStream();
 }
 
-TFDynamics::TFDynamics(const QVector<TemperatureField>& temperatureFields)
+TFDynamics::TFDynamics(double tStep)
 {
-	m_temperatureFields = temperatureFields;
-
-	m_tStep = 1;
-	m_xStep = 1;
-	m_yStep = 1;
-}
-
-TFDynamics::TFDynamics(const QVector<TemperatureField>& temperatureFields, double tStep)
-{
-	m_temperatureFields = temperatureFields;
-
 	m_tStep = tStep;
 	m_xStep = 1;
 	m_yStep = 1;
+
+	m_tMax = 1;
+	m_iMax = 1;
+	m_jMax = 1;
+
+	createFileStream();
 }
 
-TFDynamics::TFDynamics(const QVector<TemperatureField>& temperatureFields,
-					   double tStep, double xStep, double yStep)
+TFDynamics::TFDynamics(double tStep, double xStep, double yStep)
 {
-	m_temperatureFields = temperatureFields;
-
 	m_tStep = tStep;
 	m_xStep = xStep;
 	m_yStep = yStep;
+
+	m_tMax = 1;
+	m_iMax = 1;
+	m_jMax = 1;
+
+	createFileStream();
 }
 
-
-TFDynamics::TFDynamics(const TFDynamics& other)
+TFDynamics::TFDynamics(double tStep, double xStep, double yStep, int tMax, int iMax, int jMax)
 {
-	m_temperatureFields = other.temperatureFields();
+	m_tStep = tStep;
+	m_xStep = xStep;
+	m_yStep = yStep;
 
-	m_tStep = other.tStep();
-	m_xStep = other.xStep();
-	m_yStep = other.yStep();
+	m_tMax = tMax;
+	m_iMax = iMax;
+	m_jMax = jMax;
+
+	createFileStream();
 }
 
-TFDynamics & TFDynamics::operator =(const TFDynamics& other)
+TFDynamics::TFDynamics(const TFDynamics & other)
 {
-	m_temperatureFields = other.temperatureFields();
-	setTStep(other.tStep());
-	setXStep(other.xStep());
-	setYStep(other.yStep());
+	m_fileName = other.m_fileName;
 
-	return *this;
+	m_tStep = other.m_tStep;
+	m_xStep = other.m_xStep;
+	m_yStep = other.m_yStep;
+
+	m_tMax = other.m_tMax;
+	m_iMax = other.m_iMax;
+	m_jMax = other.m_jMax;
 }
 
-const TemperatureField TFDynamics::operator [](int i) const
+TFDynamics::~TFDynamics()
 {
-	return m_temperatureFields[i];
+
 }
 
-TemperatureField &TFDynamics::operator [](int i)
+void TFDynamics::operator =(const TFDynamics & other)
 {
-	return m_temperatureFields[i];
-}
+	m_fileName = other.m_fileName;
 
-void TFDynamics::push_back(const TemperatureField & field)
-{
-	m_temperatureFields.push_back(field);
-}
+	m_tStep = other.m_tStep;
+	m_xStep = other.m_xStep;
+	m_yStep = other.m_yStep;
 
-const QVector<TemperatureField> & TFDynamics::temperatureFields() const
-{
-	return m_temperatureFields;
+	m_tMax = other.m_tMax;
+	m_iMax = other.m_iMax;
+	m_jMax = other.m_jMax;
 }
 
 double TFDynamics::tStep() const
@@ -106,4 +112,44 @@ double TFDynamics::yStep() const
 void TFDynamics::setYStep(double yStep)
 {
 	m_yStep = yStep;
+}
+
+void TFDynamics::createFileStream()
+{
+	m_fileName = QString("data/%1").arg(QDateTime::currentDateTime().toString("dd_MM_yyyy_hh_mm"));
+}
+
+int TFDynamics::tMax() const
+{
+	return m_tMax;
+}
+
+void TFDynamics::setTMax(int tMax)
+{
+	m_tMax = tMax;
+}
+
+int TFDynamics::jMax() const
+{
+	return m_jMax;
+}
+
+void TFDynamics::setJMax(int jMax)
+{
+	m_jMax = jMax;
+}
+
+int TFDynamics::iMax() const
+{
+	return m_iMax;
+}
+
+void TFDynamics::setIMax(int iMax)
+{
+	m_iMax = iMax;
+}
+
+const QString & TFDynamics::fileName()
+{
+	return m_fileName;
 }

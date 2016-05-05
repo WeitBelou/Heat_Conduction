@@ -1,7 +1,6 @@
 #include "plottingwidget.h"
 
-PlottingWidget::PlottingWidget(QWidget *parent) : QWidget(parent),
-	m_data()
+PlottingWidget::PlottingWidget(QWidget *parent) : QWidget(parent)
 {
 	setMinimumSize(500, 500);
 	createCentral();
@@ -9,43 +8,53 @@ PlottingWidget::PlottingWidget(QWidget *parent) : QWidget(parent),
 	createControls();
 
 	loop = new QTimer(this);
-	connect(loop, &QTimer::timeout, this,
-			[this](){slider->setValue(this->currentIndex() + 1);});
+	connect(loop, &QTimer::timeout, this, [=](){
+		readNextLayer();
+		drawCurrentLayer();
+	});
 	m_tStep = 1;
+}
 
+PlottingWidget::~PlottingWidget()
+{
+	if (file.isOpen()) {
+		file.close();
+	}
 }
 
 void PlottingWidget::setData(const TFDynamics& data)
 {
 	m_data = data;
 
-	m_iMax = m_data.temperatureFields()[0].iMax();
-	m_jMax = m_data.temperatureFields()[0].jMax();
-	m_tMax = m_data.temperatureFields().size() - 1;
+	m_iMax = m_data.iMax();
+	m_jMax = m_data.jMax();
+	m_tMax = m_data.tMax();
+
+	if (file.isOpen()) {
+		file.close();
+	}
+
+	currentField = TemperatureField(m_iMax, m_jMax);
 
 	colorMap->data()->setRange(QCPRange(0, m_data.xStep() * m_iMax),
 							   QCPRange(0, m_data.yStep() * m_jMax));
 
 	colorMap->data()->setSize(m_iMax, m_jMax);
 
-	slider->setMaximum(m_tMax);
-	slider->setValue(0);
+	m_currentIndex = 0;
 
 	m_tStep = m_data.tStep();
 
 	plot->rescaleAxes();
 }
 
-void PlottingWidget::setDataFromFile(const QFile & file)
-{
-
-}
-
 void PlottingWidget::startDrawing()
 {
-	if (m_data.temperatureFields().isEmpty()) {
-		return;
-	}
+	file.setFileName(m_data.fileName());
+	file.open(QIODevice::ReadOnly);
+
+	str.setDevice(&file);
+	str.setFloatingPointPrecision(QDataStream::DoublePrecision);
 
 	loop->stop();
 	int dt = static_cast<int>(10000.0 / m_tMax);
@@ -53,10 +62,17 @@ void PlottingWidget::startDrawing()
 		dt = 1;
 	}
 
-	if (currentIndex() < m_tMax) {
-		slider->setValue(currentIndex() + 1);
-		loop->stop();
+	loop->start(dt);
+}
+
+void PlottingWidget::resumeDrawing()
+{
+	loop->stop();
+	int dt = static_cast<int>(10000.0 / m_tMax);
+	if (dt == 0) {
+		dt = 1;
 	}
+
 	loop->start(dt);
 }
 
@@ -68,16 +84,25 @@ void PlottingWidget::pauseDrawing()
 void PlottingWidget::stopDrawing()
 {
 	loop->stop();
-	slider->setValue(0);
+	setCurrentIndex(0);
+	file.close();
+}
+
+void PlottingWidget::readNextLayer()
+{
+	if (currentIndex() < m_tMax - 1) {
+		setCurrentIndex(currentIndex() + 1);
+		str >> currentField;
+	}
+	else {
+		loop->stop();
+		setCurrentIndex(0);
+	}
 }
 
 
 void PlottingWidget::drawCurrentLayer()
 {
-	if (m_data.temperatureFields().isEmpty()) {
-		return;
-	}
-
 	double x, y, z;
 
 	for (int i = 0; i < m_iMax; ++i)
@@ -85,7 +110,7 @@ void PlottingWidget::drawCurrentLayer()
 	  for (int j = 0; j < m_jMax; ++j)
 	  {
 		colorMap->data()->cellToCoord(i, j, &x, &y);
-		z = m_data.temperatureFields()[currentIndex()](i, j);
+		z = currentField(i, j);
 		colorMap->data()->setCell(i, j, z);
 	  }
 	}
@@ -129,20 +154,8 @@ void PlottingWidget::createPlot()
 
 void PlottingWidget::createControls()
 {
-	slider = new QSlider(Qt::Horizontal, this);
-	slider->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Ignored);
-	slider->setMinimum(0);
-	slider->setMaximum(1);
-	slider->setValue(0);
-
 	lcdTime = new QLCDNumber(this);
 	lcdTime->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
-
-	connect(slider, &QSlider::valueChanged, this, &PlottingWidget::setCurrentIndex);
-	connect(slider, &QSlider::valueChanged, this, &PlottingWidget::drawCurrentLayer);
-	connect(slider, &QSlider::valueChanged, lcdTime, [=](int i) {
-		lcdTime->display(m_tStep * i);
-	});
 
 	play = new QPushButton("Play", this);
 	pause = new QPushButton("Pause", this);
@@ -151,11 +164,18 @@ void PlottingWidget::createControls()
 	down->addWidget(play);
 	down->addWidget(pause);
 	down->addWidget(stop);
-	down->addWidget(slider);
 	down->addWidget(lcdTime, Qt::AlignRight);
 
 
-	connect(play, &QPushButton::clicked, this, &PlottingWidget::startDrawing);
+	connect(play, &QPushButton::clicked, this, [=](){
+		if (currentIndex() == 0) {
+			startDrawing();
+		}
+		else {
+			resumeDrawing();
+		}
+	});
+
 	connect(pause, &QPushButton::clicked, this, &PlottingWidget::pauseDrawing);
 	connect(stop, &QPushButton::clicked, this, &PlottingWidget::stopDrawing);
 }
@@ -168,4 +188,5 @@ int PlottingWidget::currentIndex() const
 void PlottingWidget::setCurrentIndex(int currentIndex)
 {
 	m_currentIndex = currentIndex;
+	lcdTime->display(currentIndex * m_tStep);
 }

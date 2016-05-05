@@ -133,33 +133,31 @@ TFDynamics Problem::solve() const
 {
 	int tMax = m_tMax / m_tStep;
 
-	QVector<TemperatureField> temperatureFields;
-	temperatureFields.reserve(tMax + 1);
-	temperatureFields.push_back(geometry.zeroLayer());
+	TFDynamics allLayers(m_tStep, geometry.xStep(),	 geometry.yStep(),
+						 m_tMax, geometry.iMax(), geometry.jMax());
+	TemperatureField temp = geometry.zeroLayer();
 
-	TFDynamics allLayers(temperatureFields, m_tStep, geometry.xStep(),
-						 geometry.yStep());
-	TemperatureField temp;
+	QFile file(allLayers.fileName());
+	file.open(QIODevice::WriteOnly);
 
-	QFile fout("Layers.txt");
-	fout.open(QIODevice::WriteOnly);
-	QTextStream sout(&fout);
+	QDataStream sout(&file);
+	sout.setFloatingPointPrecision(QDataStream::DoublePrecision);
 	for (int t = 0; t < tMax; ++t)
 	{
 		if (isBreak) {
 			return TFDynamics();
+			file.close();
 		}
-		temp = nextTF(allLayers[t]);
+
 		sout << temp;
-		if ( t != (tMax-1))
-			sout << "*" << endl;
-		allLayers.push_back(temp);
+		temp = nextTF(temp);
+
 		double executionState = double(t)/double(tMax);
 		emit layerCalcDone(executionState);
 	}
 	emit layerCalcDone(1);
-	fout.close();
-return allLayers;
+	file.close();
+	return allLayers;
 }
 
 
