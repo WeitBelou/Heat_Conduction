@@ -67,37 +67,33 @@ const TemperatureField Problem::nextTF(const TemperatureField & current) const
 				F = -((rho*c)/m_tStep)*current(i,j);
 				newBeta = (Cx*beta(i-1,j)-F)/(Bx-Cx*alpha(i-1,j));
 				beta(i,j) = newBeta;
-//				alpha(i,j) =  Ay/(By-Cy*alpha(i-1,j));
-//				beta(i,j) = (Cy*beta(i-1,j)+(((rho*c)/m_tStep)*current(i,j)))/(By-Cy*alpha(i-1,j));
+
 			}
 
 		}
 	}
-	// на этом шаге мы высчитали альфа и бета для t = t + 1/2 * tau;
-	// расчитаем ряд температур. Потом размажем и повторим
+
 
 #pragma omp parallel for
 	for (int j = 0; j < jMax; j++)
 	{
 		for (int i = iMax-1; i > -1; i--)
 		{
-			if (!geometry.idNet()(i, j)) //граница
+			if (!geometry.idNet()(i, j))
 				next(i,j) = current(i,j);
 			if (geometry.idNet()(i, j))
 				next(i,j) = next(i+1,j)*alpha(i,j) + beta (i,j);
 		}
 	}
 
-		// на этом шаге мы высчитали T для t = t + 1/2 * tau;
-		// теперь повторим то же самое горизонтально
 
 #pragma omp parallel for
-	for (int i = 0; i < iMax; i++ ) //выбираем строку (движемся между строк)
+	for (int i = 0; i < iMax; i++ )
 	{
 		double F;
 		double newAlpha;
 		double newBeta;
-		for (int j = 0; j <jMax; j++) // выбираем элемент в строке (движемся по строке)
+		for (int j = 0; j <jMax; j++)
 		{
 
 			if ((!geometry.idNet()(i, j)))
@@ -110,21 +106,18 @@ const TemperatureField Problem::nextTF(const TemperatureField & current) const
 				F = -((rho*c)/m_tStep)*next(i,j);
 				newBeta = (Cx*beta(i,j-1)-F)/(Bx-Cx*alpha(i,j-1));
 				beta(i,j) = newBeta;
-//				alpha(i,j) =  Ax/(Bx-Cx*alpha(i,j-1));
-//				beta(i,j) = (Cx*beta(i,j-1)+(((rho*c)/m_tStep)*current(i,j)))/(Bx-Cx*alpha(i,j-1));
+
 			}
 
 		}
 	}
-	// на этом шаге мы высчитали альфа и бета для t = t + tau;
-	// расчитаем ряд температур. Потом размажем и повторим
 
 #pragma omp parallel for
-	for (int i = 0; i < iMax; i++) //выбираем строку (движемся между строк)
+	for (int i = 0; i < iMax; i++)
 	{
-		for (int j = jMax-1; j > -1; j--) // выбираем элемент в строке (движемся по строке)
+		for (int j = jMax-1; j > -1; j--)
 		{
-			if (!geometry.idNet()(i, j)) //граница
+			if (!geometry.idNet()(i, j))
 				next(i,j) = current(i,j);
 			if (geometry.idNet()(i, j))
 				next(i,j) = next(i,j+1)*alpha(i,j) + beta (i,j);
