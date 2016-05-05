@@ -10,7 +10,7 @@
 GraphWidget::GraphWidget(QWidget *parent)
 	: QGraphicsView(parent), maxTemperature(1000)
 {
-
+	createScene();
 }
 
 void GraphWidget::drawBackground(QPainter *painter, const QRectF &rect)

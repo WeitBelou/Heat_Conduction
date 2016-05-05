@@ -71,7 +71,7 @@ TFDynamics::~TFDynamics()
 
 }
 
-void TFDynamics::operator =(const TFDynamics & other)
+TFDynamics & TFDynamics::operator =(const TFDynamics & other)
 {
 	m_fileName = other.m_fileName;
 
@@ -82,6 +82,8 @@ void TFDynamics::operator =(const TFDynamics & other)
 	m_tMax = other.m_tMax;
 	m_iMax = other.m_iMax;
 	m_jMax = other.m_jMax;
+
+	return *this;
 }
 
 double TFDynamics::tStep() const

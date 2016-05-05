@@ -1,22 +1,21 @@
 #ifndef TFDYNAMICS_H
 #define TFDYNAMICS_H
 #include "layer.h"
-#include <QVector>
-#include <QFile>
 
+#include <QVector>
 
 class TFDynamics
 {
 public:
 	TFDynamics();
-	TFDynamics(double tStep);
+	explicit TFDynamics(double tStep);
 	TFDynamics(double tStep, double xStep, double yStep);
 	TFDynamics(double tStep, double xStep, double yStep,
 			   int tMax, int iMax, int jMax);
 	TFDynamics(const TFDynamics& other);
 	~TFDynamics();
 
-	void operator =(const TFDynamics & other);
+	TFDynamics & operator =(const TFDynamics & other);
 
 	double tStep() const;
 	void setTStep(double tStep);

@@ -2,7 +2,6 @@
  */
 
 #include "parser.h"
-#include <QtMath>
 using namespace Parser;
 
 QVector<QVector<Border>> MultiParse( QString src ){

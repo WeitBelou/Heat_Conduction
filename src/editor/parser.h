@@ -9,8 +9,6 @@
 #define PARSER_H
 
 #include <QVector>
-#include <QDebug>
-#include <QTextStream>
 #include <QFile>
 #include <QRegExp>
 

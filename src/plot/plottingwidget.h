@@ -2,8 +2,15 @@
 #define PLOTTINGWIDGET_H
 
 #include <QtWidgets>
-#include "qcustomplot.h"
-#include "layer.h"
+
+QT_BEGIN_NAMESPACE
+//QCustomPlot
+class QCustomPlot;
+class QCPColorMap;
+class QCPColorScale;
+class QCPMarginGroup;
+QT_END_NAMESPACE
+
 #include "tfdynamics.h"
 
 class PlottingWidget : public QMdiSubWindow

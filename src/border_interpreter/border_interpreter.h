@@ -11,14 +11,14 @@
 #ifndef BORDER_INTERPRETER_H
 #define BORDER_INTERPRETER_H
 
-#include "tfgeometry.h"
-#include "border.h"
-#include <limits>
-#include <cmath>
-#include <QPointF>
+#include <QObject>
 #include <QVector>
 
+class QPoint;
+class QPointF;
 
+#include "border.h"
+#include "tfgeometry.h"
 
 class BorderInterpreter : public QObject
 {

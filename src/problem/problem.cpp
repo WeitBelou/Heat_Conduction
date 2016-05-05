@@ -145,8 +145,8 @@ TFDynamics Problem::solve() const
 	for (int t = 0; t < tMax; ++t)
 	{
 		if (isBreak) {
-			return TFDynamics();
 			file.close();
+			return TFDynamics();
 		}
 
 		sout << temp;

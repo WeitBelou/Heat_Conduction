@@ -1,5 +1,11 @@
 #include "editor.h"
+
 #include "gui/calculate_dialog.h"
+
+#include "graphical_input/graphical_input_dialog.h"
+
+#include "layer.h"
+#include "tfdynamics.h"
 
 Editor::Editor(QWidget *parent) : QWidget(parent)
 {

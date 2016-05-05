@@ -1,6 +1,9 @@
 #include "border_interpreter.h"
-#include <QPoint>
 
+#include <QPointF>
+
+#include <limits>
+#include <cmath>
 //Конструктор по умолчанию
 BorderInterpreter::BorderInterpreter(QObject *parent)
 	: QObject(parent),

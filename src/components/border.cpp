@@ -1,5 +1,7 @@
 #include "border.h"
 
+#include <QPointF>
+
 Border::Border() :
 	QLineF(), m_u(0)
 {

@@ -1,5 +1,6 @@
 #include "calculate_dialog.h"
 
+#include "material.h"
 CalculateDialog::CalculateDialog(QWidget * parent):
 	QDialog(parent)
 {

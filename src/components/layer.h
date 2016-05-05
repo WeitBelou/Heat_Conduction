@@ -1,6 +1,5 @@
 #ifndef LAYER_H
 #define LAYER_H
-#include <iostream>
 #include <stdexcept>
 #include <QDataStream>
 #include <QDebug>
@@ -17,7 +16,6 @@ public:
 	T & operator()(int i, int j);
 	TemplateLayer<T> & operator =(const TemplateLayer<T> & anotherLayer);
 	bool operator ==(const TemplateLayer & anotherLayer)const;
-	void print() const;
 	int iMax() const;
 	int jMax() const;
 private:
@@ -79,7 +77,7 @@ TemplateLayer<T>::TemplateLayer(const TemplateLayer & previousLayer)
 template <typename T>
 TemplateLayer<T> & TemplateLayer<T>::operator =(const TemplateLayer<T> & anotherLayer)
 {
-	if (*this == anotherLayer)
+	if (anotherLayer == *this)
 		return *this;
 
 	for (int i = 0; i < m_iMax; i++)
@@ -136,20 +134,6 @@ T & TemplateLayer<T>::operator()(int i, int j)
 	return m_matrix[i][j];
 }
 
-
-template <typename T>
-void TemplateLayer<T>::print() const
-{
-	for (int i = 0; i<m_iMax; i++)
-	{
-		for (int j = 0; j<m_jMax; j++)
-		{std::cout << "[" << m_matrix[i][j] << "]";}
-		std::cout << std::endl;
-	}
-
-}
-
-
 template <typename T>
 int TemplateLayer<T>::iMax() const
 {
@@ -200,7 +184,7 @@ inline QDataStream & operator >>(QDataStream & is, TemperatureField & tF)
 	int iMax = tF.iMax();
 	int jMax = tF.jMax();
 
-	float tmp;
+	float tmp = 0.0;
 
 	for (int i = 0; i < iMax; ++i) {
 		for (int j = 0; j < jMax; ++j) {

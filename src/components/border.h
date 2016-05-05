@@ -2,7 +2,6 @@
 #define BORDER_H
 
 #include <QTextStream>
-#include <QPointF>
 #include <QLineF>
 
 class Border : public QLineF

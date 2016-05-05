@@ -1,12 +1,8 @@
 #ifndef EDITOR_H
 #define EDITOR_H
 
-#include <QtWidgets>
 #include "parser.h"
-#include "graphical_input/graphical_input_dialog.h"
 #include "plot/plottingwidget.h"
-#include "layer.h"
-#include "tfdynamics.h"
 
 class Editor : public QWidget
 {

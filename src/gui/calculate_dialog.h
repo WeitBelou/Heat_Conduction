@@ -2,9 +2,11 @@
 #define CALCULATE_DIALOG_H
 
 #include <QtWidgets>
+
 #include "border_interpreter/border_interpreter.h"
-#include "material.h"
 #include "problem/problem.h"
+
+class Material;
 
 class CalculateDialog : public QDialog
 {

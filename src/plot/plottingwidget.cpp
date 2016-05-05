@@ -1,5 +1,5 @@
 #include "plottingwidget.h"
-
+#include "qcustomplot.h"
 PlottingWidget::PlottingWidget(QMdiArea * parent) : QMdiSubWindow(parent)
 {
 	resize(500, 500);
