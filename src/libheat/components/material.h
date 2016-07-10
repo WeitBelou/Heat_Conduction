@@ -6,26 +6,26 @@ class Material
 {
 public:
 	Material();
-	Material(double rho, double lambda, double c);
+	Material (float rho, float lambda, float c);
 	Material(Material const& other);
 
 	Material & operator =(const Material & other);
 
-	double rho() const;
-	void setRho(double rho);
+	float rho () const;
+	void  setRho (float rho);
 
-	double lambda() const;
-	void setLambda(double lambda);
+	float lambda () const;
+	void  setLambda (float lambda);
 
-	double c() const;
-	void setC(double c);
+	float c () const;
+	void  setC (float c);
 
 	friend QTextStream & operator <<(QTextStream & os, const Material & m);
 	friend QTextStream & operator >>(QTextStream & is, Material & m);
 private:
-	double m_rho;
-	double m_lambda;
-	double m_c;
+	float m_rho;
+	float m_lambda;
+	float m_c;
 };
 
 Q_DECLARE_METATYPE(Material)

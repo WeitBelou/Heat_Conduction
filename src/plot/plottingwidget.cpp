@@ -51,12 +51,12 @@ void PlottingWidget::setData(const TFDynamics& data)
 	int ySize = static_cast<int>(m_jMax * m_data.yStep());
 	double aspect = 1.0 * xSize / ySize;
 	if (aspect > 1) {
-		ySize = 500 / aspect;
+		ySize = static_cast<int >(500 / aspect);
 		xSize = 500;
 	}
 	else {
 		ySize = 500;
-		xSize = 500 * aspect;
+		xSize = static_cast<int >(500 * aspect);
 	}
 
 	plot->resize(xSize, ySize);

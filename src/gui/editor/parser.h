@@ -12,7 +12,7 @@
 #include <QFile>
 #include <QRegExp>
 
-#include "border.h"
+#include "libheat/components/border.h"
 
 QVector<QVector<Border>> multiParse( QString src );
 QVector<Border> parsePolygon(QString src);

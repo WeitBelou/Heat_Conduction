@@ -8,11 +8,11 @@ class Border : public QLineF
 {
 public:
 	Border();
-	Border(QLineF line, double u);
-	Border(QPointF p1, QPointF p2, double u);
+	Border(QLineF line, float u);
+	Border(QPointF p1, QPointF p2, float u);
 
-	double u() const;
-	void setU(double u);
+	float u() const;
+	void setU(float u);
 
 	friend QTextStream &operator<<(QTextStream &os, const Border &b);
 	friend QTextStream &operator>>(QTextStream &is, Border &b);

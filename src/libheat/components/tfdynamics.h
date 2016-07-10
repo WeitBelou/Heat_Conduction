@@ -8,23 +8,23 @@ class TFDynamics
 {
 public:
 	TFDynamics();
-	explicit TFDynamics(double tStep);
-	TFDynamics(double tStep, double xStep, double yStep);
-	TFDynamics(double tStep, double xStep, double yStep,
-			   int tMax, int iMax, int jMax);
+	explicit TFDynamics(float tStep);
+	TFDynamics(float tStep, float xStep, float yStep);
+	TFDynamics(float tStep, float xStep, float yStep,
+			   float tMax, int iMax, int jMax);
 	TFDynamics(const TFDynamics& other);
 	~TFDynamics();
 
 	TFDynamics & operator =(const TFDynamics & other);
 
-	double tStep() const;
-	void setTStep(double tStep);
+	float tStep() const;
+	void setTStep(float tStep);
 
-	double xStep() const;
-	void setXStep(double xStep);
+	float xStep() const;
+	void setXStep(float xStep);
 
-	double yStep() const;
-	void setYStep(double yStep);
+	float yStep() const;
+	void setYStep(float yStep);
 
 	const QString & fileName();
 
@@ -34,8 +34,8 @@ public:
 	int jMax() const;
 	void setJMax(int jMax);
 
-	int tMax() const;
-	void setTMax(int tMax);
+	float tMax() const;
+	void setTMax(float tMax);
 
 private:
 	void createFileStream();
@@ -48,7 +48,7 @@ private:
 
 	int m_iMax;
 	int m_jMax;
-	int m_tMax;
+	float m_tMax;
 };
 
 #endif // TFDYNAMICS_H

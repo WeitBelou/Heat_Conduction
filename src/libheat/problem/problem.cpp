@@ -1,22 +1,13 @@
 #include "problem.h"
-#include "material.h"
-#include "tfdynamics.h"
-#include "tfgeometry.h"
-#include <QObject>
-#include "./tfdynamics.h"
-#include "./layer.h"
-#include <QVector>
 #include <QFile>
-#include <omp.h>
-#include <time.h>
-#include <iostream>
+
 Problem::Problem(QObject *parent) : QObject(parent)
 {
 
 }
 
 Problem::Problem(const Material & material, const TFGeometry & geometry,
-		double tMax, double tStep, QObject *parent) : QObject(parent),
+				 float tMax, float tStep, QObject *parent) : QObject(parent),
 	material(material), geometry(geometry), isBreak(false)
 {
 	m_tMax = tMax;
@@ -39,8 +30,8 @@ const TemperatureField Problem::nextTF(const TemperatureField & current) const
 
 	int iMax = geometry.iMax();
 	int jMax = geometry.jMax();
-	const double rho = material.rho();
-	const double c = material.c();
+	const float rho = material.rho();
+	const float c = material.c();
 
 
 
@@ -51,9 +42,9 @@ const TemperatureField Problem::nextTF(const TemperatureField & current) const
 #pragma omp parallel for
 	for (int j = 0; j < jMax; j++ )
 	{
-		double F;
-		double newAlpha;
-		double newBeta;
+		float F;
+		float newAlpha;
+		float newBeta;
 		for (int i = 0; i <iMax; i++)
 		{
 
@@ -90,9 +81,9 @@ const TemperatureField Problem::nextTF(const TemperatureField & current) const
 #pragma omp parallel for
 	for (int i = 0; i < iMax; i++ )
 	{
-		double F;
-		double newAlpha;
-		double newBeta;
+		float F;
+		float newAlpha;
+		float newBeta;
 		for (int j = 0; j <jMax; j++)
 		{
 
@@ -128,7 +119,7 @@ const TemperatureField Problem::nextTF(const TemperatureField & current) const
 
 TFDynamics Problem::solve() const
 {
-	int tMax = m_tMax / m_tStep;
+	int tMax = static_cast<int>(m_tMax / m_tStep);
 
 	TFDynamics allLayers(m_tStep, geometry.xStep(),	 geometry.yStep(),
 						 m_tMax, geometry.iMax(), geometry.jMax());

@@ -2,11 +2,6 @@
 #include "vertex.h"
 #include "graphwidget.h"
 
-#include <QGraphicsScene>
-#include <QGraphicsSceneMouseEvent>
-#include <QPainter>
-#include <QStyleOption>
-
 Vertex::Vertex(GraphWidget *graphWidget)
 	: graph(graphWidget), radius(5),
 	  m_firstEdge(nullptr), m_secondEdge(nullptr)

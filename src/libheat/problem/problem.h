@@ -3,11 +3,10 @@
 #include <QObject>
 #include <QVector>
 
-#include "material.h"
-#include "tfdynamics.h"
-#include "tfgeometry.h"
-#include "layer.h"
 #include <QTime>
+#include <src/libheat/components/tfgeometry.h>
+#include <src/libheat/components/tfdynamics.h>
+#include <src/libheat/components/material.h>
 
 class Problem: public QObject
 {
@@ -15,7 +14,7 @@ class Problem: public QObject
 public:
 	explicit Problem (QObject *parent = 0);
 	Problem(const Material & material, const TFGeometry & geometry,
-			double tMax, double tStep, QObject * parent = 0);
+			float tMax, float tStep, QObject * parent = 0);
 	TFDynamics solve() const;
 	~Problem();
 
@@ -27,16 +26,12 @@ private:
 
 	Material material;
 	TFGeometry geometry;
-	double m_tMax;
-	double m_tStep;
+	float m_tMax;
+	float m_tStep;
 
-	double Ax;
-	double Cx;
-	double Bx;
-
-	double Ay;
-	double Cy;
-	double By;
+	float Ax;
+	float Cx;
+	float Bx;
 
 	bool isBreak;
 

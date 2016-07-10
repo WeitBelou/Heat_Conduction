@@ -1,11 +1,6 @@
 #include "graphwidget.h"
 #include "edge.h"
 #include "vertex.h"
-#include <QDebug>
-
-#include <math.h>
-
-#include <QKeyEvent>
 
 GraphWidget::GraphWidget(QWidget *parent)
 	: QGraphicsView(parent), maxTemperature(1000)
@@ -65,39 +60,39 @@ QColor GraphWidget::colorFromTemperature(double u)
 	if (a > 0.85) {
 		a -= 0.85;
 		a /= 0.15;
-		return QColor(255, 255, 40 + 215 * a);
+		return QColor(255, 255, static_cast<int>(40 + 215 * a));
 	}
 	if (a > 0.6) {
 		a -= 0.6;
 		a /= 0.15;
-		return QColor(255, 100 + 155 * a, 40 * a);
+		return QColor(255, static_cast<int>(100 + 155 * a), static_cast<int>(40 * a));
 	}
 	if (a > 0.33) {
 		a -= 0.33;
 		a /= 0.27;
-		return QColor(200 + 55 * a, 30 + 70 * a, 140 * (1 - a));
+		return QColor(static_cast<int>(200 + 55 * a), static_cast<int>(30 + 70 * a), static_cast<int>(140 * (1 - a)));
 	}
 	if (a > 0.15) {
 		a -= 0.15;
 		a /= 0.18;
-		return QColor(20 + 180 * a, 30 * a, 120 + 20 * a);
+		return QColor(static_cast<int>(20 + 180 * a), static_cast<int>(30 * a), static_cast<int>(120 + 20 * a));
 	}
 	if (a >= 0) {
 		a /= 0.15;
-		return QColor(20 * a, 0, 50 + 70 * a);
+		return QColor(static_cast<int>(20 * a), 0, static_cast<int>(50 + 70 * a));
 	}
 	return QColor();
 }
 
 void GraphWidget::drawGrid(QPainter * painter, const QRectF & rect)
 {
-	double xMin = rect.left();
-	double xMax = rect.right();
-	double yMin = rect.top();
-	double yMax = rect.bottom();
+	int xMin = static_cast<int>(rect.left());
+	int xMax = static_cast<int>(rect.right());
+	int yMin = static_cast<int>(rect.top());
+	int yMax = static_cast<int>(rect.bottom());
 
-	double xStep = rect.width() / 5;
-	double yStep = rect.height() / 5;
+	int xStep = static_cast<int>(rect.width() / 5);
+	int yStep = static_cast<int>(rect.height() / 5);
 
 	QPen majorGridPen;
 	majorGridPen.setColor(Qt::blue);
@@ -106,12 +101,12 @@ void GraphWidget::drawGrid(QPainter * painter, const QRectF & rect)
 	painter->setPen(majorGridPen);
 
 	//Vertical major grid lines
-	for (double x = xMin; x < xMax; x += xStep) {
+	for (int x = xMin; x < xMax; x += xStep) {
 		painter->drawLine(x, yMin, x, yMax);
 	}
 
 	//Horizontal major grid lines
-	for (double y = yMin; y < yMax; y += yStep) {
+	for (int y = yMin; y < yMax; y += yStep) {
 		painter->drawLine(xMin, y, xMax, y);
 	}
 

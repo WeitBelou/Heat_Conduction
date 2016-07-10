@@ -11,7 +11,7 @@ class QCPColorScale;
 class QCPMarginGroup;
 QT_END_NAMESPACE
 
-#include "tfdynamics.h"
+#include "libheat/components/tfdynamics.h"
 
 class PlottingWidget : public QMdiSubWindow
 {

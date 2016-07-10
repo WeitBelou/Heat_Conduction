@@ -1,9 +1,5 @@
 #include "border_interpreter.h"
 
-#include <QPointF>
-
-#include <limits>
-#include <cmath>
 //Конструктор по умолчанию
 BorderInterpreter::BorderInterpreter(QObject *parent)
 	: QObject(parent),
@@ -90,8 +86,8 @@ void BorderInterpreter::findAreaParameters()
 	height += 20*m_workingArea.yStep();
 
 	//нахождение размеров сетки
-	iMax = length / m_workingArea.xStep();
-	jMax = height / m_workingArea.yStep();
+	iMax = static_cast<int>(length / m_workingArea.xStep());
+	jMax = static_cast<int>(height / m_workingArea.yStep());
 
 
 	emit logSent(QString("Final length - %1, final height - %2").arg(length).arg(height));
@@ -104,21 +100,21 @@ void BorderInterpreter::findAreaParameters()
 
 void BorderInterpreter::findLengthHeight()
 {
-	xMax = xMin = borders[0].x1();
-	yMax = yMin = borders[0].y1();
+	xMax = xMin = static_cast<float>(borders[0].x1());
+	yMax = yMin = static_cast<float>(borders[0].y1());
 
 	for(int i = 0, max = borders.size(); i < max; i++) {
 		if(xMax < borders[i].x1())
-			xMax = borders[i].x1();
+			xMax = static_cast<float>(borders[i].x1());
 
 		if(yMax < borders[i].y1())
-			yMax = borders[i].y1();
+			yMax = static_cast<float>(borders[i].y1());
 
 		if(xMin > borders[i].x1())
-			xMin = borders[i].x1();
+			xMin = static_cast<float>(borders[i].x1());
 
 		if(yMin > borders[i].y1())
-			yMin = borders[i].y1();
+			yMin = static_cast<float>(borders[i].y1());
 	}
 
 	length = xMax - xMin;
@@ -275,7 +271,7 @@ QPoint BorderInterpreter::movePoint(const QPoint& p1, const QPoint& p2)
 }
 
 //Нанесение точки границы на сетку
-void BorderInterpreter::putPoint(const QPoint& p, const double& u)
+void BorderInterpreter::putPoint (const QPoint &p, const float &u)
 {
 	m_workingArea.zeroLayer()(p.x(), p.y()) = u;
 	m_workingArea.idNet()(p.x(), p.y()) = false;

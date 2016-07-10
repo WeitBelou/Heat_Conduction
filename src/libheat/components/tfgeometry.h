@@ -7,8 +7,8 @@ class TFGeometry
 public:
 	TFGeometry();
 	TFGeometry(const TemperatureField & zeroLayer, const BoolGrid & idNet);
-	TFGeometry(const TemperatureField & zeroLayer, const BoolGrid & idNet,
-				 double xStep, double yStep);
+	TFGeometry (const TemperatureField &zeroLayer, const BoolGrid &idNet,
+				float xStep, float yStep);
 	TFGeometry(const TFGeometry & other);
 
 	TFGeometry & operator =(const TFGeometry & other);
@@ -21,11 +21,11 @@ public:
 	const BoolGrid & idNet() const;
 	void setIdNet(const BoolGrid& idNet);
 
-	double xStep() const;
-	void setXStep(double xStep);
+	float xStep () const;
+	void  setXStep(float xStep);
 
-	double yStep() const;
-	void setYStep(double yStep);
+	float yStep () const;
+	void  setYStep(float yStep);
 
 	int iMax() const;
 
@@ -35,7 +35,7 @@ private:
 	TemperatureField m_zeroLayer;
 	BoolGrid m_idNet;
 
-	double m_xStep;
-	double m_yStep;
+	float m_xStep;
+	float m_yStep;
 };
 #endif // TFGEOMETRY_H

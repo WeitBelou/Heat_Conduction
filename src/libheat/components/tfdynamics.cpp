@@ -1,5 +1,4 @@
 #include "tfdynamics.h"
-#include <QTime>
 
 TFDynamics::TFDynamics()
 {
@@ -14,7 +13,7 @@ TFDynamics::TFDynamics()
 	createFileStream();
 }
 
-TFDynamics::TFDynamics(double tStep)
+TFDynamics::TFDynamics(float tStep)
 {
 	m_tStep = tStep;
 	m_xStep = 1;
@@ -27,7 +26,7 @@ TFDynamics::TFDynamics(double tStep)
 	createFileStream();
 }
 
-TFDynamics::TFDynamics(double tStep, double xStep, double yStep)
+TFDynamics::TFDynamics(float tStep, float xStep, float yStep)
 {
 	m_tStep = tStep;
 	m_xStep = xStep;
@@ -40,7 +39,7 @@ TFDynamics::TFDynamics(double tStep, double xStep, double yStep)
 	createFileStream();
 }
 
-TFDynamics::TFDynamics(double tStep, double xStep, double yStep, int tMax, int iMax, int jMax)
+TFDynamics::TFDynamics(float tStep, float xStep, float yStep, float tMax, int iMax, int jMax)
 {
 	m_tStep = tStep;
 	m_xStep = xStep;
@@ -86,32 +85,32 @@ TFDynamics & TFDynamics::operator =(const TFDynamics & other)
 	return *this;
 }
 
-double TFDynamics::tStep() const
+float TFDynamics::tStep() const
 {
 	return m_tStep;
 }
 
-void TFDynamics::setTStep(double tStep)
+void TFDynamics::setTStep(float tStep)
 {
 	m_tStep = tStep;
 }
 
-double TFDynamics::xStep() const
+float TFDynamics::xStep() const
 {
 	return m_xStep;
 }
 
-void TFDynamics::setXStep(double xStep)
+void TFDynamics::setXStep(float xStep)
 {
 	m_xStep = xStep;
 }
 
-double TFDynamics::yStep() const
+float TFDynamics::yStep() const
 {
 	return m_yStep;
 }
 
-void TFDynamics::setYStep(double yStep)
+void TFDynamics::setYStep(float yStep)
 {
 	m_yStep = yStep;
 }
@@ -121,12 +120,12 @@ void TFDynamics::createFileStream()
 	m_fileName = QString("BUFFER");
 }
 
-int TFDynamics::tMax() const
+float TFDynamics::tMax() const
 {
 	return m_tMax;
 }
 
-void TFDynamics::setTMax(int tMax)
+void TFDynamics::setTMax(float tMax)
 {
 	m_tMax = tMax;
 }

@@ -2,7 +2,7 @@
 #define EDGE_H
 
 #include <QGraphicsItem>
-#include "border.h"
+#include "libheat/components/border.h"
 
 class Vertex;
 

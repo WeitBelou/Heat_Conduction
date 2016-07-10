@@ -2,9 +2,10 @@
 #define CALCULATE_DIALOG_H
 
 #include <QtWidgets>
+#include <libheat/components/border.h>
 
-#include "border_interpreter/border_interpreter.h"
-#include "problem/problem.h"
+#include "libheat/border_interpreter/border_interpreter.h"
+#include "libheat/problem/problem.h"
 
 class Material;
 
@@ -28,8 +29,8 @@ private slots:
 
 	void addLogMessage(const QString & s);
 
-	void setTMax(double value);
-	void setTStep(double value);
+	void setTMax (float value);
+	void setTStep (float value);
 
 private:
 	void createCentral();
@@ -60,8 +61,8 @@ private:
 
 	QComboBox * materialChooser;
 
-	double tMax;
-	double tStep;
+	float tMax;
+	float tStep;
 
 	bool isDone;
 	bool isCalculating;

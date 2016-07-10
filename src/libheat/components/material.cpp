@@ -7,7 +7,7 @@ Material::Material()
 	m_c = 460;
 }
 
-Material::Material(double ro, double lambda, double c)
+Material::Material (float ro, float lambda, float c)
 {
 	m_rho = ro;
 	m_lambda = lambda;
@@ -29,41 +29,41 @@ Material & Material::operator =(const Material& other)
 	return *this;
 }
 
-double Material::rho() const
+float Material::rho () const
 {
 	return m_rho;
 }
 
-void Material::setRho(double rho)
+void Material::setRho (float rho)
 {
 	m_rho = rho;
 }
 
-double Material::lambda() const
+float Material::lambda () const
 {
 	return m_lambda;
 }
 
-void Material::setLambda(double lambda)
+void Material::setLambda (float lambda)
 {
 	m_lambda = lambda;
 }
 
-double Material::c() const
+float Material::c () const
 {
 	return m_c;
 }
 
-void Material::setC(double c)
+void Material::setC (float c)
 {
 	m_c = c;
 }
 
 QTextStream & operator <<(QTextStream & os, const Material & m)
 {
-	//Rho = DOUBLE
-	//Lambda = DOUBLE
-	//C = DOUBLE
+	//Rho = float
+	//Lambda = float
+	//C = float
 
 	os << "Rho = " << m.rho() << endl;
 	os << "Lambda = " << m.lambda() << endl;
@@ -74,9 +74,9 @@ QTextStream & operator <<(QTextStream & os, const Material & m)
 
 QTextStream & operator >>(QTextStream & is, Material & m)
 {
-	//DOUBLE DOUBLE DOUBLE
+	//float float float
 
-	double tmp;
+	float tmp;
 
 	is >> tmp;
 	m.setRho(tmp);

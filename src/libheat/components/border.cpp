@@ -1,31 +1,29 @@
 #include "border.h"
 
-#include <QPointF>
-
 Border::Border() :
 	QLineF(), m_u(0)
 {
 
 }
 
-Border::Border(QLineF line, double u) :
+Border::Border(QLineF line, float u) :
 	QLineF(line), m_u(u)
 {
 
 }
 
-Border::Border(QPointF p1, QPointF p2, double u) :
+Border::Border(QPointF p1, QPointF p2, float u) :
 	QLineF(p1, p2), m_u(u)
 {
 
 }
 
-double Border::u() const
+float Border::u() const
 {
 	return m_u;
 }
 
-void Border::setU(double u)
+void Border::setU(float u)
 {
 	m_u = u;
 }

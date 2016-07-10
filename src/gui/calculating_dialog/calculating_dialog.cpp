@@ -1,6 +1,5 @@
 #include "calculating_dialog.h"
 
-#include "material.h"
 CalculatingDialog::CalculatingDialog(QWidget * parent):
 	QDialog(parent)
 {
@@ -66,7 +65,7 @@ void CalculatingDialog::addLogMessage(const QString & s)
 	log->appendPlainText(QString("%1\n").arg(s));
 }
 
-void CalculatingDialog::setTStep(double value)
+void CalculatingDialog::setTStep (float value)
 {
 	tStep = value;
 }
@@ -153,7 +152,7 @@ void CalculatingDialog::createProgress()
 	mainLayout->addWidget(log);
 }
 
-void CalculatingDialog::setTMax(double value)
+void CalculatingDialog::setTMax (float value)
 {
 	tMax = value;
 }

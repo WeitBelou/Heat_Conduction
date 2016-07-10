@@ -11,8 +11,8 @@ TFGeometry::TFGeometry(const TemperatureField& zeroLayer, const BoolGrid& idNet)
 
 }
 
-TFGeometry::TFGeometry(const TemperatureField& zeroLayer, const BoolGrid& idNet,
-						   double xStep, double yStep) :
+TFGeometry::TFGeometry (const TemperatureField &zeroLayer, const BoolGrid &idNet,
+						float xStep, float yStep) :
 	m_zeroLayer(zeroLayer), m_idNet(idNet), m_xStep(xStep), m_yStep(yStep)
 {
 
@@ -66,22 +66,22 @@ void TFGeometry::setIdNet(const BoolGrid& idNet)
 	m_idNet = idNet;
 }
 
-double TFGeometry::xStep() const
+float TFGeometry::xStep () const
 {
 	return m_xStep;
 }
 
-void TFGeometry::setXStep(double xStep)
+void TFGeometry::setXStep(float xStep)
 {
 	m_xStep = xStep;
 }
 
-double TFGeometry::yStep() const
+float TFGeometry::yStep () const
 {
 	return m_yStep;
 }
 
-void TFGeometry::setYStep(double yStep)
+void TFGeometry::setYStep(float yStep)
 {
 	m_yStep = yStep;
 }

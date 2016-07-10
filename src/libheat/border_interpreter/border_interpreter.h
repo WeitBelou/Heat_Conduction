@@ -13,12 +13,11 @@
 
 #include <QObject>
 #include <QVector>
+#include <libheat/components/border.h>
+#include <libheat/components/tfgeometry.h>
 
 class QPoint;
 class QPointF;
-
-#include "border.h"
-#include "tfgeometry.h"
 
 class BorderInterpreter : public QObject
 {
@@ -49,7 +48,7 @@ private:
 	QPoint pToGp(const QPointF& p);
 	QPoint movePoint(const QPoint& p1, const QPoint& p2);
 
-	void putPoint(const QPoint& p, const double& u);
+	void putPoint (const QPoint &p, const float &u);
 
 	const int m_maxPointsPerDimension;
 	const int m_minPointsPerDimension;
@@ -58,9 +57,9 @@ private:
 
 	QVector<Border> borders;
 	TFGeometry m_workingArea;
-	double xMax, xMin, yMax, yMin;
+	float xMax, xMin, yMax, yMin;
 	int iMax, jMax;
-	double length, height, xMinDist, yMinDist;
+	float length, height, xMinDist, yMinDist;
 };
 
 #endif // BORDER_INTERPRETER_H

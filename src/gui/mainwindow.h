@@ -2,8 +2,10 @@
 #define MAINWINDOW_H
 
 #include <QtWidgets>
-#include "editor/editor.h"
+
 #include "plot/plottingwidget.h"
+
+#include "editor/editor.h"
 
 
 class MainWindow : public QMainWindow
@@ -16,9 +18,6 @@ private:
 	void createCentralWidget();
 	void createPlot();
 	void createEditor();
-
-	QStatusBar * status;
-	QToolBar * tools;
 
 	QMdiArea * central;
 

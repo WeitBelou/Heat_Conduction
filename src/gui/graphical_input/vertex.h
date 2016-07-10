@@ -38,12 +38,10 @@ protected:
 
 private:
 	GraphWidget *graph;
-	double radius;
+	float radius;
 
 	Edge * m_firstEdge;
 	Edge * m_secondEdge;
-
-	QPointF newPos;
 };
 
 #endif // VERTEX_H
